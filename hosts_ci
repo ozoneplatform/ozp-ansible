@@ -1,0 +1,8 @@
+# inventory file for CI boxes
+
+[ci-deploy]
+ci-latest.abc.efg.net
+ci-release.abc.efg.net
+
+[ci-build]
+ci-jenkins.abc.efg.net

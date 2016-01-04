@@ -1,0 +1,42 @@
+---
+# This playbook deploys the whole application stack in this site.
+#
+
+vars:
+  python_version: 3.4.3
+
+- name: apply common configuration to all nodes
+  hosts: all
+  remote_user: root
+
+  roles:
+    - common
+    - python-3
+    - postgres
+
+- name: configure build boxes
+  hosts: buildservers
+  remote_user: root
+
+  roles:
+    - node
+
+- name: configure deploy boxes
+  hosts: deployservers
+  remote_user: root
+
+  roles:
+    - nginx
+    - mysql
+    - php
+    - ozp-base
+    - ozp-ssl-certs
+    - ozp-authorization
+    - ozp-backend
+    - ozp-center
+    - ozp-hud
+    - ozp-webtop
+    - ozp-iwc
+    - ozp-help
+    - ozp-demo-apps
+    - metrics
