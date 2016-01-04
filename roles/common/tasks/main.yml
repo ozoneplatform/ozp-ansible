@@ -1,6 +1,6 @@
 ---
 - name: Install prereqs
-  yum: name={{ items }} state=present
+  yum: name={{ item }} state=present
   with_items:
     - epel-release
     - vim
@@ -16,6 +16,8 @@
     - db4-devel
     - libpcap-devel
     - xz-devel
+  become: true
 
 - name: Install development tools
   yum: name='@development'
+  become: true

@@ -1,0 +1,4 @@
+---
+- hosts: buildservers
+  roles:
+    - common

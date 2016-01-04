@@ -1,0 +1,19 @@
+---
+- name: Download nginx source
+  get_url:
+    url: http://nginx.org/download/nginx-1.9.4.tar.gz
+    dest: {{ download_dir }}/nginx-1.9.4.tar.gz
+
+- name: Extract archive
+  command: tar xzf nginx-1.9.4.tar.gz
+    chdir: {{ download_dir }}
+
+- name: Configure nginx
+  command: ./configure --with-http_ssl_module
+
+- name: Make nginx
+  command: make
+
+- name: Install nginx
+  command: sudo make install
+  become: true
