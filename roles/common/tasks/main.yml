@@ -16,6 +16,7 @@
     - db4-devel
     - libpcap-devel
     - xz-devel
+    - libselinux-python # required for ansible i guess
   become: true
 
 - name: Install development tools

@@ -1,19 +1,80 @@
 ---
+- debug: var=download_dir
+- debug: var=nginx_version
+- name: Install prereqs for ssl module
+  yum: name={{ item }} state=present
+  with_items:
+    - pcre
+    - pcre-devel
+  become: true
+
 - name: Download nginx source
   get_url:
-    url: http://nginx.org/download/nginx-1.9.4.tar.gz
-    dest: {{ download_dir }}/nginx-1.9.4.tar.gz
+    url: http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
+    dest: "{{ download_dir }}/nginx-{{ nginx_version }}.tar.gz"
 
 - name: Extract archive
-  command: tar xzf nginx-1.9.4.tar.gz
-    chdir: {{ download_dir }}
+  unarchive:
+    src: "{{ download_dir }}/nginx-{{ nginx_version }}.tar.gz"
+    dest: "{{ download_dir }}"
+    copy: no
 
 - name: Configure nginx
-  command: ./configure --with-http_ssl_module
+  command: chdir={{ download_dir }}/nginx-{{ nginx_version }} ./configure --with-http_ssl_module
 
 - name: Make nginx
-  command: make
+  command: chdir={{ download_dir }}/nginx-{{ nginx_version }} make
 
+# Install nginx to /usr/local/nginx
 - name: Install nginx
-  command: sudo make install
+  command: chdir={{ download_dir }}/nginx-{{ nginx_version }} make install
+  become: true
+
+- name: Create nginx user
+  user:
+    name: nginx
+    comment: "nginx"
+    # group: nginx
+    password: "password"
+  become: true
+
+- name: Copy nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: /usr/local/nginx/conf/nginx.conf
+    owner: nginx
+    # group: nginx
+    mode: 0644
+  become: true
+
+- name: Copy ozp nginx conf
+  template:
+    src: ozp_nginx.conf.j2
+    dest: /usr/local/nginx/conf/ozp.conf
+    owner: nginx
+    # group: nginx
+    mode: 0644
+  become: true
+
+- name: Copy nginx init.d script
+  template:
+    src: nginx.initd.j2
+    dest: /etc/init.d/nginx
+    owner: root
+    group: root
+    mode: 0744
+  become: true
+
+- name: Create directory for static file hosting
+  file:
+    path: /ozp/static-deployment/django_static
+    state: directory
+    owner: nginx
+    # group: nginx
+    mode: 0775
+    recurse: true
+  become: true
+
+- name: Ensure nginx is running (and enable it at boot)
+  service: name=nginx state=started enabled=yes
   become: true

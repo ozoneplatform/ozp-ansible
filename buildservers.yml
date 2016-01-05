@@ -1,4 +1,11 @@
 ---
 - hosts: buildservers
+  vars:
+    download_dir: /home/vagrant
   roles:
-    - common
+    #- common
+    #- ssl_certs
+    #- nginx
+    #- python_3
+    #- node
+    - postgres

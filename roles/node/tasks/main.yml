@@ -1,0 +1,36 @@
+---
+- name: Create directory for node installs
+  file:
+    path: /opt/node/
+    state: directory
+    mode: 0777
+    recurse: true
+  become: true
+
+- name: Download custom node version manager
+  get_url:
+    url: https://raw.githubusercontent.com/ozone-development/dev-tools/master/node-version-manager/set_node_version.sh
+    dest: /opt/node/set_node_version.sh
+
+- name: Make set_node_version.sh executable
+  file:
+    path: /opt/node/set_node_version.sh
+    mode: 0777
+
+- name: Download node
+  get_url:
+    url: https://nodejs.org/download/release/v{{ node_version }}/node-v{{ node_version }}-linux-x64.tar.gz
+    dest: /opt/node/
+
+- name: Extract archive
+  unarchive:
+    src: /opt/node/node-v{{ node_version }}-linux-x64.tar.gz
+    dest: /opt/node
+    copy: no
+
+- name: Rename node directory
+  command: mv /opt/node/node-v{{ node_version }}-linux-x64 /opt/node/{{ node_version }}
+  become: true
+
+
+# to use this version of node, `./set_node_versions.sh <version>

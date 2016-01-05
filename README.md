@@ -37,4 +37,7 @@ roles for build box (like Jenkins Slave):
 roles for deploy box:
 * all of them
 
+Running a playbook:
+If using ansible from source, just update the git repo and `source ./hacking/env-setup` before running any ansible commands
 
+`ansible-playbook buildservers.yml -i ~/ozp/not-in-git/hosts_ci -u alan.ward -k --ask-become-pass`

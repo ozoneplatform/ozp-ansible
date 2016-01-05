@@ -1,0 +1,52 @@
+---
+- name: Create directory for Root CA certs
+  file:
+    path: /ozp/ca_certs/private
+    state: directory
+    owner: nginx
+    # group: nginx
+    mode: 0775
+    recurse: true
+  become: true
+
+- name: Create directory for server certs
+  file:
+    path: /ozp/server_certs/private
+    state: directory
+    owner: nginx
+    # group: nginx
+    mode: 0775
+    recurse: true
+  become: true
+
+- name: Copy Root CA cert
+  copy:
+    src: rootCA.pem
+    dest: /ozp/ca_certs/
+    owner: nginx
+    mode: 0644
+  become: true
+
+- name: Copy Root CA private key
+  copy:
+    src: rootCA.key
+    dest: /ozp/ca_certs/private
+    owner: nginx
+    mode: 0644
+  become: true
+
+- name: Copy server cert
+  copy:
+    src: server.crt
+    dest: /ozp/server_certs
+    owner: nginx
+    mode: 0644
+  become: true
+
+- name: Copy server private key
+  copy:
+    src: server.key
+    dest: /ozp/server_certs/private
+    owner: nginx
+    mode: 0644
+  become: true
