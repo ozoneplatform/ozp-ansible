@@ -22,3 +22,11 @@
 - name: Install development tools
   yum: name='@development'
   become: true
+
+- name: Create ozp user
+  user:
+    name: ozp
+    comment: "ozp"
+    # group: ozp
+    password: "password"
+  become: true

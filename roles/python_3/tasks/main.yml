@@ -23,3 +23,11 @@
   command: chdir={{ download_dir }}/Python-{{ python_version }} make altinstall
   become: true
 
+- name: Create directory to hold python envs
+  file:
+    path: /ozp/python_envs
+    state: directory
+    owner: ozp
+    mode: 0755
+    recurse: true
+  become: true

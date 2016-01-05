@@ -1,6 +1,4 @@
 ---
-- debug: var=download_dir
-- debug: var=nginx_version
 - name: Install prereqs for ssl module
   yum: name={{ item }} state=present
   with_items:

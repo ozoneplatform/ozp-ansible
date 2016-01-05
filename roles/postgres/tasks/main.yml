@@ -32,3 +32,90 @@
   args:
     chdir: "{{ download_dir }}/postgresql-{{ postgres_version }}"
   become: true
+
+- name: Add postgres shared library to ldconfig
+  copy:
+    src: ld.conf
+    dest: /etc/ld.so.conf.d/ozp.conf
+    owner: root
+    mode: 0644
+  become: true
+
+- name: Reload ldconfig
+  command:
+    /sbin/ldconfig
+  become: true
+
+- name: Create postgres user
+  user:
+    name: postgres
+    comment: "postgres"
+    # group: postgres
+    password: "password"
+  become: true
+
+- name: Create postgres data directory
+  file:
+    path: /usr/local/pgsql/data
+    state: directory
+    owner: postgres
+    mode: 0644
+  become: true
+
+- name: Change ownership to postgres user
+  command: chown -R postgres /usr/local/pgsql
+  become: true
+
+- name: Fix file permissions
+  command: find /usr/local/pgsql -type f -exec chmod 644 {} \;
+  become: true
+
+- name: Make bin/ files executable
+  command: find /usr/local/pgsql/bin -type f -exec chmod 755 {} \;
+  become: true
+
+- name: Fix directory permissions
+  command: find /usr/local/pgsql -type d -exec chmod 755 {} \;
+  become: true
+
+# If the data directory is not empty, this will cause an error. We could
+# forecefully remove contents from this directory, but that would result in
+# destructive behavior. Instead, we'll just ingore failures here, assuming
+# that the data directory has been initialized previously
+- name: Initialize postgres data directory
+  command: /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data/
+  become: true
+  become_user: postgres
+  ignore_errors: true
+
+- name: Install init.d script
+  template:
+    src: postgres.initd.j2
+    dest: /etc/init.d/postgres
+    owner: root
+    group: root
+    mode: 0744
+  become: true
+
+- name: Ensure postgres is running (and enable it at boot)
+  service: name=postgres state=started enabled=yes
+  become: true
+
+- name: Sleep for a second (might not be necessary now)
+  command: sleep 1
+
+# TODO: Password?
+- name: Create a new database user
+  command: /usr/local/pgsql/bin/createuser ozp_user
+  become: true
+  become_user: postgres
+
+- name: Create a new database
+  command: /usr/local/pgsql/bin/createdb ozp
+  become: true
+  become_user: postgres
+
+- name: Grant user permissions on new database
+  command: /usr/local/pgsql/bin/psql -c 'GRANT ALL PRIVILEGES ON DATABASE ozp TO ozp_user;'
+  become: true
+  become_user: postgres
