@@ -1,3 +1,55 @@
 ---
 - name: Download source
+  get_url:
+    url: https://github.com/ozone-development/demo-auth-service/archive/v1.0.0.tar.gz
+    dest: "{{ download_dir }}/demo-auth-service-1.0.0.tar.gz"
+
+- name: Extract archive
+  unarchive:
+    src: "{{ download_dir }}/demo-auth-service-1.0.0.tar.gz"
+    dest: "/ozp/"
+    copy: no
+    owner: ozp
+  become: true
+
+- name: Clean up old files
+  file:
+    path: /ozp/demo-auth-service
+    state: absent
+  become: true
+
+- name: Move files
+  command: mv /ozp/demo-auth-service-1.0.0 /ozp/demo-auth-service
+  become: true
+
+- name: Use custom settings.py file
+  copy:
+    src: settings_demoauth.py
+    dest: /ozp/demo-auth-service/demoauth/settings.py
+    owner: ozp
+    mode: 0644
+  become: true
+
+- name: Copy auth_data.json file
+  copy:
+    src: auth_data.json
+    dest: /ozp/demo-auth-service/main/auth_data.json
+    owner: ozp
+    mode: 0644
+  become: true
+
+- name: Copy init.d file
+  copy:
+    src: gunicorn_demoauth.initd
+    dest: /etc/init.d/gunicorn_demoauth
+    mode: 0744
+  become: true
+
+- name: Redeploy the service
+  command: service gunicorn_demoauth redeploy
+  become: true
+
+- name: Ensure the service is running (and enable it at boot)
+  service: name=gunicorn_demoauth state=started enabled=yes
+  become: true
 

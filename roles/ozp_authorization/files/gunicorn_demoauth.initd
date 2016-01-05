@@ -1,0 +1,140 @@
+#! /bin/bash
+### BEGIN INIT INFO
+# Provides:          yourapp
+# Required-Start:    nginx
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: The main django process
+# Description:       The gunicorn process that receives HTTP requests
+#                    from nginx
+#
+### END INIT INFO
+#
+# Author:       mle <geobi@makina-corpus.net>
+#
+APPNAME=demoauth
+USER=ozp
+PYTHON_ENV=/ozp/python_envs/demoauthservice
+ACTIVATE=$PYTHON_ENV/bin/activate
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:$PYTHON_ENV/bin
+APPDIR=/ozp/demo-auth-service
+APPMODULE=demoauth.wsgi:application
+NGINX_STATIC=/ozp/static-deployment/django_static
+DAEMON=gunicorn
+BIND=127.0.0.1:8081
+PIDFILE=/ozp/gunicorn_demoauth.pid
+LOGFILE=/ozp/gunicorn_demoauth.log
+WORKERS=2
+
+# Source function library
+. /etc/init.d/functions
+
+# Go to source directory
+cd $APPDIR
+
+if [ -e "/etc/default/$APPNAME" ]
+then
+    . /etc/default/$APPNAME
+fi
+
+# test if $USER exists
+user_exists=$(id -u $USER > /dev/null 2>&1; echo $?)
+if [ $user_exists -eq 1 ]; then
+   echo "error user $USER does not exist"
+   failure
+   exit $?
+fi
+
+start() {
+	if [ -f $PIDFILE ]; then
+	    PID=`cat $PIDFILE`
+	    echo "$APPNAME already running: $PID"
+	    failure
+	    exit 2;
+	fi
+        echo -n "Starting $APPNAME"
+        source $ACTIVATE
+	cmd="$DAEMON --daemon --bind=$BIND --pid=$PIDFILE --workers=$WORKERS --user=$USER --log-file=$LOGFILE $APPMODULE"
+	echo "Running gunicorn as: $cmd"
+	$cmd
+	if [ $? -eq 0 ]; then
+	   # TODO: this doesn't guarantee success
+	   success
+	   return $?
+	else
+	  failure
+          echo "failure"
+          return $?
+	fi
+}
+
+stop() {
+        echo -n "Shutting down $APPNAME: "
+        killproc -p $PIDFILE $DAEMON
+        # kill -9 $(cat $PIDFILE)
+        # rm -f $PIDFILE
+	return $?
+}
+
+rh_status() {
+    status "$DAEMON"
+}
+
+reload() {
+  kill -HUP $(cat $PIDFILE)
+  return $?
+}
+
+reinstall() {
+ PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:$PYTHON_ENV/bin
+ cd $APPDIR
+ echo "Redeploying demo-auth-service"
+ # remove old python env
+ rm -rf $PYTHON_ENV
+ # create new virtualenv
+ mkdir -p $PYTHON_ENV
+ pyvenv-3.4 $PYTHON_ENV
+ source $ACTIVATE
+ # install dependencies
+ # pip install --no-index --find-links=wheelhouse -r requirements.txt
+ pip install -r requirements.txt
+ # remove old static files
+ rm -rf static
+ mkdir static
+ # collect static files
+ python manage.py collectstatic --noinput
+ # copy static files to nginx directory
+ cp -r static/* $NGINX_STATIC
+
+ return $?
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        rh_status
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    reload)
+        reload
+        ;;
+    redeploy)
+	stop
+	reinstall
+	start
+	;;
+    *)
+        echo "Usage: $APPNAME {start|stop|status|reload|restart|redeploy"
+        exit 1
+        ;;
+esac
+exit $?
