@@ -1,0 +1,66 @@
+---
+- name: Download source from GitHub tag
+  when: download_from == "github"
+  git:
+    repo: git://github.com/ozone-development/ozp-backend.git
+    dest: /ozp/backend
+  become: true
+  become_user: ozp
+
+- name: Download source from Jenkins
+  when: download_from == "jenkins"
+  get_url:
+    url: https://jenkins.di2e.net/view/OZP/job/{{ jenkins_project}}/{{ jenkins_build_number }}/artifact/*zip*/archive.zip
+    dest: "{{ download_dir }}/backend_jenkins_archive.zip"
+
+- name: Checkout git branch or tag name
+  when: (download_from == "github" and git_tag_or_branch_name)
+  command: git checkout {{ git_tag_or_branch_name }}
+  args:
+    chdir: /ozp/backend
+  become: true
+  become_user: ozp
+
+- name: Extract archive from Jenkins (outer zip file)
+  when: download_from == "jenkins"
+  unarchive:
+    src: "{{ download_dir }}/backend_jenkins_archive.tar.gz"
+    dest: "{{ download_dir }}"
+    copy: no
+    owner: ozp
+  become: true
+
+#- name: Clean up old files
+#  file:
+#    path: /ozp/backend
+#    state: absent
+#  become: true
+#
+#- name: Move files
+#  command: mv /ozp/ozp-backend-{{ backend_version }} /ozp/backend
+#  become: true
+#
+#- name: Use custom settings.py file
+#  copy:
+#    src: settings.py
+#    dest: /ozp/backend/ozp/settings.py
+#    owner: ozp
+#    mode: 0644
+#  become: true
+#
+#- name: Copy init.d file
+#  copy:
+#    src: gunicorn_ozp.initd
+#    dest: /etc/init.d/gunicorn_ozp
+#    mode: 0744
+#  become: true
+#
+## WARNING: This will destroy all exiting data!!!
+#- name: Redeploy the service
+#  command: service gunicorn_ozp nuke
+#  become: true
+#
+#- name: Ensure the service is running (and enable it at boot)
+#  service: name=gunicorn_ozp state=started enabled=yes
+#  become: true
+#
