@@ -7,11 +7,17 @@
   become: true
   become_user: ozp
 
-- name: Download source from Jenkins
+- name: Download artifacts from Jenkins
   when: download_from == "jenkins"
-  get_url:
-    url: https://jenkins.di2e.net/view/OZP/job/{{ jenkins_project}}/{{ jenkins_build_number }}/artifact/*zip*/archive.zip
+  uri:
+    url: https://{{ jenkins_host }}/view/OZP/job/{{ jenkins_project}}/{{ jenkins_build_number }}/artifact/*zip*/archive.zip
     dest: "{{ download_dir }}/backend_jenkins_archive.zip"
+    method: GET
+    user: "{{ jenkins_username }}"
+    password: "{{ jenkins_password }}"
+    force_basic_auth: true
+    timeout: 30
+    status_code: 200
 
 - name: Checkout git branch or tag name
   when: (download_from == "github" and git_tag_or_branch_name)
@@ -21,46 +27,78 @@
   become: true
   become_user: ozp
 
+- name: Remove any existing "artifact" directory
+  when: download_from == "jenkins"
+  file:
+    path: "{{ download_dir }}/archive"
+    state: absent
+
+
 - name: Extract archive from Jenkins (outer zip file)
   when: download_from == "jenkins"
   unarchive:
-    src: "{{ download_dir }}/backend_jenkins_archive.tar.gz"
+    src: "{{ download_dir }}/backend_jenkins_archive.zip"
     dest: "{{ download_dir }}"
     copy: no
-    owner: ozp
+
+- name: Rename tar file from Jenkins
+  when: download_from == "jenkins"
+  shell: mv `ls -1` new-backend.tar.gz
+  args:
+    chdir: "{{ download_dir }}/archive"
+
+- name: Extract archive contents from Jenkins download
+  when: download_from == "jenkins"
+  unarchive:
+    src: "{{ download_dir }}/archive/new-backend.tar.gz"
+    dest: "{{ download_dir }}"
+    copy: no
+
+# At this point we have the backend files in {{ download_dir }}/release. We
+# want to move them to /ozp/backend and change their owner to the ozp user
+#
+- name: Prepare /ozp/backend directory
+  when: download_from == "jenkins"
+  shell: rm -rf /ozp/backend; mkdir /ozp/backend
   become: true
 
-#- name: Clean up old files
-#  file:
-#    path: /ozp/backend
-#    state: absent
-#  become: true
-#
-#- name: Move files
-#  command: mv /ozp/ozp-backend-{{ backend_version }} /ozp/backend
-#  become: true
-#
-#- name: Use custom settings.py file
-#  copy:
-#    src: settings.py
-#    dest: /ozp/backend/ozp/settings.py
-#    owner: ozp
-#    mode: 0644
-#  become: true
-#
-#- name: Copy init.d file
-#  copy:
-#    src: gunicorn_ozp.initd
-#    dest: /etc/init.d/gunicorn_ozp
-#    mode: 0744
-#  become: true
-#
+- name: Move files
+  when: download_from == "jenkins"
+  shell: mv {{ download_dir }}/release/* /ozp/backend/
+  become: true
+
+- name: Change ownership
+  when: download_from == "jenkins"
+  file:
+    path: /ozp/backend
+    owner: ozp
+    state: directory
+    recurse: true
+  become: true
+
+- name: Use custom settings.py file
+  copy:
+    src: settings.py
+    dest: /ozp/backend/ozp/settings.py
+    owner: ozp
+    mode: 0644
+  become: true
+
+- name: Copy init.d file
+  copy:
+    src: gunicorn_ozp.initd
+    dest: /etc/init.d/gunicorn_ozp
+    mode: 0744
+  become: true
+
 ## WARNING: This will destroy all exiting data!!!
-#- name: Redeploy the service
-#  command: service gunicorn_ozp nuke
-#  become: true
-#
-#- name: Ensure the service is running (and enable it at boot)
-#  service: name=gunicorn_ozp state=started enabled=yes
-#  become: true
-#
+- name: Redeploy the service AND reset the database with sample data
+  when: reset_database
+  command: service gunicorn_ozp nuke
+  become: true
+
+- name: Ensure the service is running (and enable it at boot)
+  service: name=gunicorn_ozp state=started enabled=yes
+  become: true
+  ignore_errors: true
+

@@ -17,6 +17,8 @@
     - libpcap-devel
     - xz-devel
     - libselinux-python # required for ansible i guess
+    - python-httplib2 # required to use uri module in ansible
+
   become: true
 
 - name: Install development tools

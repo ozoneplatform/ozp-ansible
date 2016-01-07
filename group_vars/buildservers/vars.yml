@@ -1,0 +1,5 @@
+---
+#download_dir: ~/
+jenkins_username: "{{ vault_jenkins_username }}"
+jenkins_password: "{{ vault_jenkins_password }}"
+jenkins_host: "{{ vault_jenkins_host }}"

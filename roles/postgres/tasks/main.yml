@@ -54,13 +54,6 @@
     password: "password"
   become: true
 
-- name: Create postgres data directory
-  file:
-    path: /usr/local/pgsql/data
-    state: directory
-    owner: postgres
-    mode: 0644
-  become: true
 
 - name: Change ownership to postgres user
   command: chown -R postgres /usr/local/pgsql
@@ -76,6 +69,14 @@
 
 - name: Fix directory permissions
   command: find /usr/local/pgsql -type d -exec chmod 755 {} \;
+  become: true
+
+- name: Create postgres data directory
+  file:
+    path: /usr/local/pgsql/data
+    state: directory
+    owner: postgres
+    mode: 0700
   become: true
 
 # If the data directory is not empty, this will cause an error. We could

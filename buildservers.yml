@@ -1,7 +1,9 @@
 ---
 - hosts: buildservers
+
   vars:
     download_dir: /home/vagrant
+
   roles:
     #- common
     #- ssl_certs
