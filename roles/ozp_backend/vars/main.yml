@@ -1,10 +1,10 @@
 ---
 # valid choices are "jenkins" or "github"
-download_from: jenkins
+download_from: "github"
  # branch or tag name to checkout from git repo
-git_tag_or_branch_name: "v0.9.7"
+git_tag_or_branch_name: "master"
 # if jenkins, choose a project name and build number
 jenkins_project: "build-new-backend"
-jenkins_build_number: 168
+jenkins_build_number: 170
 # Optionally re-create the database
 reset_database: true
