@@ -1,0 +1,21 @@
+---
+- name: Copy OzoneConfig.js to Center
+  template:
+    src: OzoneConfig.js.j2
+    dest: /usr/local/ozp/frontend/center/OzoneConfig.js
+    owner: nginx
+  become: true
+
+- name: Copy OzoneConfig.js to HUD
+  template:
+    src: OzoneConfig.js.j2
+    dest: /usr/local/ozp/frontend/hud/OzoneConfig.js
+    owner: nginx
+  become: true
+
+- name: Copy OzoneConfig.js to Webtop
+  template:
+    src: OzoneConfig.js.j2
+    dest: /usr/local/ozp/frontend/webtop/OzoneConfig.js
+    owner: nginx
+  become: true

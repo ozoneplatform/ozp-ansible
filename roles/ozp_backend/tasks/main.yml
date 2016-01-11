@@ -16,8 +16,9 @@
 - name: Remove any existing local directory for backend
   when: download_from == "github"
   file:
-    path: /usr/local/ozp/build-backend
+    path: /usr/local/ozp/build/backend
     state: absent
+    recurse: true
   become: true
   become_user: ozp
 
@@ -25,7 +26,7 @@
   when: download_from == "github"
   git:
     repo: git://github.com/ozone-development/ozp-backend.git
-    dest: /usr/local/ozp/build-backend/ozp-backend
+    dest: /usr/local/ozp/build/backend/ozp-backend
   become: true
   become_user: ozp
 
@@ -33,7 +34,7 @@
   when: (download_from == "github" and git_tag_or_branch_name)
   command: git checkout {{ git_tag_or_branch_name }}
   args:
-    chdir: /usr/local/ozp/build-backend/ozp-backend
+    chdir: /usr/local/ozp/build/backend/ozp-backend
   become: true
   become_user: ozp
 
@@ -47,7 +48,7 @@
   when: download_from == "github"
   shell: source /usr/local/ozp/python-env/bin/activate; pip install --upgrade pip; pip install wheel; export PATH=/usr/local/pgsql/bin:$PATH; pip install -r requirements.txt --no-cache-dir -I
   args:
-    chdir: /usr/local/ozp/build-backend/ozp-backend
+    chdir: /usr/local/ozp/build/backend/ozp-backend
   become: true
   become_user: ozp
 
@@ -55,16 +56,16 @@
   when: download_from == "github"
   shell: source /usr/local/ozp/python-env/bin/activate; export PATH=/usr/local/pgsql/bin:$PATH; python release.py --no-version
   args:
-    chdir: /usr/local/ozp/build-backend/ozp-backend
+    chdir: /usr/local/ozp/build/backend/ozp-backend
   become: true
   become_user: ozp
 
-# now we need to move /ozp/build-backend/ozp-backend/new-backend-<XYZ>.tar.gz
+# now we need to move /ozp/build/backend/ozp-backend/new-backend-<XYZ>.tar.gz
 - name: Extract tarball and move to correct location
   when: download_from == "github"
   shell: mv `ls *.tar.gz` new-backend.tar.gz; tar xzf new-backend.tar.gz; cp -r release/* /usr/local/ozp/backend/
   args:
-    chdir: /usr/local/ozp/build-backend/ozp-backend
+    chdir: /usr/local/ozp/build/backend/ozp-backend
   become: true
   become_user: ozp
 

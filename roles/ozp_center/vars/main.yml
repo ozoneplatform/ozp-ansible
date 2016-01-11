@@ -1,10 +1,8 @@
 ---
 # valid choices are "jenkins" or "github"
-download_from: "github"
+download_from: "jenkins"
  # branch or tag name to checkout from git repo
 git_tag_or_branch_name: "new-backend"
 # if jenkins, choose a project name and build number
 jenkins_project: "build-center-new-backend"
-jenkins_build_number: 170
-# Optionally re-create the database
-reset_database: true
+jenkins_build_number: 97

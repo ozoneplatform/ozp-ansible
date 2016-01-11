@@ -5,11 +5,13 @@
     download_dir: /home/vagrant
 
   roles:
-    - common
-    - ssl_certs
-    - nginx
-    - python_3
-    - node
-    - postgres
-    - ozp_authorization
-    - ozp_backend
+    #- common
+    #- ssl_certs
+    #- nginx
+    #- python_3
+    #- node
+    #- postgres
+    #- ozp_authorization
+    #- ozp_backend
+    - ozp_center
+    - ozp_config
