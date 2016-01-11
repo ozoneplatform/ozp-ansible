@@ -106,15 +106,20 @@
   command: sleep 1
 
 # TODO: Password?
+# Ignore errors - ok if this user already exists
 - name: Create a new database user
   command: /usr/local/pgsql/bin/createuser ozp_user
   become: true
   become_user: postgres
+  ignore_errors: true
 
+# Ignore errors - ok if this db already exists
 - name: Create a new database
   command: /usr/local/pgsql/bin/createdb ozp
   become: true
   become_user: postgres
+  ignore_errors: true
+
 
 - name: Grant user permissions on new database
   command: /usr/local/pgsql/bin/psql -c 'GRANT ALL PRIVILEGES ON DATABASE ozp TO ozp_user;'

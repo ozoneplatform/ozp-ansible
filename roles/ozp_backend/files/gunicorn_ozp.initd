@@ -15,17 +15,17 @@
 #
 APPNAME=ozp
 USER=ozp
-PYTHON_ENV=/ozp/python_envs/ozpbackend
+PYTHON_ENV=/usr/local/ozp/python-env
 ACTIVATE=$PYTHON_ENV/bin/activate
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:$PYTHON_ENV/bin
-APPDIR=/ozp/backend
-NGINX_STATIC=/ozp/static-deployment/django_static
+APPDIR=/usr/local/ozp/backend
+NGINX_STATIC=/usr/local/ozp/frontend/django_static
 APPMODULE=ozp.wsgi:application
 DAEMON=gunicorn
 BIND=127.0.0.1:8080
-PIDFILE=/ozp/gunicorn_ozp.pid
-LOGFILE=/ozp/gunicorn_ozp.log
-DJANGO_LOGFILE=/ozp/ozp.log
+PIDFILE=/usr/local/ozp/gunicorn_ozp.pid
+LOGFILE=/usr/local/ozp/gunicorn_ozp.log
+DJANGO_LOGFILE=/usr/local/ozp/ozp.log
 WORKERS=2
 
 # Source function library
@@ -112,7 +112,7 @@ reinstall() {
  # copy static files to nginx directory
  cp -r static/* $NGINX_STATIC
  # make media directory if it doesn't exist
- mkdir -p media
+ mkdir -p /usr/local/ozp/media
  return $?
 }
 

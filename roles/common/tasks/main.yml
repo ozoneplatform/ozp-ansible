@@ -16,9 +16,15 @@
     - db4-devel
     - libpcap-devel
     - xz-devel
+    - libjpeg-devel
     - libselinux-python # required for ansible i guess
-    - python-httplib2 # required to use uri module in ansible
 
+  become: true
+
+- name: Install httplib2 (or other things from the epel)
+  yum: name={{ item }} state=present
+  with_items:
+    - python-httplib2 # required to use uri module in ansible
   become: true
 
 - name: Install development tools
@@ -33,9 +39,11 @@
     password: "password"
   become: true
 
-- name: Create /ozp directory
+- name: Create /usr/local/ozp directory
   file:
-    path: /ozp
+    path: /usr/local/ozp
     owner: ozp
     mode: 0755
+    recurse: true
+    state: directory
   become: true

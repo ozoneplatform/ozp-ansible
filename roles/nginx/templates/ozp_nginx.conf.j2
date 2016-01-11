@@ -7,25 +7,25 @@ server {
         location = /favicon.ico { access_log off; log_not_found off; }
 
         location /static/ {
-            alias /ozp/static-deployment/django_static/;
+            alias /usr/local/ozp/frontend/django_static/;
         }
         location /center/ {
-            alias /ozp/static-deployment/center/;
+            alias /usr/local/ozp/frontend/center/;
         }
         location /hud/ {
-            alias /ozp/static-deployment/hud/;
+            alias /usr/local/ozp/frontend/hud/;
         }
         location /webtop/ {
-            alias /ozp/static-deployment/webtop/;
+            alias /usr/local/ozp/frontend/webtop/;
         }
         location /iwc/ {
-            alias /ozp/static-deployment/iwc/;
+            alias /usr/local/ozp/frontend/iwc/;
         }
         location /demo_apps/ {
-            alias /ozp/static-deployment/demo_apps/;
+            alias /usr/local/ozp/frontend/demo_apps/;
         }
         location /help/ {
-            alias /ozp/static-deployment/help/;
+            alias /usr/local/ozp/frontend/help/;
         }
 
         location / {
@@ -53,15 +53,15 @@ server {
         # same file in the following order: the primary certificate comes first,
         # then the intermediate certificates. A secret key in the PEM format may
         # be placed in the same file
-        ssl_certificate      /ozp/server_certs/server.crt;
+        ssl_certificate      /usr/local/ozp/server_certs/server.crt;
 
         # Specifies a file with the secret key in the PEM format for the given
         # virtual server
-        ssl_certificate_key  /ozp/server_certs/private/server.key;
+        ssl_certificate_key  /usr/local/ozp/server_certs/private/server.key;
 
         # Specifies a file with trusted CA certificates in the PEM format used
         # to verify client certificates
-        ssl_client_certificate      /ozp/ca_certs/rootCA.pem;
+        ssl_client_certificate      /usr/local/ozp/ca_certs/rootCA.pem;
 
         # Change to 'required' if only SSL Client authenticated
         # request should be passed to Django
@@ -87,7 +87,7 @@ server {
         location = /favicon.ico { access_log off; log_not_found off; }
 
         location /static/ {
-            alias /ozp/static-deployment/django_static/;
+            alias /usr/local/ozp/frontend/django_static/;
         }
 
         location / {
@@ -112,15 +112,15 @@ server {
         # same file in the following order: the primary certificate comes first,
         # then the intermediate certificates. A secret key in the PEM format may
         # be placed in the same file
-        ssl_certificate      /ozp/server_certs/server.crt;
+        ssl_certificate      /usr/local/ozp/server_certs/server.crt;
 
         # Specifies a file with the secret key in the PEM format for the given
         # virtual server
-        ssl_certificate_key  /ozp/server_certs/private/server.key;
+        ssl_certificate_key  /usr/local/ozp/server_certs/private/server.key;
 
         # Specifies a file with trusted CA certificates in the PEM format used
         # to verify client certificates
-        ssl_client_certificate      /ozp/ca_certs/rootCA.pem;
+        ssl_client_certificate      /usr/local/ozp/ca_certs/rootCA.pem;
 
         # Change to 'required' if only SSL Client authenticated
         # request should be passed to Django
@@ -147,7 +147,7 @@ server {
 
         location / {
             index index.php  index.html index.htm;
-            root /ozp/static-deployment/metrics;
+            root /usr/local/ozp/frontend/metrics;
         }
 
         # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
@@ -156,8 +156,8 @@ server {
             include /usr/local/nginx/conf/fastcgi_params;
             fastcgi_pass   127.0.0.1:9000;
             fastcgi_index  index.php;
-            fastcgi_param  DOCUMENT_ROOT /ozp/static-deployment/metrics;
-            fastcgi_param  SCRIPT_FILENAME   /ozp/static-deployment/metrics$fastcgi_script_name;
+            fastcgi_param  DOCUMENT_ROOT /usr/local/ozp/frontend/metrics;
+            fastcgi_param  SCRIPT_FILENAME   /usr/local/ozp/frontend/metrics$fastcgi_script_name;
         }
 
         # Enables the HTTPS protocol for the given virtual server
@@ -169,15 +169,15 @@ server {
         # same file in the following order: the primary certificate comes first,
         # then the intermediate certificates. A secret key in the PEM format may
         # be placed in the same file
-        ssl_certificate      /ozp/server_certs/server.crt;
+        ssl_certificate      /usr/local/ozp/server_certs/server.crt;
 
         # Specifies a file with the secret key in the PEM format for the given
         # virtual server
-        ssl_certificate_key  /ozp/server_certs/private/server.key;
+        ssl_certificate_key  /usr/local/ozp/server_certs/private/server.key;
 
         # Specifies a file with trusted CA certificates in the PEM format used
         # to verify client certificates
-        ssl_client_certificate      /ozp/ca_certs/rootCA.pem;
+        ssl_client_certificate      /usr/local/ozp/ca_certs/rootCA.pem;
 
         # Change to 'required' if only SSL Client authenticated
         # request should be passed to Django

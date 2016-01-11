@@ -105,7 +105,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/ozp/ozp.log'
+            'filename': '/usr/local/ozp/ozp.log'
         }
     },
     'loggers': {
@@ -149,7 +149,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
 
 # MEDIA_ROOT is the absolute path to the folder that will hold user uploads
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join('/usr/local/ozp/media/')
 
 # MEDIA_URL is the relative browser URL to be used when accessing media files
 #   from the browser
@@ -214,8 +215,8 @@ OZP = {
     # convert DNs read as /CN=My Name/OU=Something... to CN=My Name, OU=Something
     'PREPROCESS_DN': True,
     'OZP_AUTHORIZATION': {
-        'SERVER_CRT': '/ozp/server.crt',
-        'SERVER_KEY': '/ozp/server.key',
+        'SERVER_CRT': '/usr/local/ozp/server.crt',
+        'SERVER_KEY': '/usr/local/ozp/server.key',
         'USER_INFO_URL': r'http://localhost:8081/demo-auth/users/%s/info.json?issuerDN=%s',
         # assumes the real URL is <root>/users/<DN>/groups/<PROJECT_NAME>/
         'USER_GROUPS_URL': r'http://localhost:8081/demo-auth/users/%s/groups/%s/',

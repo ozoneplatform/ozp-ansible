@@ -28,13 +28,14 @@
   command: chdir={{ download_dir }}/nginx-{{ nginx_version }} make install
   become: true
 
-- name: Create nginx user
-  user:
-    name: nginx
-    comment: "nginx"
-    # group: nginx
-    password: "password"
-  become: true
+# This is being done in ssl_certs now
+#- name: Create nginx user
+#  user:
+#    name: nginx
+#    comment: "nginx"
+#    # group: nginx
+#    password: "password"
+#  become: true
 
 - name: Copy nginx.conf
   template:
@@ -65,7 +66,7 @@
 
 - name: Create directory for static file hosting
   file:
-    path: /ozp/static-deployment/django_static
+    path: /usr/local/ozp/frontend/django_static
     state: directory
     owner: nginx
     # group: nginx

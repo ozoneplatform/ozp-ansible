@@ -15,16 +15,16 @@
 #
 APPNAME=demoauth
 USER=ozp
-PYTHON_ENV=/ozp/python_envs/demoauthservice
+PYTHON_ENV=/usr/local/ozp/python-env-demoauthservice
 ACTIVATE=$PYTHON_ENV/bin/activate
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:$PYTHON_ENV/bin
-APPDIR=/ozp/demo-auth-service
+APPDIR=/usr/local/ozp/demo-auth-service
 APPMODULE=demoauth.wsgi:application
-NGINX_STATIC=/ozp/static-deployment/django_static
+NGINX_STATIC=/usr/local/ozp/frontend/django_static
 DAEMON=gunicorn
 BIND=127.0.0.1:8081
-PIDFILE=/ozp/gunicorn_demoauth.pid
-LOGFILE=/ozp/gunicorn_demoauth.log
+PIDFILE=/usr/local/ozp/gunicorn_demoauth.pid
+LOGFILE=/usr/local/ozp/gunicorn_demoauth.log
 WORKERS=2
 
 # Source function library
