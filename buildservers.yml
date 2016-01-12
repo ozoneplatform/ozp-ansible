@@ -1,11 +1,8 @@
 ---
 - hosts: buildservers
-
-  vars:
-    download_dir: /home/vagrant
-
   roles:
     #- common
+    - no_internet
     #- ssl_certs
     #- nginx
     #- python_3
@@ -13,5 +10,5 @@
     #- postgres
     #- ozp_authorization
     #- ozp_backend
-    - ozp_center
-    - ozp_config
+    #- ozp_center
+    #- ozp_config

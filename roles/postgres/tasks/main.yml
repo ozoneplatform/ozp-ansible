@@ -7,6 +7,7 @@
   become: true
 
 - name: Download postgres
+  when: not offline
   get_url:
     url: https://ftp.postgresql.org/pub/source/v{{ postgres_version }}/postgresql-{{ postgres_version }}.tar.gz
     dest: "{{ download_dir }}/postgresql-{{ postgres_version }}.tar.gz"

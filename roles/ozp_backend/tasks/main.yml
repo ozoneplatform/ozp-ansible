@@ -9,9 +9,9 @@
   become: true
   become_user: ozp
 
-#################
-#     GitHub
-#################
+###############################################################################
+#                                 GitHub
+###############################################################################
 
 - name: Remove any existing local directory for backend
   when: download_from == "github"
@@ -23,7 +23,7 @@
   become_user: ozp
 
 - name: Download source from GitHub tag
-  when: download_from == "github"
+  when: (download_from == "github" and not offline)
   git:
     repo: git://github.com/ozone-development/ozp-backend.git
     dest: /usr/local/ozp/build/backend/ozp-backend
@@ -31,7 +31,7 @@
   become_user: ozp
 
 - name: Checkout git branch or tag name
-  when: (download_from == "github" and git_tag_or_branch_name)
+  when: (download_from == "github" and git_tag_or_branch_name and not offline)
   command: git checkout {{ git_tag_or_branch_name }}
   args:
     chdir: /usr/local/ozp/build/backend/ozp-backend
@@ -45,7 +45,7 @@
   become_user: ozp
 
 - name: Install python dependencies
-  when: download_from == "github"
+  when: (download_from == "github" and not offline)
   shell: source /usr/local/ozp/python-env/bin/activate; pip install --upgrade pip; pip install wheel; export PATH=/usr/local/pgsql/bin:$PATH; pip install -r requirements.txt --no-cache-dir -I
   args:
     chdir: /usr/local/ozp/build/backend/ozp-backend
@@ -53,7 +53,7 @@
   become_user: ozp
 
 - name: Create release tarball
-  when: download_from == "github"
+  when: (download_from == "github" and not offline)
   shell: source /usr/local/ozp/python-env/bin/activate; export PATH=/usr/local/pgsql/bin:$PATH; python release.py --no-version
   args:
     chdir: /usr/local/ozp/build/backend/ozp-backend
@@ -62,7 +62,7 @@
 
 # now we need to move /ozp/build/backend/ozp-backend/new-backend-<XYZ>.tar.gz
 - name: Extract tarball and move to correct location
-  when: download_from == "github"
+  when: (download_from == "github" and not offline)
   shell: mv `ls *.tar.gz` new-backend.tar.gz; tar xzf new-backend.tar.gz; cp -r release/* /usr/local/ozp/backend/
   args:
     chdir: /usr/local/ozp/build/backend/ozp-backend
@@ -70,9 +70,9 @@
   become_user: ozp
 
 
-#################
-#     Jenkins
-#################
+###############################################################################
+#                                 Jenkins
+###############################################################################
 - name: Download artifacts from Jenkins
   when: download_from == "jenkins"
   uri:
@@ -104,24 +104,26 @@
   args:
     chdir: "{{ download_dir }}/archive"
 
-- name: Extract archive contents from Jenkins download
-  when: download_from == "jenkins"
+###############################################################################
+#                                 Local
+###############################################################################
+- name: Extract archive contents
+  when: download_from == "local"
   unarchive:
-    src: "{{ download_dir }}/archive/new-backend.tar.gz"
+    src: "{{ download_dir }}/backend.tar.gz"
     dest: "{{ download_dir }}"
     copy: no
 
 # At this point we have the backend files in {{ download_dir }}/release. We
 # want to move them to /usr/local/ozp/backend and change their owner to the ozp user
 #
-
 - name: Move files
-  when: download_from == "jenkins"
+  when: download_from == "jenkins"|"local"
   shell: mv {{ download_dir }}/release/* /usr/local/ozp/backend/
   become: true
 
 - name: Change ownership
-  when: download_from == "jenkins"
+  when: download_from == "jenkins"|"local"
   file:
     path: /usr/local/ozp/backend
     owner: ozp
@@ -129,9 +131,8 @@
     recurse: true
   become: true
 
-
 ################
-# Common to GitHub and Jenkins
+# Common to GitHub and Jenkins and Local
 ################
 - name: Use custom settings.py file
   copy:

@@ -1,5 +1,6 @@
 ---
 - name: Download source
+  when: not offline
   get_url:
     url: https://github.com/ozone-development/demo-auth-service/archive/v1.0.0.tar.gz
     dest: "{{ download_dir }}/demo-auth-service-1.0.0.tar.gz"

@@ -1,4 +1,7 @@
 ---
+# Note that even if "offline" is set to true, we assume there is a local
+# yum mirror
+
 - name: Install prereqs
   yum: name={{ item }} state=present
   with_items:

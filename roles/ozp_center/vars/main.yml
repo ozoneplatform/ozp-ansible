@@ -1,5 +1,5 @@
 ---
-# valid choices are "jenkins" or "github"
+# valid choices are "jenkins", "github", or "local"
 download_from: "jenkins"
  # branch or tag name to checkout from git repo
 git_tag_or_branch_name: "new-backend"

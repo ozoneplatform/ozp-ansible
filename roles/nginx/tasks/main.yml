@@ -7,6 +7,7 @@
   become: true
 
 - name: Download nginx source
+  when: not offline
   get_url:
     url: http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
     dest: "{{ download_dir }}/nginx-{{ nginx_version }}.tar.gz"

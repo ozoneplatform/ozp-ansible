@@ -7,9 +7,9 @@
     recurse: true
   become: true
 
-- name: Download custom node version manager
-  get_url:
-    url: https://raw.githubusercontent.com/ozone-development/dev-tools/master/node-version-manager/set_node_version.sh
+- name: Copy custom node version manager
+  copy:
+    src: set_node_version.sh
     dest: /usr/local/node_versions/set_node_version.sh
 
 - name: Make set_node_version.sh executable
@@ -18,13 +18,14 @@
     mode: 0777
 
 - name: Download node
+  when: not offline
   get_url:
     url: https://nodejs.org/download/release/v{{ node_version }}/node-v{{ node_version }}-linux-x64.tar.gz
-    dest: /usr/local/node_versions
+    dest: "{{ download_dir }}"
 
 - name: Extract archive
   unarchive:
-    src: /usr/local/node_versions/node-v{{ node_version }}-linux-x64.tar.gz
+    src: "{{ download_dir }}/node-v{{ node_version }}-linux-x64.tar.gz"
     dest: /usr/local/node_versions
     copy: no
 

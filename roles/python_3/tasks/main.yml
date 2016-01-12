@@ -1,5 +1,6 @@
 ---
 - name: Download python source
+  when: not offline
   get_url:
     url: https://www.python.org/ftp/python/{{ python_version }}/Python-{{ python_version}}.tgz
     dest: "{{ download_dir }}"

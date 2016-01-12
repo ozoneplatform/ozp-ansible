@@ -1,0 +1,15 @@
+---
+- name: Create remote directory for these files
+  file:
+    path: "{{ download_dir }}"
+    recurse: true
+    owner: root
+    state: directory
+  become: true
+
+- name: Copy files
+  copy:
+    src: ../files/
+    dest: "{{ download_dir }}"
+    owner: root
+  become: true
