@@ -6,18 +6,26 @@
     dest: "{{ download_dir }}"
     mode: 0644
     validate_certs: no
+  become: true
+  become_user: ozp
 
 - name: Extract archive
   unarchive:
     src: "{{ download_dir }}/Python-{{ python_version }}.tgz"
     dest: "{{ download_dir }}"
     copy: no
+  become: true
+  become_user: ozp
 
 - name: Configure Python
   command: chdir={{ download_dir }}/Python-{{ python_version }} ./configure --prefix=/usr/local --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib"
+  become: true
+  become_user: ozp
 
 - name: Make python
   command: chdir={{ download_dir }}/Python-{{ python_version }} make
+  become: true
+  become_user: ozp
 
 # Install python to /usr/local
 - name: Install python

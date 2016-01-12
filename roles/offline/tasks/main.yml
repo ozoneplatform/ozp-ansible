@@ -1,15 +1,9 @@
 ---
-- name: Create remote directory for these files
-  file:
-    path: "{{ download_dir }}"
-    recurse: true
-    owner: root
-    state: directory
-  become: true
-
 - name: Copy files
+  when: offline
   copy:
     src: ../files/
     dest: "{{ download_dir }}"
-    owner: root
+    owner: ozp
+    force: yes
   become: true

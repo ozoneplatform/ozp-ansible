@@ -11,22 +11,30 @@
   get_url:
     url: https://ftp.postgresql.org/pub/source/v{{ postgres_version }}/postgresql-{{ postgres_version }}.tar.gz
     dest: "{{ download_dir }}/postgresql-{{ postgres_version }}.tar.gz"
+  become: true
+  become_user: ozp
 
 - name: Extract archive
   unarchive:
     src: "{{ download_dir }}/postgresql-{{ postgres_version }}.tar.gz"
     dest: "{{ download_dir }}"
     copy: no
+  become: true
+  become_user: ozp
 
 - name: Configure postgres
   command: ./configure
   args:
     chdir: "{{ download_dir }}/postgresql-{{ postgres_version }}"
+  become: true
+  become_user: ozp
 
 - name: Build postgres
   command: make
   args:
     chdir: "{{ download_dir }}/postgresql-{{ postgres_version }}"
+  become: true
+  become_user: ozp
 
 - name: Install postgres
   command: make install

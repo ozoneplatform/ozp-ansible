@@ -2,7 +2,7 @@
 - hosts: buildservers
   roles:
     #- common
-    - no_internet
+    - offline
     #- ssl_certs
     #- nginx
     #- python_3
@@ -11,4 +11,5 @@
     #- ozp_authorization
     #- ozp_backend
     #- ozp_center
-    #- ozp_config
+    - ozp_hud
+    - ozp_config

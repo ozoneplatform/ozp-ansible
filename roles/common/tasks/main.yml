@@ -50,3 +50,10 @@
     recurse: true
     state: directory
   become: true
+
+- name: Create download directory
+  file:
+    path: "{{ download_dir }}"
+    owner: ozp
+    state: directory
+  become: true

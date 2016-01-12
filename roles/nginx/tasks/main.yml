@@ -11,18 +11,26 @@
   get_url:
     url: http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
     dest: "{{ download_dir }}/nginx-{{ nginx_version }}.tar.gz"
+  become: true
+  become_user: ozp
 
 - name: Extract archive
   unarchive:
     src: "{{ download_dir }}/nginx-{{ nginx_version }}.tar.gz"
     dest: "{{ download_dir }}"
     copy: no
+  become: true
+  become_user: ozp
 
 - name: Configure nginx
   command: chdir={{ download_dir }}/nginx-{{ nginx_version }} ./configure --with-http_ssl_module
+  become: true
+  become_user: ozp
 
 - name: Make nginx
   command: chdir={{ download_dir }}/nginx-{{ nginx_version }} make
+  become: true
+  become_user: ozp
 
 # Install nginx to /usr/local/nginx
 - name: Install nginx
