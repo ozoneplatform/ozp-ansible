@@ -1,16 +1,16 @@
 ---
-# These tasks will download ozp-hud from GitHub (a branch or tag name) or
+# These tasks will download ozp-webtop from GitHub (a branch or tag name) or
 # Jenkins (using a specific build number)
 
-- name: Remove any existing hud directory
+- name: Remove any existing webtop directory
   file:
-    path: /usr/local/ozp/frontend/hud
+    path: /usr/local/ozp/frontend/webtop
     state: absent
   become: true
 
-- name: Create the directory for the hud
+- name: Create the directory for the webtop
   file:
-    path: /usr/local/ozp/frontend/hud
+    path: /usr/local/ozp/frontend/webtop
     state: directory
     owner: nginx
   become: true
@@ -19,10 +19,10 @@
 #     GitHub
 #################
 
-- name: Remove any existing local directory for hud
+- name: Remove any existing local directory for webtop
   when: download_from == "github"
   file:
-    path: /usr/local/ozp/build/ozp-hud
+    path: /usr/local/ozp/build/ozp-webtop
     state: absent
   become: true
   become_user: ozp
@@ -30,8 +30,8 @@
 - name: Download source from GitHub tag
   when: (download_from == "github" and not offline)
   git:
-    repo: git://github.com/ozone-development/ozp-hud.git
-    dest: /usr/local/ozp/build/ozp-hud
+    repo: git://github.com/ozone-development/ozp-webtop.git
+    dest: /usr/local/ozp/build/ozp-webtop
   become: true
   become_user: ozp
 
@@ -39,30 +39,30 @@
   when: (download_from == "github" and git_tag_or_branch_name)
   command: git checkout {{ git_tag_or_branch_name }}
   args:
-    chdir: /usr/local/ozp/build/ozp-hud
+    chdir: /usr/local/ozp/build/ozp-webtop
   become: true
   become_user: ozp
 
-- name: Install bower and gulp
+- name: Install bower and grunt
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell:  source /usr/local/node_versions/set_node_version.sh 0.12.7; npm install -g bower gulp
+  shell:  source /usr/local/node_versions/set_node_version.sh 0.12.7; npm install -g bower grunt-cli
   args:
-    chdir: /usr/local/ozp/build/ozp-hud
+    chdir: /usr/local/ozp/build/ozp-webtop
   become: true
 
-- name: Build, test, and create tarball for hud release
+- name: Build, test, and create tarball for webtop release
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell: source /usr/local/node_versions/set_node_version.sh 0.12.7;npm install; npm run build;npm run tarDistDate
+  shell: source /usr/local/node_versions/set_node_version.sh 0.12.7;npm install; npm run bower;npm run build;npm run compile;npm run tarDevDate
   args:
-    chdir: /usr/local/ozp/build/ozp-hud
+    chdir: /usr/local/ozp/build/ozp-webtop
   become: true
   become_user: ozp
 
 - name: Extact release to nginx dir
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell: mv `ls *.tar.gz` hud.tar.gz; tar xzf hud.tar.gz; cp -r dist/* /usr/local/ozp/frontend/hud/
+  shell: mv `ls *.tar.gz` webtop.tar.gz; tar xzf webtop.tar.gz; cp -r build/* /usr/local/ozp/frontend/webtop/
   args:
-    chdir: /usr/local/ozp/build/ozp-hud
+    chdir: /usr/local/ozp/build/ozp-webtop
   become: true
 
 #################
@@ -72,7 +72,7 @@
   when: (download_from == "jenkins" and not offline)
   uri:
     url: https://{{ jenkins_host }}/view/OZP/job/{{ jenkins_project}}/{{ jenkins_build_number }}/artifact/*zip*/archive.zip
-    dest: "{{ download_dir }}/hud_jenkins_archive.zip"
+    dest: "{{ download_dir }}/webtop_jenkins_archive.zip"
     method: GET
     user: "{{ jenkins_username }}"
     password: "{{ jenkins_password }}"
@@ -93,7 +93,7 @@
 - name: Extract archive from Jenkins (outer zip file)
   when: download_from == "jenkins"
   unarchive:
-    src: "{{ download_dir }}/hud_jenkins_archive.zip"
+    src: "{{ download_dir }}/webtop_jenkins_archive.zip"
     dest: "{{ download_dir }}"
     copy: no
   become: true
@@ -101,7 +101,7 @@
 
 - name: Rename tar file from Jenkins
   when: download_from == "jenkins"
-  shell: mv `ls -1` hud.tar.gz
+  shell: mv `ls -1` webtop.tar.gz
   args:
     chdir: "{{ download_dir }}/archive"
   become: true
@@ -110,7 +110,7 @@
 - name: Extract archive contents from Jenkins download
   when: download_from == "jenkins"
   unarchive:
-    src: "{{ download_dir }}/archive/hud.tar.gz"
+    src: "{{ download_dir }}/archive/webtop.tar.gz"
     dest: "{{ download_dir }}"
     copy: no
   become: true
@@ -122,25 +122,25 @@
 - name: Extract archive contents from local tarball
   when: download_from == "local"
   unarchive:
-    src: "{{ download_dir }}/hud.tar.gz"
+    src: "{{ download_dir }}/webtop.tar.gz"
     dest: "{{ download_dir }}"
     copy: no
   become: true
   become_user: ozp
 
-# At this point we have the hud files in {{ download_dir }}/dist. We
-# want to move them to /usr/local/ozp/frontend/hud and change their owner to the nginx user
+# At this point we have the webtop files in {{ download_dir }}/build. We
+# want to move them to /usr/local/ozp/frontend/webtop and change their owner to the nginx user
 #
 
 - name: Move files
   when: (download_from == "jenkins" or download_from == "local")
-  shell: mv {{ download_dir }}/dist/* /usr/local/ozp/frontend/hud
+  shell: mv {{ download_dir }}/build/* /usr/local/ozp/frontend/webtop
   become: true
 
 - name: Change ownership
   when: (download_from == "jenkins" or download_from == "local")
   file:
-    path: /usr/local/ozp/frontend/hud
+    path: /usr/local/ozp/frontend/webtop
     owner: nginx
     state: directory
     recurse: true

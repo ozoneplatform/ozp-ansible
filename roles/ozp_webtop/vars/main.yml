@@ -1,0 +1,8 @@
+---
+# valid choices are "jenkins", "github", or "local"
+download_from: "github"
+ # branch or tag name to checkout from git repo
+git_tag_or_branch_name: "new-backend"
+# if jenkins, choose a project name and build number
+jenkins_project: "build-webtop-new-backend"
+jenkins_build_number: 18
