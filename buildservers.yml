@@ -9,9 +9,10 @@
     #- node
     #- postgres
     #- ozp_authorization
-    #- ozp_backend
+    - ozp_backend
     #- ozp_center
     #- ozp_hud
     #- ozp_webtop
-    - ozp_iwc
-    - ozp_config
+    #- ozp_iwc
+    #- ozp_demo_apps
+    #- ozp_config

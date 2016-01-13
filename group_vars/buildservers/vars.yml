@@ -5,7 +5,7 @@ jenkins_host: "{{ vault_jenkins_host }}"
 # if offline is true, don't try to download anything. all files (dependencies,
 # ozp source, etc) must be available in the 'files' directory of the
 # offline role
-offline: false
+offline: true
 # this is where files downloaded from the internet (3rd party and ozp source)
 #  will be placed
 download_dir: "/usr/local/ozp/internet_files"
