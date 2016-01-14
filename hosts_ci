@@ -1,8 +1,8 @@
 # inventory file for CI boxes
 
-[deployservers]
-ci-latest.abc.efg.net
-ci-release.abc.efg.net
+[ozpdev]
+ci-prototype.abc.def.net
+#ci-jenkins.abc.efg.net
+#ci-latest.abc.efg.net
+#ci-release.abc.efg.net
 
-[buildservers]
-ci-jenkins.abc.efg.net

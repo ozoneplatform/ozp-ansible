@@ -1,0 +1,8 @@
+---
+- hosts: all
+  vars_files:
+    - group_vars/all/all.yml
+    - group_vars/all/vault.yml
+
+  roles:
+    - ozp_demo_apps

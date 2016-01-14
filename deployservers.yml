@@ -1,5 +1,0 @@
----
-- hosts: deployservers
-  roles:
-    - common
-    - nginx

@@ -1,6 +1,6 @@
 ---
 # valid choices are "jenkins", "github", or "local"
-download_from: "github"
+download_from: "jenkins"
  # branch or tag name to checkout from git repo
 git_tag_or_branch_name: "master"
 # if jenkins, choose a project name and build number

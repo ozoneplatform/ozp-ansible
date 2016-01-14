@@ -1,0 +1,3 @@
+---
+- include: ozp_deploy_backend.yml
+- include: ozp_deploy_frontend.yml

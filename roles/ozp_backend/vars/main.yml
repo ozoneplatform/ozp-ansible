@@ -1,11 +1,11 @@
 ---
 # valid choices are "jenkins", "github", and "local" (use "local" when
 # offline is set and the release tarball is available at {{ download_dir }}
-download_from: "local"
+download_from: "jenkins"
  # branch or tag name to checkout from git repo
 git_tag_or_branch_name: "master"
 # if jenkins, choose a project name and build number
 jenkins_project: "build-new-backend"
-jenkins_build_number: 170
+jenkins_build_number: 172
 # Optionally re-create the database
 reset_database: true

@@ -21,6 +21,7 @@ PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:$PYTHON_ENV/bin
 APPDIR=/usr/local/ozp/demo-auth-service
 APPMODULE=demoauth.wsgi:application
 NGINX_STATIC=/usr/local/ozp/frontend/django_static
+NGINX_USER=nginx
 DAEMON=gunicorn
 BIND=127.0.0.1:8081
 PIDFILE=/usr/local/ozp/gunicorn_demoauth.pid
@@ -106,6 +107,7 @@ reinstall() {
  python manage.py collectstatic --noinput
  # copy static files to nginx directory
  cp -r static/* $NGINX_STATIC
+ chown -R $NGINX_USER $NGINX_STATIC
 
  return $?
 }

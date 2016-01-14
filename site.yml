@@ -1,5 +1,3 @@
 ---
-# This playbook deploys the whole application stack in this site.
-
-- include: buildservers.yml
-- include: deployservers.yml
+- include: provision.yml
+- include: ozp_deploy.yml

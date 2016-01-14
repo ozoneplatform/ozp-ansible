@@ -15,6 +15,7 @@
 #
 APPNAME=ozp
 USER=ozp
+NGINX_USER=nginx
 PYTHON_ENV=/usr/local/ozp/python-env
 ACTIVATE=$PYTHON_ENV/bin/activate
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:$PYTHON_ENV/bin
@@ -113,6 +114,9 @@ reinstall() {
  cp -r static/* $NGINX_STATIC
  # make media directory if it doesn't exist
  mkdir -p /usr/local/ozp/media
+ # fix ownership
+ sudo chown -R $NGINX_USER $NGINX_STATIC
+ sudo chown -R $USER /usr/local/ozp/media
  return $?
 }
 

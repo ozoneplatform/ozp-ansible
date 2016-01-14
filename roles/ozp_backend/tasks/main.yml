@@ -151,8 +151,8 @@
 # Common to GitHub and Jenkins and Local
 ################
 - name: Use custom settings.py file
-  copy:
-    src: settings.py
+  template:
+    src: settings.py.j2
     dest: /usr/local/ozp/backend/ozp/settings.py
     owner: ozp
     mode: 0644

@@ -1,0 +1,14 @@
+---
+- hosts: all
+  vars_files:
+    - group_vars/all/all.yml
+    - group_vars/all/vault.yml
+
+  roles:
+    - common
+    - offline
+    - ssl_certs
+    - nginx
+    - python_3
+    - node
+    - postgres
