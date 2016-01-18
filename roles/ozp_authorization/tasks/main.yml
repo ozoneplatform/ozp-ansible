@@ -51,7 +51,7 @@
   copy:
     src: gunicorn_demoauth.initd
     dest: /etc/init.d/gunicorn_demoauth
-    mode: 0744
+    mode: 0755
   become: true
 
 - name: Redeploy the service

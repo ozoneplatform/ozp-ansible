@@ -15,28 +15,26 @@
     mode: 0777
   become: true
 
-#- name: Make set_node_version.sh executable
-#  file:
-#    path: /usr/local/node_versions/set_node_version.sh
-#    mode: 0777
-
 - name: Download node
   when: not offline
+  with_items: "{{node_versions}}"
   get_url:
-    url: https://nodejs.org/download/release/v{{ node_version }}/node-v{{ node_version }}-linux-x64.tar.gz
+    url: https://nodejs.org/dist/v{{ item }}/node-v{{ item }}-linux-x64.tar.gz
     dest: "{{ download_dir }}"
   become: true
   become_user: ozp
 
 - name: Extract archive
+  with_items: "{{node_versions}}"
   unarchive:
-    src: "{{ download_dir }}/node-v{{ node_version }}-linux-x64.tar.gz"
+    src: "{{ download_dir }}/node-v{{ item }}-linux-x64.tar.gz"
     dest: /usr/local/node_versions
     copy: no
   become: true
 
 - name: Rename node directory
-  shell: rm -rf /usr/local/node_versions/{{ node_version }}; mv /usr/local/node_versions/node-v{{ node_version }}-linux-x64 /usr/local/node_versions/{{ node_version }}
+  with_items: "{{node_versions}}"
+  shell: rm -rf /usr/local/node_versions/{{ item }}; mv /usr/local/node_versions/node-v{{ item }}-linux-x64 /usr/local/node_versions/{{ item }}
   become: true
 
 

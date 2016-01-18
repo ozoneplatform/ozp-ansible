@@ -1,7 +1,7 @@
 ---
 # valid choices are "jenkins", "github", and "local" (use "local" when
 # offline is set and the release tarball is available at {{ download_dir }}
-download_from: "jenkins"
+download_from: "github"
  # branch or tag name to checkout from git repo
 git_tag_or_branch_name: "master"
 # if jenkins, choose a project name and build number

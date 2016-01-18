@@ -1,6 +1,6 @@
 ---
 # valid choices are "jenkins", "github", or "local"
-download_from: "jenkins"
+download_from: "github"
  # branch or tag name to checkout from git repo
 git_tag_or_branch_name: "master"
 # if jenkins, choose a project name and build number
@@ -8,3 +8,4 @@ jenkins_project: "build-iwc-latest"
 jenkins_build_number: 156
 # for ozpIwc.conf.js
 api_root_url: "/api"
+node_version: 0.12.7

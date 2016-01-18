@@ -33,6 +33,7 @@
   git:
     repo: git://github.com/ozone-development/ozp-backend.git
     dest: /usr/local/ozp/build/backend/ozp-backend
+    accept_hostkey: yes
   become: true
   become_user: ozp
 
@@ -162,7 +163,7 @@
   copy:
     src: gunicorn_ozp.initd
     dest: /etc/init.d/gunicorn_ozp
-    mode: 0744
+    mode: 0755
   become: true
 
 ## WARNING: This will destroy all exiting data!!!

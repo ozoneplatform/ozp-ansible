@@ -70,7 +70,7 @@
     dest: /etc/init.d/nginx
     owner: root
     group: root
-    mode: 0744
+    mode: 0755
   become: true
 
 - name: Create directory for static file hosting

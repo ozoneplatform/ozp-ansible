@@ -104,15 +104,13 @@
     dest: /etc/init.d/postgres
     owner: root
     group: root
-    mode: 0744
+    mode: 0755
   become: true
 
 - name: Ensure postgres is running (and enable it at boot)
-  service: name=postgres state=started enabled=yes
+  service: name=postgres state=restarted enabled=yes
   become: true
-
-- name: Sleep for a second (might not be necessary now)
-  command: sleep 1
+  ignore_errors: true
 
 # TODO: Password?
 # Ignore errors - ok if this user already exists

@@ -32,6 +32,7 @@
   git:
     repo: git://github.com/ozone-development/ozp-iwc.git
     dest: /usr/local/ozp/build/ozp-iwc
+    accept_hostkey: yes
   become: true
   become_user: ozp
 
@@ -45,14 +46,14 @@
 
 - name: Install bower and grunt
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell:  source /usr/local/node_versions/set_node_version.sh 0.12.7; npm install -g bower grunt-cli
+  shell:  source /usr/local/node_versions/set_node_version.sh {{ node_version }}; npm install -g bower grunt-cli
   args:
     chdir: /usr/local/ozp/build/ozp-iwc
   become: true
 
 - name: Build, test, and create tarball for iwc release
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell: source /usr/local/node_versions/set_node_version.sh 0.12.7;npm install; npm run bower; npm run build;npm run tarDate
+  shell: source /usr/local/node_versions/set_node_version.sh {{ node_version }};npm install; npm run bower; npm run build;npm run tarDate
   args:
     chdir: /usr/local/ozp/build/ozp-iwc
   become: true

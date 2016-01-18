@@ -32,6 +32,7 @@
   git:
     repo: git://github.com/ozone-development/ozp-demo.git
     dest: /usr/local/ozp/build/ozp-demo
+    accept_hostkey: true
   become: true
   become_user: ozp
 
@@ -45,14 +46,14 @@
 
 - name: Install bower and gulp
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell:  source /usr/local/node_versions/set_node_version.sh 0.12.7; npm install -g bower gulp
+  shell:  source /usr/local/node_versions/set_node_version.sh {{ node_version }}; npm install -g bower gulp
   args:
     chdir: /usr/local/ozp/build/ozp-demo
   become: true
 
 - name: Build, test, and create tarball for demo_apps release
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell: source /usr/local/node_versions/set_node_version.sh 0.12.7;npm install; bower install;bower update;npm run tarDate
+  shell: source /usr/local/node_versions/set_node_version.sh {{ node_version }};npm install; bower install;bower update;npm run tarDate
   args:
     chdir: /usr/local/ozp/build/ozp-demo
   become: true
