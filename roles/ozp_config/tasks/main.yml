@@ -1,10 +1,13 @@
 ---
+# ignore errors since we might just be installing one of these projects
+
 - name: Copy OzoneConfig.js to Center
   template:
     src: OzoneConfig.js.j2
     dest: /usr/local/ozp/frontend/center/OzoneConfig.js
     owner: nginx
   become: true
+  ignore_errors: true
 
 - name: Copy OzoneConfig.js to HUD
   template:
@@ -12,6 +15,7 @@
     dest: /usr/local/ozp/frontend/hud/OzoneConfig.js
     owner: nginx
   become: true
+  ignore_errors: true
 
 - name: Copy OzoneConfig.js to Webtop
   template:
@@ -19,3 +23,4 @@
     dest: /usr/local/ozp/frontend/webtop/OzoneConfig.js
     owner: nginx
   become: true
+  ignore_errors: true
