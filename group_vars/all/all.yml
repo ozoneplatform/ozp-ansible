@@ -15,4 +15,4 @@ server_fqdn: "localhost"
 # for vagrant boxes, this will be something like 4433 (or whatever port you
 # are forwarding from your host to guest port 443). For ci or production
 # boxes, it will be the standard 443.
-server_port: 443
+server_port: 4433
