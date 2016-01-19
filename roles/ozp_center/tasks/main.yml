@@ -46,7 +46,7 @@
 
 - name: Install bower and gulp
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell:  source /usr/local/node_versions/set_node_version.sh {{ node_version }}; npm install -g bower gulp
+  shell:  source /usr/local/node_versions/set_node_version.sh {{ node_version }};npm install -g bower gulp
   args:
     chdir: /usr/local/ozp/build/ozp-center
   become: true

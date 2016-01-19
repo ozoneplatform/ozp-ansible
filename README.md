@@ -1,7 +1,8 @@
-Ansible
+ozp-ansible
 =====================
 ## Quickstart
-If you're in a hurry and just want a Vagrant box running OZP, do this:
+If you're in a hurry and just want a Vagrant box running all the OZP things,
+do this:
 * Install the latest versions of Virtualbox and Vagrant on your host
 * `mv group_vars/all/vault_unencrypted.yml group_vars/all/vault.yml`
 * `vagrant up` in this directory (this will take about 45 minutes)
@@ -29,7 +30,6 @@ following installed on your host machine:
     VirtualBox is what the core team tests with)
 * updated version of Vagrant
 
-
 ## Installing Ansible
 See the official Ansible docs for details. We recommend using the latest
 version of Ansible from their Git repository (as opposed to using a package
@@ -43,7 +43,7 @@ on a Centos 6.6 box:
     read and execute permissions to `/usr/lib64/python2.6/site-packages/Crypto`.
     Finally, I had to `pip uninstall cryptography`. YMMV.
 
-## General Notes about ozp-ansible
+## General Notes About ozp-ansible
 There are many top-level Ansible playbooks, making it easier to do what you
 want:
 * site - provision a box and deploy all the ozp things
@@ -71,8 +71,8 @@ We haven't had a particular need for Ansible's Hosts or Groups features yet...
 ## Ansible Variables
 * group_vars/all/all.yml
   * `server_fqdn`: localhost, unless this is a real server
-  * `server_port`: typically 443 for real servers, or whatever port you're forwarding
-    to port 443 on the guest VM
+  * `server_port`: typically 443 for real servers, or whatever port you're
+    forwarding to port 443 on the guest VM
   * `offline` - if true, Ansible won't try to download stuff from the interwebs
   * jenkins stuff - items relevant to the OZP team's Jenkins instance. Not
     made public
@@ -83,7 +83,6 @@ We haven't had a particular need for Ansible's Hosts or Groups features yet...
   * `git_tag_or_branch_name` - as described
   * `reset_database` (ozp_backend only) - if true, flush the database
 
-
 ## Vagrant and Ansible
 We typically use Vagrant to run VMs and Ansible to provision them. Vagrant
 supports Ansible out of the box via two provisioners: Ansible remote
@@ -93,13 +92,20 @@ It's easier to get started using the Ansible local provisioner, since
 that doesn't require you to install Ansible on your host machine.
 
 ## Ansible Use Cases
-
 ### Build Everything from GitHub using Vagrant
-ETA:
+"A Vagrant box running all of the OZP things, built from scratch via the
+latest code on GitHub"
 
-### Provision a Server for OZP
+See the Quickstart section at the top of this README
+### Install OZP on a Real Server Using Latest on GitHub
+1. Install Ansible on your host
+2.
+
 
 ### Provision a Vagrant box for OZP
+
+### Reinstall ozp-center on Vagrant Box
+
 
 
 Ansible files for setting up boxes to build and/or deploy OZP
