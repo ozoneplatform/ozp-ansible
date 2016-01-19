@@ -5,7 +5,8 @@ download_from: "github"
 git_tag_or_branch_name: "master"
 # if jenkins, choose a project name and build number
 jenkins_project: "build-iwc-latest"
-jenkins_build_number: 156
+# enter a build number or "lastSuccessfulBuild" to get the latest artifact
+jenkins_build_number: "lastSuccessfulBuild"
 # for ozpIwc.conf.js
 api_root_url: "/api"
 node_version: 0.12.7

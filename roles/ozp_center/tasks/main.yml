@@ -51,9 +51,12 @@
     chdir: /usr/local/ozp/build/ozp-center
   become: true
 
+# I was having problems with PhantomJS - the solution below seemed to fix the
+# problem:
+# https://github.com/Medium/phantomjs/issues/161#issuecomment-44001131
 - name: Build, test, and create tarball for center release
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell: source /usr/local/node_versions/set_node_version.sh {{ node_version }};npm install; npm run build; npm run test; npm run tarDistDate
+  shell: source /usr/local/node_versions/set_node_version.sh {{ node_version }};PHANTOMJS_CDNURL=http://cnpmjs.org/downloads npm install; npm run build;npm run tarDistDate
   args:
     chdir: /usr/local/ozp/build/ozp-center
   become: true
