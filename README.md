@@ -5,7 +5,7 @@ If you're in a hurry and just want a Vagrant box running all the OZP things,
 do this:
 * Install the latest versions of Virtualbox and Vagrant on your host
 * `mv group_vars/all/vault_unencrypted.yml group_vars/all/vault.yml`
-* `vagrant up` in this directory (this will take about 45 minutes)
+* `vagrant up` in this directory (this will take about 35 minutes)
 * Access Center from your host at `https://localhost:4433/center/`,
     API docs at `https://localhost:4433/docs/`
 
@@ -29,6 +29,8 @@ following installed on your host machine:
 * updated version of VirtualBox (other VM providers should work too, but
     VirtualBox is what the core team tests with)
 * updated version of Vagrant
+* Ensure the server or VM that you will deploy OZP to has at least 2GB of
+    memory - you will get very strange and unhelpful errors otherwise
 
 ## Installing Ansible
 See the official Ansible docs for details. We recommend using the latest
@@ -89,9 +91,12 @@ supports Ansible out of the box via two provisioners: Ansible remote
 provisioner and Andible local provisioner.
 
 It's easier to get started using the Ansible local provisioner, since
-that doesn't require you to install Ansible on your host machine.
+that doesn't require you to install Ansible on your host machine, but both
+provisioners are useful.
 
 ## Ansible Use Cases
+Before running anything Ansible, source the Ansible environment script
+to put ansible commands on your PATH: `source /path/to/ansible/hacking/env-setup`
 ### Build Everything from GitHub using Vagrant
 "A Vagrant box running all of the OZP things, built from scratch via the
 latest code on GitHub"
@@ -99,52 +104,31 @@ latest code on GitHub"
 See the Quickstart section at the top of this README
 ### Install OZP on a Real Server Using Latest on GitHub
 1. Install Ansible on your host
-2.
+2. `mv group_vars/all/vault_unencrypted.yml group_vars/all/vault.yml`
+3. Set `server_fqdn` and `server_port` as necessary
+4. Create a hosts file (see hosts_local for example) for your server
+5. `ansible-playbook site.yml -i <my_hosts> -u <my_username> -k --ask-become-pass`
 
+If you only want to provision the server with dependencies (nginx, postgres, etc),
+just run the `provision.yml` playbook instead of `site.yml`. The same logic
+applies to other playbooks, so you can deploy/redeploy at a very granular
+level
 
-### Provision a Vagrant box for OZP
+### Install part of OZP on a Vagrant box from your host
+Let's say you've already gone through the Quickstart section and have a
+Vagrant box up and running. Now you want to update the backend with the latest
+from the master branch on GitHub. To do this, simply use the instructions above,
+but select `hosts_vagrant` as the hosts file, use the username `vagrant` and
+password `vagrant`
+
+You could also use this method to fully provision a Vagrant box from your
+host without using any of the Vagrant/Ansible integrations. Just remove
+the Ansible provisioning bit at the bottom of the Vagrantfile, then
+`vagrant up`. When the box is up, run
+`ansible-playbook site.yml -i hosts_vagrant -u vagrant -k --ask-become-pass`,
+using `vagrant` for both the username and password
+
+### Installing
 
 ### Reinstall ozp-center on Vagrant Box
 
-
-
-Ansible files for setting up boxes to build and/or deploy OZP
-
-roles:
-* common (EPEL repo, vim)
-* build-base (development tools, git)
-* python-3
-* postgres
-* node
-* nginx
-* mysql
-* php
-* ozp-dir (create ozp user and /ozp dir)
-* ozp-ssl-certs
-* ozp-authorization
-* ozp-backend
-* ozp-center
-* ozp-hud
-* ozp-webtop
-* ozp-iwc
-* ozp-help
-* ozp-demo-apps
-* metrics
-
-roles for build box (like Jenkins Slave):
-* common (EPEL repo, vim)
-* build-base (development tools, git)
-* python-3
-* postgres
-* node
-* nginx
-* mysql
-* php
-
-roles for deploy box:
-* all of them
-
-Running a playbook:
-If using ansible from source, just update the git repo and `source ./hacking/env-setup` before running any ansible commands
-
-`ansible-playbook buildservers.yml -i ~/ozp/not-in-git/hosts_ci -u alan.ward -k --ask-become-pass`
