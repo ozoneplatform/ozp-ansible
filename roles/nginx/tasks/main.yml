@@ -83,6 +83,15 @@
     recurse: true
   become: true
 
+- name: Fix permissions in nginx directory
+  command: chown -R nginx /usr/local/nginx/
+  become: true
+
+# TODO: do we need this or does the above suffice?
+- name: Fix permissions of top level nginx dir
+  command: chown -R nginx /usr/local/nginx
+  become: true
+
 - name: Ensure nginx is running (and enable it at boot)
   service: name=nginx state=started enabled=yes
   become: true
