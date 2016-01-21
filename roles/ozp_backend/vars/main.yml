@@ -5,7 +5,7 @@ download_from: "github"
  # branch or tag name to checkout from git repo
 git_tag_or_branch_name: "master"
 # if jenkins, choose a project name and build number
-jenkins_project: "build-new-backend"
+jenkins_project: "build-backend-latest"
 # enter a build number or "lastSuccessfulBuild" to get the latest artifact
 jenkins_build_number: "lastSuccessfulBuild"
 # Optionally re-create the database
