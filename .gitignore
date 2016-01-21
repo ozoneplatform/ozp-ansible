@@ -1,3 +1,5 @@
 roles/offline/files/*.tar.gz
 roles/offline/files/*.tgz
 vagrant_test_box
+*.swp
+.vagrant

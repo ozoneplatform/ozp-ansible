@@ -33,10 +33,8 @@ following installed on your host machine:
     memory - you will get very strange and unhelpful errors otherwise
 
 ## Installing Ansible
-See the official Ansible docs for details. We recommend using the latest
-version of Ansible from their Git repository (as opposed to using a package
-manager to install it). Some problems that we've seen installing Ansible
-on a Centos 6.6 box:
+See the official Ansible docs for details. Some problems that we've seen
+installing Ansible on a Centos 6.6 box:
 * needed to remove `python-yaml` package and install PyYAML instead (got a
 * weird 'dispose' error otherwise)
 * `ansible-vault` kept complaining about an old version of pycrypto. Uninstalled
@@ -64,11 +62,15 @@ Any one of the above playbooks can be run by itself, making it easy to do things
 like deploy ozp-center, or provision a server without installing OZP code.
 
 `group_vars/all/vault.yml` is an encrypted file containing credentials for the
-OZP core team's Jenkins instance. We do not make these public. This file
-will need to be removed before running Ansible, else you will get errors
-about it.
+OZP core team's Jenkins instance. We do not make these public. If you are
+a member of the core dev team, you can use the `--ask-vault-pass` command
+line option to decrypt the vault file. Otherwise, simply copy the provided
+`vault_unencrypted.yml` file over top of `vault.yml`. The only consequence of
+this is that you won't be able to connect to our Jenkins build server
+to retrieve pre-built artifacts
 
-We haven't had a particular need for Ansible's Hosts or Groups features yet...
+We haven't had a particular need for Ansible's Hosts or Groups features yet,
+so you may notice random group names and ad hoc sets of hosts.
 
 ## Ansible Variables
 * group_vars/all/all.yml
@@ -119,7 +121,8 @@ Let's say you've already gone through the Quickstart section and have a
 Vagrant box up and running. Now you want to update the backend with the latest
 from the master branch on GitHub. To do this, simply use the instructions above,
 but select `hosts_vagrant` as the hosts file, use the username `vagrant` and
-password `vagrant`
+password `vagrant`, and use the `ozp_deploy_backend.yml` playbook instead of
+`site.yml`.
 
 You could also use this method to fully provision a Vagrant box from your
 host without using any of the Vagrant/Ansible integrations. Just remove
@@ -128,7 +131,19 @@ the Ansible provisioning bit at the bottom of the Vagrantfile, then
 `ansible-playbook site.yml -i hosts_vagrant -u vagrant -k --ask-become-pass`,
 using `vagrant` for both the username and password
 
-### Installing
+### Offline Installation
+The "offline" mode is useful for provisioning a system without Internet access.
+That said, we do assume that you have the following:
+* local yum mirrors
+* local npm mirrors
+
+1. Look at `roles/offline/files/README.md` and ensure all of the
+necessary files are located in that directory
+2. Set `offline: true` in `group_vars/all/all.yml`
+3. For all ozp things, set `download_from` to "local" in
+    `roles/<ozp_xyz>/vars/main.yml`
+
+
 
 ### Reinstall ozp-center on Vagrant Box
 
