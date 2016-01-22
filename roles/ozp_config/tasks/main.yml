@@ -17,6 +17,14 @@
   become: true
   ignore_errors: true
 
+- name: Copy OzoneConfig.js to Help
+  template:
+    src: OzoneConfig.js.j2
+    dest: /usr/local/ozp/frontend/help/OzoneConfig.js
+    owner: nginx
+  become: true
+  ignore_errors: true
+
 - name: Copy OzoneConfig.js to Webtop
   template:
     src: OzoneConfig.js.j2
