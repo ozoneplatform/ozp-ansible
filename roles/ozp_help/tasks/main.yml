@@ -61,7 +61,7 @@
 
 - name: Extact release to nginx dir
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell: mv `ls *.tar.gz` help.tar.gz; tar xzf help.tar.gz; cp -r dist/* /usr/local/ozp/frontend/help/
+  shell: mv `ls *.tar.gz` help.tar.gz; tar xzf help.tar.gz; cp -r public/* /usr/local/ozp/frontend/help/
   args:
     chdir: /usr/local/ozp/build/ozp-help
   become: true
@@ -129,17 +129,16 @@
   become: true
   become_user: ozp
 
-# At this point we have the help files in {{ download_dir }}/dist. We
+# At this point we have the help files in {{ download_dir }}/public. We
 # want to move them to /usr/local/ozp/frontend/help and change their owner to the nginx user
 #
 
 - name: Move files
   when: (download_from == "jenkins" or download_from == "local")
-  shell: mv {{ download_dir }}/dist/* /usr/local/ozp/frontend/help
+  shell: mv {{ download_dir }}/public/* /usr/local/ozp/frontend/help
   become: true
 
 - name: Change ownership
-  when: (download_from == "jenkins" or download_from == "local")
   file:
     path: /usr/local/ozp/frontend/help
     owner: nginx
