@@ -102,7 +102,7 @@
 
 - name: Rename tar file from Jenkins
   when: download_from == "jenkins"
-  shell: mv `ls -1` webtop.tar.gz
+  shell: mv `ls -1 | grep webtop-dev` webtop.tar.gz
   args:
     chdir: "{{ download_dir }}/archive"
   become: true
