@@ -1,0 +1,148 @@
+---
+# These tasks will download ozp-help from GitHub (a branch or tag name) or
+# Jenkins (using a specific build number)
+
+- name: Remove any existing help directory
+  file:
+    path: /usr/local/ozp/frontend/help
+    state: absent
+  become: true
+
+- name: Create the directory for the help
+  file:
+    path: /usr/local/ozp/frontend/help
+    state: directory
+    owner: nginx
+  become: true
+
+#################
+#     GitHub
+#################
+
+- name: Remove any existing local directory for help
+  when: download_from == "github"
+  file:
+    path: /usr/local/ozp/build/ozp-help
+    state: absent
+  become: true
+  become_user: ozp
+
+- name: Download source from GitHub tag
+  when: (download_from == "github" and not offline)
+  git:
+    repo: git://github.com/ozone-development/ozp-help.git
+    dest: /usr/local/ozp/build/ozp-help
+    accept_hostkey: yes
+  become: true
+  become_user: ozp
+
+- name: Checkout git branch or tag name
+  when: (download_from == "github" and git_tag_or_branch_name)
+  command: git checkout {{ git_tag_or_branch_name }}
+  args:
+    chdir: /usr/local/ozp/build/ozp-help
+  become: true
+  become_user: ozp
+
+- name: Install bower and gulp
+  when: (download_from == "github" and git_tag_or_branch_name)
+  shell:  source /usr/local/node_versions/set_node_version.sh {{ node_version }}; npm install -g bower gulp
+  args:
+    chdir: /usr/local/ozp/build/ozp-help
+  become: true
+
+- name: Build, test, and create tarball for help release
+  when: (download_from == "github" and git_tag_or_branch_name)
+  shell: source /usr/local/node_versions/set_node_version.sh {{ node_version }};npm install; npm run build;npm run tarDistDate
+  args:
+    chdir: /usr/local/ozp/build/ozp-help
+  become: true
+  become_user: ozp
+
+- name: Extact release to nginx dir
+  when: (download_from == "github" and git_tag_or_branch_name)
+  shell: mv `ls *.tar.gz` help.tar.gz; tar xzf help.tar.gz; cp -r dist/* /usr/local/ozp/frontend/help/
+  args:
+    chdir: /usr/local/ozp/build/ozp-help
+  become: true
+
+#################
+#     Jenkins
+#################
+- name: Download artifacts from Jenkins
+  when: (download_from == "jenkins" and not offline)
+  uri:
+    url: https://{{ jenkins_host }}/view/OZP/job/{{ jenkins_project}}/{{ jenkins_build_number }}/artifact/*zip*/archive.zip
+    dest: "{{ download_dir }}/help_jenkins_archive.zip"
+    method: GET
+    user: "{{ jenkins_username }}"
+    password: "{{ jenkins_password }}"
+    force_basic_auth: true
+    timeout: 30
+    status_code: 200
+  become: true
+  become_user: ozp
+
+- name: Remove any existing "artifact" directory
+  when: download_from == "jenkins"
+  file:
+    path: "{{ download_dir }}/archive"
+    state: absent
+  become: true
+  become_user: ozp
+
+- name: Extract archive from Jenkins (outer zip file)
+  when: download_from == "jenkins"
+  unarchive:
+    src: "{{ download_dir }}/help_jenkins_archive.zip"
+    dest: "{{ download_dir }}"
+    copy: no
+  become: true
+  become_user: ozp
+
+- name: Rename tar file from Jenkins
+  when: download_from == "jenkins"
+  shell: mv `ls -1` help.tar.gz
+  args:
+    chdir: "{{ download_dir }}/archive"
+  become: true
+  become_user: ozp
+
+- name: Extract archive contents from Jenkins download
+  when: download_from == "jenkins"
+  unarchive:
+    src: "{{ download_dir }}/archive/help.tar.gz"
+    dest: "{{ download_dir }}"
+    copy: no
+  become: true
+  become_user: ozp
+
+#################
+#     Local
+#################
+- name: Extract archive contents from local tarball
+  when: download_from == "local"
+  unarchive:
+    src: "{{ download_dir }}/help.tar.gz"
+    dest: "{{ download_dir }}"
+    copy: no
+  become: true
+  become_user: ozp
+
+# At this point we have the help files in {{ download_dir }}/dist. We
+# want to move them to /usr/local/ozp/frontend/help and change their owner to the nginx user
+#
+
+- name: Move files
+  when: (download_from == "jenkins" or download_from == "local")
+  shell: mv {{ download_dir }}/dist/* /usr/local/ozp/frontend/help
+  become: true
+
+- name: Change ownership
+  when: (download_from == "jenkins" or download_from == "local")
+  file:
+    path: /usr/local/ozp/frontend/help
+    owner: nginx
+    state: directory
+    recurse: true
+  become: true
