@@ -45,11 +45,21 @@
   become: true
   become_user: ozp
 
+- name: Remove any existing python env
+  file:
+    path: /usr/local/ozp/python-env
+    state: absent
+  become: true
+
 - name: Create python env
   when: download_from == "github"
-  shell: mkdir -p /usr/local/ozp/python-env; rm -rf /usr/local/ozp/python-env; /usr/local/bin/pyvenv-3.4 /usr/local/ozp/python-env
+  shell: mkdir -p /usr/local/ozp/python-env;  /usr/local/bin/pyvenv-3.4 /usr/local/ozp/python-env
   become: true
   become_user: ozp
+
+- name: Fix Python sandbox problem
+  shell: chown -R ozp /usr/local/lib/python3.4/lib2to3/
+  become: true
 
 - name: Install python dependencies
   when: (download_from == "github" and not offline)

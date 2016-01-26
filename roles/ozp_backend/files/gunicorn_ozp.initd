@@ -117,6 +117,7 @@ reinstall() {
  # fix ownership
  sudo chown -R $NGINX_USER $NGINX_STATIC
  sudo chown -R $USER /usr/local/ozp/media
+ sudo chown -R $USER $PYTHON_ENV
  return $?
 }
 
