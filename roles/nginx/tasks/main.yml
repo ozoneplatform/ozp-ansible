@@ -93,5 +93,5 @@
   become: true
 
 - name: Ensure nginx is running (and enable it at boot)
-  service: name=nginx state=started enabled=yes
+  service: name=nginx state=restarted enabled=yes
   become: true

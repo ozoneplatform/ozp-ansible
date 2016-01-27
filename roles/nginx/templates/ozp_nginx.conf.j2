@@ -6,6 +6,11 @@ server {
 
         location = /favicon.ico { access_log off; log_not_found off; }
 
+        # enforce trailing slash on urls
+        location ~ ^/(?<page>static|center|hud|webtop|help|iwc|demo_apps)$ {
+            return 301 /$page/;
+        }
+
         location /static/ {
             alias /usr/local/ozp/frontend/django_static/;
         }
