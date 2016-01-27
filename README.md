@@ -143,7 +143,26 @@ necessary files are located in that directory
 3. For all ozp things, set `download_from` to "local" in
     `roles/<ozp_xyz>/vars/main.yml`
 
+### Test a Pull Request
+Assuming you already have a box runnning OZP (if not, just use Ansible as
+described previously):
+* update `roles/<role-for-PR>/vars/main.yml` and change `download_from` to
+    `github` and set the branch name to that of the PR
+* run the necessary playbook
+* validate the PR
 
+Cases where this may not work:
+* change being tested requires transitive dependency update (in package.json,
+    for example) that was not committed to the branch
 
-### Reinstall ozp-center on Vagrant Box
+### Developer Setup
+Developers typically want to edit code on their host and deploy to a target.
+Vagrant provides a "Synced Folders" capability that should support this
+workflow, since it not only supports sharing directories between a host box
+and Vagrant target, but also allows you to control ownership settings
 
+* Center code (contents of `dist/`) -> /usr/local/ozp/frontend/center, owned by
+    user `nginx`. Same idea for hud, webtop, iwc, and demo_apps. Be mindful of
+    `OzoneConfig.js`
+* Backend code -> /usr/local/ozp/backend, owned by user ozp (be mindful of
+    `ozp/settings.py`)
