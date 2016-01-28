@@ -8,6 +8,7 @@ do this:
 * `vagrant up` in this directory (this will take about 35 minutes)
 * Access Center from your host at `https://localhost:4433/center/`,
     API docs at `https://localhost:4433/docs/`
+* Point a clone of ozp-center or ozp-hud to the backend running at localhost:4433 `API_URL="https://localhost:4433/marketplace" npm start` 
 
 ## Introduction
 Ansible is a simple IT automation tool that we are using for lots of things,
