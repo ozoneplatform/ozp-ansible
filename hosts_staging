@@ -1,0 +1,10 @@
+# inventory file for staging env
+
+[dbserver]
+# dbserver.ozp.com
+
+[staticserver]
+# static.ozp.com
+
+[apiserver]
+# api.ozp.com
