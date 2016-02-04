@@ -169,6 +169,16 @@
     mode: 0644
   become: true
 
+# Alternatively, copy an existing settings.py file
+- name: Use non-templated settings.py file
+  when: use_static_settings_file
+  copy:
+    src: settings.py
+    dest: /usr/local/ozp/backend/ozp/settings.py
+    mode: 0644
+  become: true
+  become_user: ozp
+
 - name: Copy init.d file
   copy:
     src: gunicorn_ozp.initd
