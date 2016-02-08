@@ -38,6 +38,9 @@
 
   roles:
     - ssl_certs
+    # postgres doesn't need to run on this box, but it must be installed there
+    # so that the Python psycopg2 lib will install properly
+    - postgres
     - python_3
     - ozp_backend
     #- db_migration

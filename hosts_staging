@@ -1,10 +1,33 @@
 # inventory file for staging env
+#
+[loadbalancer]
+172.28.128.0
 
 [dbserver]
-# dbserver.ozp.com
+172.28.128.6
+
+[imageserver]
+172.28.128.5
 
 [staticserver]
-# static.ozp.com
+172.28.128.1
+172.28.128.3
 
 [apiserver]
-# api.ozp.com
+172.28.128.2
+172.28.128.4
+
+# todo: need to use children or just separate groups?
+[alpha]
+172.28.128.1
+172.28.128.2
+
+[alpha:vars]
+api_server_fqdn=172.28.128.2
+
+[bravo]
+172.28.128.3
+172.28.128.4
+
+[bravo:vars]
+api_server_fqdn=172.28.128.4
