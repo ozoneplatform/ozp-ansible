@@ -1,0 +1,67 @@
+---
+- name: Install prereqs
+  yum: name={{ item }} state=present
+  with_items:
+    - pcre
+    - pcre-devel
+    - libz-devel
+  become: true
+
+- name: Create haproxy user
+  user:
+    name: haproxy
+    comment: "haproxy"
+    # group: haproxy
+    password: "password"
+  become: true
+
+- name: Download HAProxy source
+  when: not offline
+  get_url:
+    url: http://www.haproxy.org/download/{{ haproxy_version }}/src/haproxy-1.6.3.tar.gz
+    dest: /src/haproxy-{{ haproxy_version }}.tar.gz
+  become: true
+
+- name: Extract archive
+  unarchive:
+    src: /src/haproxy-{{ haproxy_version }}.tar.gz
+    dest: /src
+    copy: no
+  become: true
+
+- name: Make haproxy
+  command: chdir=/src/haproxy-{{ haproxy_version }} make TARGET=linux2628 CPU=x86_64 USE_OPENSSL=1 USE_ZLIB=1 USE_PCRE=1
+  become: true
+
+- name: Install haproxy
+  command: chdir=/src/nginx-{{ haproxy_version }} make install
+  become: true
+
+- name: Copy binaries
+  command: cp /usr/local/sbin/haproxy* /usr/sbin/
+  become: true
+
+- name: Copy init.d script
+  command: cp /src/haproxy-1.6.3/examples/haproxy.init /etc/init.d/haproxy
+  become: true
+
+- name: Fix permissions on init.d script
+  command: chmod +x /etc/init.d/haproxy
+  become: true
+
+- name: Create directory for config file
+  command: mkdir -p /etc/haproxy
+  become: true
+
+- name: Copy haproxy config
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    # group: root
+    mode: 0644
+  become: true
+
+- name: Create status file
+  shell: mkdir -p /var/lib/haproxy;touch /var/lib/haproxy/stats
+  become: true
