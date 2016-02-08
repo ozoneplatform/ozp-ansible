@@ -72,7 +72,7 @@ Vagrant.configure(2) do |config|
   # SHELL
   #
   #config.vm.provision "ansible_local" do |ansible|
-  #  ansible.playbook = "/vagrant/site.yml"
+  #  ansible.playbook = "/vagrant/staging_site.yml"
   #end
   #
   #
@@ -81,7 +81,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "loadbalancer" do |lb|
     lb.vm.network "forwarded_port", guest: 443, host: 4433
     lb.vm.hostname = "loadbalancer"
-    lb.vm.network "private_network", ip: "172.28.128.0"
+    lb.vm.network "private_network", ip: "172.28.128.20"
     lb.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.name = "loadbalancer"
@@ -89,7 +89,7 @@ Vagrant.configure(2) do |config|
   end
   config.vm.define "frontend_alpha" do |fa|
     fa.vm.hostname = "frontend-alpha"
-    fa.vm.network "private_network", ip: "172.28.128.1"
+    fa.vm.network "private_network", ip: "172.28.128.21"
     fa.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.name = "frontend_alpha"
@@ -97,7 +97,7 @@ Vagrant.configure(2) do |config|
   end
   config.vm.define "backend_alpha" do |ba|
     ba.vm.hostname = "backend-alpha"
-    ba.vm.network "private_network", ip: "172.28.128.2"
+    ba.vm.network "private_network", ip: "172.28.128.22"
     ba.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.name = "backend_alpha"
@@ -105,7 +105,7 @@ Vagrant.configure(2) do |config|
   end
   config.vm.define "frontend_bravo" do |fb|
     fb.vm.hostname = "frontend-bravo"
-    fb.vm.network "private_network", ip: "172.28.128.3"
+    fb.vm.network "private_network", ip: "172.28.128.23"
     fb.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.name = "frontend_bravo"
@@ -113,7 +113,7 @@ Vagrant.configure(2) do |config|
   end
   config.vm.define "backend_bravo" do |bb|
     bb.vm.hostname = "backend-bravo"
-    bb.vm.network "private_network", ip: "172.28.128.4"
+    bb.vm.network "private_network", ip: "172.28.128.24"
     bb.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.name = "backend_bravo"
@@ -121,7 +121,7 @@ Vagrant.configure(2) do |config|
   end
   config.vm.define "image_server" do |is|
     is.vm.hostname = "image-server"
-    is.vm.network "private_network", ip: "172.28.128.5"
+    is.vm.network "private_network", ip: "172.28.128.25"
     is.vm.provider "virtualbox" do |vb|
       vb.memory = "512"
       vb.name = "image_server"
@@ -129,7 +129,7 @@ Vagrant.configure(2) do |config|
   end
   config.vm.define "db_server" do |db|
     db.vm.hostname = "db-server"
-    db.vm.network "private_network", ip: "172.28.128.6"
+    db.vm.network "private_network", ip: "172.28.128.26"
     db.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.name = "db_server"

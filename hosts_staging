@@ -1,33 +1,35 @@
 # inventory file for staging env
 #
 [loadbalancer]
-172.28.128.0
+172.28.128.20
 
 [dbserver]
-172.28.128.6
+172.28.128.26
 
 [imageserver]
-172.28.128.5
+172.28.128.25
 
 [staticserver]
-172.28.128.1
-172.28.128.3
+172.28.128.21
+172.28.128.23
 
 [apiserver]
-172.28.128.2
-172.28.128.4
+172.28.128.22
+172.28.128.24
 
 # todo: need to use children or just separate groups?
 [alpha]
-172.28.128.1
-172.28.128.2
+172.28.128.21
+172.28.128.22
 
 [alpha:vars]
-api_server_fqdn=172.28.128.2
+api_fqdn=172.28.128.22
+frontend_fqdn=172.28.128.21
 
 [bravo]
-172.28.128.3
-172.28.128.4
+172.28.128.23
+172.28.128.24
 
 [bravo:vars]
-api_server_fqdn=172.28.128.4
+api_fqdn=172.28.128.24
+frontend_fqdn=172.28.128.23
