@@ -107,6 +107,12 @@
     mode: 0755
   become: true
 
+#- name: Allow incoming database connections step one
+#  command: echo "TODO: Edit pg_hba.conf"
+#
+#- name: Allow incoming database connections step two
+#  command: echo "TODO: Edit postgresql.conf"
+
 - name: Ensure postgres is running (and enable it at boot)
   service: name=postgres state=restarted enabled=yes
   become: true

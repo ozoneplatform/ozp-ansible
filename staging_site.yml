@@ -8,6 +8,23 @@
     - common
     - offline
 
+- hosts: loadbalancer
+  vars_files:
+    - group_vars/all/all.yml
+    - group_vars/all/vault.yml
+
+  roles:
+    - haproxy
+
+- hosts: authserver
+  vars_files:
+    - group_vars/all/all.yml
+    - group_vars/all/vault.yml
+
+  roles:
+    - python_3
+    - ozp_authorization
+
 - hosts: dbserver
   vars_files:
     - group_vars/all/all.yml

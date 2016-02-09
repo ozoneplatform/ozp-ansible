@@ -25,7 +25,7 @@ SECRET_KEY = 'v%ue42rl)b*^6494!&1kd)dzfa--cs(#9#qwoe1p()hrjh#j9t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['{{ server_fqdn }}']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -90,7 +90,7 @@ DATABASES = {
         'NAME': 'ozp',  # Or path to database file if using sqlite3.
         'USER': 'ozp_user',
         'PASSWORD': 'password',
-        'HOST': 'localhost',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'HOST': '{{ db_fqdn }}',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',  # Set to empty string for default.
     }
 }
@@ -208,18 +208,18 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 OZP = {
-    'DEMO_APP_ROOT': 'https://{{ server_fqdn }}:{{ server_port }}',
+    'DEMO_APP_ROOT': 'https://{{ site_fqdn }}:{{ site_port }}',
     # if set to False, never try and update authorization-related info from
     # an external source
     'USE_AUTH_SERVER': True,
     # convert DNs read as /CN=My Name/OU=Something... to CN=My Name, OU=Something
     'PREPROCESS_DN': True,
     'OZP_AUTHORIZATION': {
-        'SERVER_CRT': '/usr/local/ozp/server.crt',
-        'SERVER_KEY': '/usr/local/ozp/server.key',
-        'USER_INFO_URL': r'http://localhost:8081/demo-auth/users/%s/info.json?issuerDN=%s',
+        'SERVER_CRT': '/usr/local/ozp/server_certs/server.crt',
+        'SERVER_KEY': '/usr/local/ozp/server_certs/private/server.key',
+        'USER_INFO_URL': r'http://{{ auth_fqdn }}:{{ auth_port }}/demo-auth/users/%s/info.json?issuerDN=%s',
         # assumes the real URL is <root>/users/<DN>/groups/<PROJECT_NAME>/
-        'USER_GROUPS_URL': r'http://localhost:8081/demo-auth/users/%s/groups/%s/',
+        'USER_GROUPS_URL': r'http://{{ auth_fqdn }}:{{ auth_port }}/demo-auth/users/%s/groups/%s/',
         # name of the group in the auth service for apps mall stewards
         'APPS_MALL_STEWARD_GROUP_NAME': 'OZP_APPS_MALL_STEWARD',
         # name of the group in the auth service for org stewards

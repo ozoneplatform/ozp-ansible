@@ -1,8 +1,8 @@
 # nginx config
 
 server {
-        server_name localhost;
-        listen 443 ssl;
+        server_name {{ frontend_fqdn }};
+        listen {{ frontend_port }} ssl;
 
         location = /favicon.ico { access_log off; log_not_found off; }
 
@@ -37,7 +37,7 @@ server {
             # enabling this broke production for Swagger and any requests
             # with responses larger than ~48k
             proxy_buffering off;
-            proxy_pass http://localhost:8080/;
+            proxy_pass https://{{ api_fqdn }}:{{ api_port }}/;
             proxy_set_header Host $http_host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -86,7 +86,7 @@ server {
     }
 
 server {
-        server_name localhost;
+        server_name {{ frontend_fqdn }};
         listen 4430 ssl;
 
         location = /favicon.ico { access_log off; log_not_found off; }
@@ -96,7 +96,7 @@ server {
         }
 
         location / {
-            proxy_pass http://localhost:8081/;
+            proxy_pass http://{{ frontend_fqdn }}:8081/;
             proxy_set_header Host $http_host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -145,7 +145,7 @@ server {
     }
 
 server {
-        server_name localhost;
+        server_name {{ frontend_fqdn }};
         listen 4440 ssl;
 
         location = /favicon.ico { access_log off; log_not_found off; }

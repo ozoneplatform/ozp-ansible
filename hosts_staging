@@ -3,6 +3,9 @@
 [loadbalancer]
 172.28.128.20
 
+[authserver]
+172.28.128.27
+
 [dbserver]
 172.28.128.26
 

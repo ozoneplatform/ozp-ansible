@@ -4,7 +4,6 @@
   with_items:
     - pcre
     - pcre-devel
-    - libz-devel
   become: true
 
 - name: Create haproxy user
@@ -15,30 +14,34 @@
     password: "password"
   become: true
 
+- name: Create /src directory
+  command: mkdir -p /src
+  become: true
+
 - name: Download HAProxy source
   when: not offline
   get_url:
-    url: http://www.haproxy.org/download/{{ haproxy_version }}/src/haproxy-1.6.3.tar.gz
-    dest: /src/haproxy-{{ haproxy_version }}.tar.gz
+    url: http://www.haproxy.org/download/1.6/src/haproxy-1.6.3.tar.gz
+    dest: /src/haproxy-1.6.3.tar.gz
   become: true
 
 - name: Extract archive
   unarchive:
-    src: /src/haproxy-{{ haproxy_version }}.tar.gz
+    src: /src/haproxy-1.6.3.tar.gz
     dest: /src
     copy: no
   become: true
 
 - name: Make haproxy
-  command: chdir=/src/haproxy-{{ haproxy_version }} make TARGET=linux2628 CPU=x86_64 USE_OPENSSL=1 USE_ZLIB=1 USE_PCRE=1
+  command: chdir=/src/haproxy-1.6.3 make TARGET=linux2628 CPU=x86_64 USE_OPENSSL=1 USE_ZLIB=1 USE_PCRE=1
   become: true
 
 - name: Install haproxy
-  command: chdir=/src/nginx-{{ haproxy_version }} make install
+  command: chdir=/src/haproxy-1.6.3 make install
   become: true
 
 - name: Copy binaries
-  command: cp /usr/local/sbin/haproxy* /usr/sbin/
+  shell: cp -f /usr/local/sbin/haproxy /usr/sbin/
   become: true
 
 - name: Copy init.d script
@@ -64,4 +67,20 @@
 
 - name: Create status file
   shell: mkdir -p /var/lib/haproxy;touch /var/lib/haproxy/stats
+  become: true
+
+- name: Create directory for socket file
+  command: mkdir -p /var/run/haproxy
+  become: true
+
+- name: Copy cert
+  copy:
+    src: ../files/
+    dest:  /etc/ssl/certs/
+    owner: haproxy
+    force: yes
+  become: true
+
+- name: Ensure haproxy is running (and enable it at boot)
+  service: name=haproxy state=restarted enabled=yes
   become: true

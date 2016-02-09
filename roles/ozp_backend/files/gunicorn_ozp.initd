@@ -23,7 +23,7 @@ APPDIR=/usr/local/ozp/backend
 NGINX_STATIC=/usr/local/ozp/frontend/django_static
 APPMODULE=ozp.wsgi:application
 DAEMON=gunicorn
-BIND=127.0.0.1:8080
+BIND=0.0.0.0:443
 PIDFILE=/usr/local/ozp/gunicorn_ozp.pid
 LOGFILE=/usr/local/ozp/gunicorn_ozp.log
 DJANGO_LOGFILE=/usr/local/ozp/ozp.log
@@ -62,7 +62,7 @@ start() {
         sudo touch $DJANGO_LOGFILE
         sudo chown $USER $DJANGO_LOGFILE
         cd $APPDIR
-	cmd="$DAEMON --daemon --bind=$BIND --pid=$PIDFILE --workers=$WORKERS --user=$USER --log-file=$LOGFILE $APPMODULE"
+	cmd="$DAEMON --daemon --bind=$BIND --pid=$PIDFILE --workers=$WORKERS --user=$USER --log-file=$LOGFILE --keyfile /usr/local/ozp/server_certs/private/server.key --certfile /usr/local/ozp/server_certs/server.crt --ca-certs /usr/local/ozp/ca_certs/rootCA.pem $APPMODULE"
 	echo "Running gunicorn as: $cmd"
     su - $USER -c "cd $APPDIR; source $ACTIVATE; $cmd"
 	if [ $? -eq 0 ]; then
