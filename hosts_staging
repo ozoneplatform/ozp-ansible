@@ -20,7 +20,6 @@
 172.28.128.22
 172.28.128.24
 
-# todo: need to use children or just separate groups?
 [alpha]
 172.28.128.21
 172.28.128.22

@@ -10,9 +10,24 @@ offline: false
 download_dir: "/usr/local/ozp/internet_files"
 # for vagrant/VMs, this is usually something like localhost.
 # For CI or production boxes, it should be ci-box.some.domain
-# Note that the server_fqdn will always be accessed via https
-server_fqdn: "localhost"
+# Note that the site will always be accessed via https
+# In production, this is the load balancer - the only thing the outside
+# world knows about
+site_fqdn: "localhost"
 # for vagrant boxes, this will be something like 4433 (or whatever port you
 # are forwarding from your host to guest port 443). For ci or production
 # boxes, it will be the standard 443.
-server_port: 4433
+site_port: 443
+# database server
+db_fqdn: "localhost"
+# for real deployments, these are set appropriately. For demos/development,
+# localhost is probably fine
+# TODO: define this in the inventory file instead
+#api_fqdn: "localhost"
+api_port: 4433
+# TODO: define this in the inventory file instead
+#frontend_fqdn: "localhost"
+frontend_port: 4444
+# not used in production
+auth_fqdn: "localhost"
+auth_port: 8081
