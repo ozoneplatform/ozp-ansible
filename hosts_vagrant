@@ -1,3 +1,7 @@
 [ozpdev]
 127.0.0.1:2222
 
+[ozpdev:vars]
+api_fqdn=localhost
+frontend_fqdn=localhost
+
