@@ -1,12 +1,14 @@
 ---
 # Add a line for each API server that will be connecting to the DB
 - name: Allow incoming database connections step one
+  when: db_fqdn != "localhost"
   shell: echo "host    all    all    {{ item }}/24    trust" >>  /usr/local/pgsql/data/pg_hba.conf
   become: true
   become_user: postgres
   with_items: groups.apiserver
 
 - name: Allow incoming database connections step two
+  when: db_fqdn != "localhost"
   shell: echo "listen_addresses = '*'" >>  /usr/local/pgsql/data/postgresql.conf
   become: true
   become_user: postgres

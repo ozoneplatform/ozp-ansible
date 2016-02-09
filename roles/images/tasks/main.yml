@@ -28,7 +28,13 @@
     state: absent
   become: true
 
+- name: Set up export file for localhost
+  when: image_fqdn == "localhost"
+  shell: echo "/usr/local/ozp/media  localhost(rw,no_root_squash)" >> /etc/exports
+  become: true
+
 - name: Set up export file
+  when: image_fqdn != "localhost"
   shell: echo "/usr/local/ozp/media  {{ item }}(rw,no_root_squash)" >> /etc/exports
   with_items: groups.apiserver
   become: true

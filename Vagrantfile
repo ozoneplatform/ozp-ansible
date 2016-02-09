@@ -72,5 +72,9 @@ Vagrant.configure(2) do |config|
   #
   config.vm.provision "ansible_local" do |ansible|
     ansible.playbook = "/vagrant/site.yml"
+    ansible.raw_arguments = '--extra-vars "site_fqdn=localhost db_fqdn=localhost auth_fqdn=localhost image_fqdn=localhost api_fqdn=localhost frontend_fqdn=localhost"'
+    #ansible.extra_vars = {site_fqdn: "localhost", db_fqdn: "localhost",
+    #    auth_fqdn: "localhost", image_fqdn: "localhost", api_fqdn: "localhost",
+    #    frontend_fqdn: "localhost"}
   end
 end
