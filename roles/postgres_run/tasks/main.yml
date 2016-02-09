@@ -1,9 +1,15 @@
 ---
-#- name: Allow incoming database connections step one
-#  command: echo "TODO: Edit pg_hba.conf"
-#
-#- name: Allow incoming database connections step two
-#  command: echo "TODO: Edit postgresql.conf"
+# Add a line for each API server that will be connecting to the DB
+- name: Allow incoming database connections step one
+  shell: echo "host    all    all    {{ item }}/24    trust" >>  /usr/local/pgsql/data/pg_hba.conf
+  become: true
+  become_user: postgres
+  with_items: groups.apiserver
+
+- name: Allow incoming database connections step two
+  shell: echo "listen_addresses = '*'" >>  /usr/local/pgsql/data/postgresql.conf
+  become: true
+  become_user: postgres
 
 - name: Ensure postgres is running (and enable it at boot)
   service: name=postgres state=restarted enabled=yes
