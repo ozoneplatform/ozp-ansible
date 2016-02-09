@@ -6,8 +6,8 @@ do this:
 * Install the latest versions of Virtualbox and Vagrant on your host
 * `mv group_vars/all/vault_unencrypted.yml group_vars/all/vault.yml`
 * `vagrant up` in this directory (this will take about 35 minutes)
-* Access Center from your host at `https://localhost:4433/center/`,
-    API docs at `https://localhost:4433/docs/`
+* Access Center from your host at `https://localhost:4440/center/`,
+    API docs at `https://localhost:4440/docs/`
 * Details: `https://github.com/ozone-development/ozp-documentation/wiki/Developer_Setup`
 
 ## Introduction

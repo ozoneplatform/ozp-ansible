@@ -8,10 +8,10 @@ offline: false
 # this is where files downloaded from the internet (3rd party and ozp source)
 #  will be placed
 download_dir: "/usr/local/ozp/internet_files"
-# for vagrant boxes, this will be something like 4433 (or whatever port you
-# are forwarding from your host to guest port 443). For ci or production
+# for vagrant boxes, this will be something like 4440 (or whatever port you
+# are forwarding from your host to guest port 4444). For ci or production
 # boxes, it will be the standard 443.
-site_port: 443
+site_port: 4440
 # port that gunicorn (for ozp-backend) runs on
 api_port: 4433
 # port that nginx runs on
