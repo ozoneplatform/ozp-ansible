@@ -10,6 +10,7 @@
   become: true
 
 - name: Ensure nfs is running (and enable it at boot)
+  when: image_fqdn != "localhost"
   service: name=nfs state=restarted enabled=yes
   become: true
 
@@ -28,11 +29,6 @@
     state: absent
   become: true
 
-- name: Set up export file for localhost
-  when: image_fqdn == "localhost"
-  shell: echo "/usr/local/ozp/media  localhost(rw,no_root_squash)" >> /etc/exports
-  become: true
-
 - name: Set up export file
   when: image_fqdn != "localhost"
   shell: echo "/usr/local/ozp/media  {{ item }}(rw,no_root_squash)" >> /etc/exports
@@ -40,5 +36,6 @@
   become: true
 
 - name: Export the directories
+  when: image_fqdn != "localhost"
   command: exportfs -a
   become: true
