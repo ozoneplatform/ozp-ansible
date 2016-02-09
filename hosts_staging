@@ -1,5 +1,14 @@
 # inventory file for staging env
 #
+[all:vars]
+# Note that the site will always be accessed via https
+# In production, this is the load balancer - the only thing the outside
+# world knows about
+site_fqdn=172.28.128.20
+db_fqdn=172.28.128.26
+auth_fqdn=172.28.128.27
+image_fqdn=172.28.128.25
+
 [loadbalancer]
 172.28.128.20
 

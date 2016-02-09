@@ -10,5 +10,5 @@ jenkins_build_number: "lastSuccessfulBuild"
 # for ozpIwc.conf.js
 api_root_url: "/api"
 # for OzoneConfig.js
-iwc_url: "https://{{ server_fqdn }}:{{ server_port }}/iwc"
+iwc_url: "https://{{ site_fqdn }}:{{ site_port }}/iwc"
 node_version: 0.12.7

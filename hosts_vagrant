@@ -1,7 +1,10 @@
-[ozpdev]
-127.0.0.1:2222
-
-[ozpdev:vars]
+[all:vars]
+site_fqdn=localhost
+db_fqdn=localhost
+auth_fqdn=localhost
+image_fqdn=localhost
 api_fqdn=localhost
 frontend_fqdn=localhost
 
+[ozpdev]
+127.0.0.1:2222

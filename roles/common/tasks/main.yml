@@ -21,6 +21,8 @@
     - xz-devel
     - libjpeg-devel
     - libselinux-python # required for ansible i guess
+    - nfs-utils
+    - nfs-utils-lib
 
   become: true
 

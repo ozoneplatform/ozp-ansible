@@ -1,0 +1,38 @@
+---
+- name: Install nfs
+  yum: name={{ item }} state=present
+  with_items:
+    - nfs-utils
+    - nfs-utils-lib
+
+- name: Ensure rpcbind is running (and enable it at boot)
+  service: name=rpcbind state=restarted enabled=yes
+  become: true
+
+- name: Ensure nfs is running (and enable it at boot)
+  service: name=nfs state=restarted enabled=yes
+  become: true
+
+- name: Make sure images directory exists
+  file:
+    path: /usr/local/ozp/media
+    owner: ozp
+    mode: 0755
+    recurse: true
+    state: directory
+  become: true
+
+- name: Remove any existing exports
+  file:
+    path: /etc/exports
+    state: absent
+  become: true
+
+- name: Set up export file
+  shell: echo "/usr/local/ozp/media  {{ item }}(rw,no_root_squash)" >> /etc/exports
+  with_items: groups.apiserver
+  become: true
+
+- name: Export the directories
+  command: exportfs -a
+  become: true

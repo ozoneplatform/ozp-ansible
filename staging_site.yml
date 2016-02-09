@@ -16,6 +16,14 @@
   roles:
     - haproxy
 
+- hosts: imageserver
+  vars_files:
+    - group_vars/all/all.yml
+    - group_vars/all/vault.yml
+
+  roles:
+    - images
+
 - hosts: authserver
   vars_files:
     - group_vars/all/all.yml

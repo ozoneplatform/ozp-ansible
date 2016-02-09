@@ -8,7 +8,7 @@ do this:
 * `vagrant up` in this directory (this will take about 35 minutes)
 * Access Center from your host at `https://localhost:4433/center/`,
     API docs at `https://localhost:4433/docs/`
-* Full Instructions - `https://github.com/ozone-development/ozp-documentation/wiki/Developer_Setup`
+* Details: `https://github.com/ozone-development/ozp-documentation/wiki/Developer_Setup`
 
 ## Introduction
 Ansible is a simple IT automation tool that we are using for lots of things,
@@ -75,8 +75,8 @@ so you may notice random group names and ad hoc sets of hosts.
 
 ## Ansible Variables
 * group_vars/all/all.yml
-  * `server_fqdn`: localhost, unless this is a real server
-  * `server_port`: typically 443 for real servers, or whatever port you're
+  * `site_fqdn`: localhost, unless this is a real server
+  * `site_port`: typically 443 for real servers, or whatever port you're
     forwarding to port 443 on the guest VM
   * `offline` - if true, Ansible won't try to download stuff from the interwebs
   * jenkins stuff - items relevant to the OZP team's Jenkins instance. Not
@@ -108,7 +108,7 @@ See the Quickstart section at the top of this README
 ### Install OZP on a Real Server Using Latest on GitHub
 1. Install Ansible on your host
 2. `mv group_vars/all/vault_unencrypted.yml group_vars/all/vault.yml`
-3. Set `server_fqdn` and `server_port` as necessary
+3. Set `site_fqdn` and `site_port` as necessary
 4. Create a hosts file (see hosts_local for example) for your server
 5. `ansible-playbook site.yml -i <my_hosts> -u <my_username> -k --ask-become-pass`
 

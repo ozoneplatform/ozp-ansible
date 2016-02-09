@@ -186,6 +186,22 @@
     mode: 0755
   become: true
 
+- name: Create the directory for the nfs mount (for images)
+  file:
+    path: /mnt/nfs/ozp_media
+    state: directory
+    recurse: true
+    owner: ozp
+  become: true
+
+- name: Mount the image directory via nfs
+  command: mount {{ image_fqdn }}:/usr/local/ozp/media /mnt/nfs/ozp_media
+  become: true
+
+- name: Add nfs mount to fstab so that it always mounts on boot
+  lineinfile: dest=/etc/fstab line="{{ image_fqdn}}:/usr/local/ozp/media  /mnt/nfs/ozp_media   nfs      auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0"
+  become: true
+
 ## WARNING: This will destroy all exiting data!!!
 - name: Redeploy the service AND reset the database with sample data
   when: reset_database

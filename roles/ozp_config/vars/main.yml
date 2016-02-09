@@ -1,3 +1,3 @@
 ---
-root_url: "https://{{ server_fqdn }}:{{ server_port }}"
+root_url: "https://{{ site_fqdn }}:{{ site_port }}"
 

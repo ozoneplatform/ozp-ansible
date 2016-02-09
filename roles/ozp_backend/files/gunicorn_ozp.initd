@@ -23,7 +23,7 @@ APPDIR=/usr/local/ozp/backend
 NGINX_STATIC=/usr/local/ozp/frontend/django_static
 APPMODULE=ozp.wsgi:application
 DAEMON=gunicorn
-BIND=0.0.0.0:443
+BIND=0.0.0.0:4433
 PIDFILE=/usr/local/ozp/gunicorn_ozp.pid
 LOGFILE=/usr/local/ozp/gunicorn_ozp.log
 DJANGO_LOGFILE=/usr/local/ozp/ozp.log
@@ -112,8 +112,6 @@ reinstall() {
  python manage.py collectstatic --noinput
  # copy static files to nginx directory
  cp -r static/* $NGINX_STATIC
- # make media directory if it doesn't exist
- mkdir -p /usr/local/ozp/media
  # fix ownership
  sudo chown -R $NGINX_USER $NGINX_STATIC
  sudo chown -R $USER /usr/local/ozp/media

@@ -33,20 +33,17 @@ defaults
         #errorfile 504 /etc/haproxy/errors/504.http
 
 frontend localnodes
-    redirect scheme https if !{ ssl_fc }
-    bind *:443 ssl crt /etc/ssl/certs/combined.pem ca-file /etc/ssl/certs/rootCA.pem verify required
-    mode http
+    bind *:443
+    option tcplog
+    mode tcp
     default_backend nodes
 
 backend nodes
-    mode http
+    mode tcp
     balance roundrobin
-    option forwardfor
-    http-request set-header X-Forwarded-Port %[dst_port]
-    http-request add-header X-Forwarded-Proto https if { ssl_fc }
-    option httpchk HEAD / HTTP/1.1\r\nHost:localhost
-    server alpha 172.28.128.21:443 check
-    server bravo 172.28.128.23:443 check
+    option ssl-hello-chk
+    server alpha 172.28.128.21:4444 check
+    server bravo 172.28.128.23:4444 check
 
 listen stats
     bind :1936
