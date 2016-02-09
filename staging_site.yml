@@ -31,7 +31,8 @@
     - group_vars/all/vault.yml
 
   roles:
-    - postgres
+    - postgres_build
+    - postgres_run
 
 - hosts: staticserver
   vars_files:
@@ -57,7 +58,7 @@
     - ssl_certs
     # postgres doesn't need to run on this box, but it must be installed there
     # so that the Python psycopg2 lib will install properly
-    - postgres
+    - postgres_build
     - python_3
     - ozp_backend
     #- db_migration

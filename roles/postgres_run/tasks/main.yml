@@ -1,0 +1,32 @@
+---
+#- name: Allow incoming database connections step one
+#  command: echo "TODO: Edit pg_hba.conf"
+#
+#- name: Allow incoming database connections step two
+#  command: echo "TODO: Edit postgresql.conf"
+
+- name: Ensure postgres is running (and enable it at boot)
+  service: name=postgres state=restarted enabled=yes
+  become: true
+  ignore_errors: true
+
+# TODO: Password?
+# Ignore errors - ok if this user already exists
+- name: Create a new database user
+  command: /usr/local/pgsql/bin/createuser ozp_user
+  become: true
+  become_user: postgres
+  ignore_errors: true
+
+# Ignore errors - ok if this db already exists
+- name: Create a new database
+  command: /usr/local/pgsql/bin/createdb ozp
+  become: true
+  become_user: postgres
+  ignore_errors: true
+
+
+- name: Grant user permissions on new database
+  command: /usr/local/pgsql/bin/psql -c 'GRANT ALL PRIVILEGES ON DATABASE ozp TO ozp_user;'
+  become: true
+  become_user: postgres

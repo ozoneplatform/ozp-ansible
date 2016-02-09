@@ -11,4 +11,5 @@
     - nginx
     - python_3
     - node
-    - postgres
+    - postgres_build
+    - postgres_run
