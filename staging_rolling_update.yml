@@ -1,0 +1,35 @@
+---
+- hosts: staticserver
+  serial: 1
+
+  vars_files:
+    - group_vars/all/all.yml
+    - group_vars/all/vault.yml
+
+  pre_tasks:
+  - name: Disable this server in haproxy
+    haproxy: 'state=disabled host={{ frontend_fqdn }} socket=/var/run/haproxy/admin.sock'
+    delegate_to: "{{ item }}"
+    with_items: groups.loadbalancer
+    become: true
+
+  roles:
+    #- { role: test_frontend}
+    #- { role: test_backend, delegate_to: "{{ api_fqdn }}"}
+    - { role: ozp_center}
+    - { role: ozp_hud}
+    - { role: ozp_webtop}
+    - { role: ozp_iwc}
+    - { role: ozp_help}
+    - { role: ozp_demo_apps}
+    - { role: ozp_config}
+    - { role: ozp_authorization, delegate_to: "{{ api_fqdn }}"}
+    - { role: ozp_backend, delegate_to: "{{ api_fqdn }}"}
+
+  post_tasks:
+  - name: Enable this server in haproxy
+    haproxy: 'state=enabled host={{ frontend_fqdn }} socket=/var/run/haproxy/admin.sock'
+    delegate_to: "{{ item }}"
+    with_items: groups.loadbalancer
+    become: true
+

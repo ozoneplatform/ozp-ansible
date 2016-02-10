@@ -30,12 +30,14 @@ following installed on your host machine:
 * updated version of VirtualBox (other VM providers should work too, but
     VirtualBox is what the core team tests with)
 * updated version of Vagrant
-* Ensure the server or VM that you will deploy OZP to has at least 2GB of
-    memory - you will get very strange and unhelpful errors otherwise
+* Ensure the server or VM that you will build OZP projects on has at least 2GB of
+    memory - you will get very strange and unhelpful errors otherwise. Boxes
+    that will only be running (and not building) these resources can get by with
+    much less - 512MB should suffice
 
 ## Installing Ansible
 See the official Ansible docs for details. Some problems that we've seen
-installing Ansible on a Centos 6.6 box:
+when using the latest (GitHub checkout) version of Ansible on a Centos 6.6 box:
 * needed to remove `python-yaml` package and install PyYAML instead (got a
 * weird 'dispose' error otherwise)
 * `ansible-vault` kept complaining about an old version of pycrypto. Uninstalled
@@ -50,7 +52,8 @@ want:
 * site - provision a box and deploy all the ozp things
   * provision - install ozp prereqs
     * nginx
-    * postgres
+    * postgres_build
+    * postgres_run
     * python
     * ...
   * ozp_deploy - install and launch all ozp things
@@ -69,9 +72,6 @@ line option to decrypt the vault file. Otherwise, simply copy the provided
 `vault_unencrypted.yml` file over top of `vault.yml`. The only consequence of
 this is that you won't be able to connect to our Jenkins build server
 to retrieve pre-built artifacts
-
-We haven't had a particular need for Ansible's Hosts or Groups features yet,
-so you may notice random group names and ad hoc sets of hosts.
 
 ## Ansible Variables
 * inventory variables
@@ -93,6 +93,9 @@ so you may notice random group names and ad hoc sets of hosts.
   * `git_tag_or_branch_name` - as described
   * `reset_database` (ozp_backend only) - if true, flush the database
 
+*NOTE*: Any variables defined in `group_vars/all/all.yml` (or any group for
+that matter) will take precedence over variables defined in Inventory files.
+
 ## Vagrant and Ansible
 We typically use Vagrant to run VMs and Ansible to provision them. Vagrant
 supports Ansible out of the box via two provisioners: Ansible remote
@@ -100,7 +103,8 @@ provisioner and Andible local provisioner.
 
 It's easier to get started using the Ansible local provisioner, since
 that doesn't require you to install Ansible on your host machine, but both
-provisioners are useful.
+provisioners are useful. If you're trying to use the staging/production setup
+(with multiple servers), you will need to install Ansible on your host
 
 ## Ansible Use Cases
 Before running anything Ansible, source the Ansible environment script
@@ -113,14 +117,14 @@ See the Quickstart section at the top of this README
 ### Install OZP on a Real Server Using Latest on GitHub
 1. Install Ansible on your host
 2. `mv group_vars/all/vault_unencrypted.yml group_vars/all/vault.yml`
-3. Set `site_fqdn` and `site_port` as necessary
-4. Create a hosts file (see hosts_local for example) for your server
+3. Create an Inventory file (see `hosts_vagrant` as an example) for your server
+4. Set the `*_fqdn` variables (in your new Inventory file) and `site_port` (in `group_vars/all/all.yml`) as needed
 5. `ansible-playbook site.yml -i <my_hosts> -u <my_username> -k --ask-become-pass`
 
 If you only want to provision the server with dependencies (nginx, postgres, etc),
 just run the `provision.yml` playbook instead of `site.yml`. The same logic
 applies to other playbooks, so you can deploy/redeploy at a very granular
-level
+level.
 
 ### Install part of OZP on a Vagrant box from your host
 Let's say you've already gone through the Quickstart section and have a
@@ -140,16 +144,16 @@ using `vagrant` for both the username and password
 ### Staging (Production-esque)
 This setup launches 8 VMs - a load balancer, two nginx frontend VMs, two
 api servers (hosting the python backend), an image server (nfs mount for images),
-a database server, and an authorization server. This is nearly identical to
+a database server, and an authorization server. This is identical to
 the setup we use in production
 
 To use this configuration, install Ansible on your host machine
 
 Usage:
-* cd `vagrant_production_setup; vagrant up`
-* change to use either a local install or Jenkins, as the default downloading
+* cd `vagrant_production_setup; vagrant up` - wait for the VMs to launch
+* change `download_from` to either `local` or `jenkins`, as the default downloading
     and building from GitHub will take a really long time. There are
-    7 files to change: backend, center, hud, webtop, iwc, demo_apps, help
+    7 files to change:
   * `roles/ozp_backend/vars/main.yml`
   * `roles/ozp_center/vars/main.yml`
   * `roles/ozp_hud/vars/main.yml`
@@ -162,6 +166,10 @@ Usage:
     vault_unencrypted.yml)
 * `https://172.28.128.20/center/` - Center
 * `https://172.28.128.20:1936` - HAProxy Statistics
+
+It's also easy to redeploy only to servers in a group. for example, add the
+`--limit loadbalancer` switch to the `ansible-playbook` command to only
+redeploy to the load balancer
 
 ### Offline Installation
 The "offline" mode is useful for provisioning a system without Internet access.

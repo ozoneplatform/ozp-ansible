@@ -195,13 +195,12 @@
   become: true
 
 - name: Mount the image directory via nfs
-  when: image_fqdn != "localhost"
-  command: mount {{ image_fqdn }}:/usr/local/ozp/media /mnt/nfs/ozp_media
-  become: true
-
-- name: Add nfs mount to fstab so that it always mounts on boot
-  when: image_fqdn != "localhost"
-  lineinfile: dest=/etc/fstab line="{{ image_fqdn}}:/usr/local/ozp/media  /mnt/nfs/ozp_media   nfs      auto,noatime,nolock,bg,nfsvers=3,intr,tcp,actimeo=1800 0 0"
+  mount:
+    src: "{{ image_fqdn }}:/usr/local/ozp/media"
+    name: /mnt/nfs/ozp_media
+    state: mounted
+    fstype: nfs
+    opts: rw
   become: true
 
 ## WARNING: This will destroy all exiting data!!!

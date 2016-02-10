@@ -13,3 +13,4 @@
     - node
     - postgres_build
     - postgres_run
+    - images
