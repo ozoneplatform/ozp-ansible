@@ -42,8 +42,11 @@ backend nodes
     mode tcp
     balance roundrobin
     option ssl-hello-chk
-    server alpha 172.28.128.21:4444 check
-    server bravo 172.28.128.23:4444 check
+    {% for host in groups['staticserver'] %}
+    server {{ host}} {{ host }}:4444 check
+    {% endfor %}
+    #server alpha 172.28.128.21:4444 check
+    #server bravo 172.28.128.23:4444 check
 
 listen stats
     bind :1936

@@ -143,15 +143,25 @@ api servers (hosting the python backend), an image server (nfs mount for images)
 a database server, and an authorization server. This is nearly identical to
 the setup we use in production
 
+To use this configuration, install Ansible on your host machine
+
 Usage:
 * cd `vagrant_production_setup; vagrant up`
 * change to use either a local install or Jenkins, as the default downloading
     and building from GitHub will take a really long time. There are
     7 files to change: backend, center, hud, webtop, iwc, demo_apps, help
+  * `roles/ozp_backend/vars/main.yml`
+  * `roles/ozp_center/vars/main.yml`
+  * `roles/ozp_hud/vars/main.yml`
+  * `roles/ozp_webtop/vars/main.yml`
+  * `roles/ozp_iwc/vars/main.yml`
+  * `roles/ozp_help/vars/main.yml`
+  * `roles/ozp_demo_apps/vars/main.yml`
 * change `site_port` to 443 in `group_vars/all/all.yml`
 * `ansible-playbook staging_site.yml -i hosts_staging -u vagrant -k --ask-vault-pass` (or, if you don't know the vault password, just copy over it using
     vault_unencrypted.yml)
-
+* `https://172.28.128.20/center/` - Center
+* `https://172.28.128.20:1936` - HAProxy Statistics
 
 ### Offline Installation
 The "offline" mode is useful for provisioning a system without Internet access.
