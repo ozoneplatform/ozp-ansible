@@ -74,8 +74,13 @@ We haven't had a particular need for Ansible's Hosts or Groups features yet,
 so you may notice random group names and ad hoc sets of hosts.
 
 ## Ansible Variables
+* inventory variables
+  * `site_fqdn` - entry point to the site
+  * `db_fqdn` - database server fqdn
+  * `auth_fqdn` - authorization server fqdn
+  * `image_fqdn` - image server fqdn
+
 * group_vars/all/all.yml
-  * `site_fqdn`: localhost, unless this is a real server
   * `site_port`: typically 443 for real servers, or whatever port you're
     forwarding to port 443 on the guest VM
   * `offline` - if true, Ansible won't try to download stuff from the interwebs
@@ -131,6 +136,22 @@ the Ansible provisioning bit at the bottom of the Vagrantfile, then
 `vagrant up`. When the box is up, run
 `ansible-playbook site.yml -i hosts_vagrant -u vagrant -k --ask-become-pass`,
 using `vagrant` for both the username and password
+
+### Staging (Production-esque)
+This setup launches 8 VMs - a load balancer, two nginx frontend VMs, two
+api servers (hosting the python backend), an image server (nfs mount for images),
+a database server, and an authorization server. This is nearly identical to
+the setup we use in production
+
+Usage:
+* cd `vagrant_production_setup; vagrant up`
+* change to use either a local install or Jenkins, as the default downloading
+    and building from GitHub will take a really long time. There are
+    7 files to change: backend, center, hud, webtop, iwc, demo_apps, help
+* change `site_port` to 443 in `group_vars/all/all.yml`
+* `ansible-playbook staging_site.yml -i hosts_staging -u vagrant -k --ask-vault-pass` (or, if you don't know the vault password, just copy over it using
+    vault_unencrypted.yml)
+
 
 ### Offline Installation
 The "offline" mode is useful for provisioning a system without Internet access.
