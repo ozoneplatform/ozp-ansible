@@ -2,14 +2,14 @@
 # Note: no offline option available for this project
 - name: Download source
   get_url:
-    url: https://github.com/ozone-development/demo-auth-service/archive/v1.0.0.tar.gz
-    dest: "{{ download_dir }}/demo-auth-service-1.0.0.tar.gz"
+    url: https://github.com/ozone-development/demo-auth-service/archive/master.tar.gz
+    dest: "{{ download_dir }}/demo-auth-service-master.tar.gz"
   become: true
   become_user: ozp
 
 - name: Extract archive
   unarchive:
-    src: "{{ download_dir }}/demo-auth-service-1.0.0.tar.gz"
+    src: "{{ download_dir }}/demo-auth-service-master.tar.gz"
     dest: "{{ download_dir }}"
     copy: no
     owner: ozp
@@ -28,7 +28,7 @@
   become: true
 
 - name: Move files
-  command: mv {{ download_dir }}/demo-auth-service-1.0.0 /usr/local/ozp/demo-auth-service
+  command: mv {{ download_dir }}/demo-auth-service-master /usr/local/ozp/demo-auth-service
   become: true
 
 - name: Use custom settings.py file
