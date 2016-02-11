@@ -36,6 +36,8 @@ following installed on your host machine:
     much less - 512MB should suffice
 
 ## Installing Ansible
+*NOTE*: ozp-ansible requires Ansible >=2.0
+
 See the official Ansible docs for details. Some problems that we've seen
 when using the latest (GitHub checkout) version of Ansible on a Centos 6.6 box:
 * needed to remove `python-yaml` package and install PyYAML instead (got a
@@ -84,6 +86,8 @@ to retrieve pre-built artifacts
   * `site_port`: typically 443 for real servers, or whatever port you're
     forwarding to port 443 on the guest VM
   * `offline` - if true, Ansible won't try to download stuff from the interwebs
+  * `pki_login` - if true, requires client certificate to login, else use
+    BasicAuth (username/password)
   * jenkins stuff - items relevant to the OZP team's Jenkins instance. Not
     made public
 

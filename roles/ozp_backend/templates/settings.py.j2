@@ -158,8 +158,11 @@ MEDIA_URL='media/'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        #'rest_framework.authentication.BasicAuthentication'
+        {% if pki_login %}
         'ozpcenter.auth.pkiauth.PkiAuthentication'
+        {% else %}
+        'rest_framework.authentication.BasicAuthentication'
+        {% endif %}
         # 'rest_framework.authentication.SessionAuthentication',
     , ),
     # Use Django's standard `django.contrib.auth` permissions,

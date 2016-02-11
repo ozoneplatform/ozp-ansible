@@ -18,3 +18,5 @@ api_port: 4433
 frontend_port: 4444
 # port that gunicorn (demo auth) runs on (not used in production)
 auth_port: 8081
+# if false, basic auth will be used
+pki_login: false

@@ -44,9 +44,11 @@ server {
             proxy_set_header X-Forwarded-Proto $scheme;
             proxy_set_header X-Scheme $scheme;
             # SSL settings for django-ssl-client-auth
+            {% if pki_login %}
             proxy_set_header X-SSL-User-DN $ssl_client_s_dn;
             proxy_set_header X-SSL-Issuer-DN $ssl_client_i_dn;
             proxy_set_header X-SSL-Authenticated $ssl_client_verify;
+            {% endif %}
         }
 
         # Enables the HTTPS protocol for the given virtual server
@@ -70,7 +72,9 @@ server {
 
         # Change to 'required' if only SSL Client authenticated
         # request should be passed to Django
+        {% if pki_login %}
         ssl_verify_client   on;
+        {% endif %}
 
         # Specifies a time during which a client may reuse the session
         # parameters stored in a cache.
@@ -103,9 +107,11 @@ server {
             proxy_set_header X-Forwarded-Proto $scheme;
             proxy_set_header X-Scheme $scheme;
             # SSL settings for django-ssl-client-auth
+            {% if pki_login %}
             proxy_set_header X-SSL-User-DN $ssl_client_s_dn;
             proxy_set_header X-SSL-Issuer-DN $ssl_client_i_dn;
             proxy_set_header X-SSL-Authenticated $ssl_client_verify;
+            {% endif %}
         }
 
         # Enables the HTTPS protocol for the given virtual server
@@ -129,7 +135,9 @@ server {
 
         # Change to 'required' if only SSL Client authenticated
         # request should be passed to Django
+        {% if pki_login %}
         ssl_verify_client   on;
+        {% endif %}
 
         # Specifies a time during which a client may reuse the session
         # parameters stored in a cache.
