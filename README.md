@@ -172,14 +172,21 @@ Usage:
   * `roles/ozp_help/vars/main.yml`
   * `roles/ozp_demo_apps/vars/main.yml`
 * change `site_port` to 443 in `group_vars/all/all.yml`
+* `cd ..` (back to ozp-ansible level)
 * `ansible-playbook staging_site.yml -i hosts_staging -u vagrant -k --ask-vault-pass` (or, if you don't know the vault password, just copy over it using
-    vault_unencrypted.yml)
+    `vault_unencrypted.yml`)
 * `https://172.28.128.20/center/` - Center
-* `https://172.28.128.20:1936` - HAProxy Statistics
+* `http://172.28.128.20:1936` - HAProxy Statistics (username: `admin`,
+    password: `password`)
 
 It's also easy to redeploy only to servers in a group. for example, add the
 `--limit loadbalancer` switch to the `ansible-playbook` command to only
 redeploy to the load balancer
+
+`staging_rolling_update.yml` will redeploy ozp (frontend and backend) in a
+rolling update fashion - that is, one set of servers will be updated at a time
+so that the site is always available via the load balancer. Run via:
+`ansible-playbook staging_rolling_update.yml -i hosts_staging -u vagrant -k --ask-vault-pass`
 
 ### Offline Installation
 The "offline" mode is useful for provisioning a system without Internet access.
@@ -220,22 +227,22 @@ and Vagrant target, but also allows you to control ownership settings
 ## BasicAuth
 **OZP Usernames for Test users**
 The format below contains the users name and the associated organizations the user belongs to
-<username>(org1, org2, org3)  
+<username>(org1, org2, org3)
 All passwords = password
 
-**Users:**  
-- aaronson (miniluv)  
-- jones (minitrue)  
-- rutherford (miniplenty)  
-- syme (minipax)  
-- tparsons (minipax, miniluv)  
+**Users:**
+- aaronson (miniluv)
+- jones (minitrue)
+- rutherford (miniplenty)
+- syme (minipax)
+- tparsons (minipax, miniluv)
 - charrington (minipax, miniluv, minitrue)
 
-**Org Stewards:**  
-- wsmith (minitrue)  
-- julia (minitrue, miniluv)  
+**Org Stewards:**
+- wsmith (minitrue)
+- julia (minitrue, miniluv)
 - Obrien (minipax, miniplenty)
 
-**Admin:**  
-- bigbrother  
+**Admin:**
+- bigbrother
 - bigbrother2
