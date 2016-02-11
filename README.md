@@ -216,3 +216,26 @@ and Vagrant target, but also allows you to control ownership settings
     `OzoneConfig.js`
 * Backend code -> /usr/local/ozp/backend, owned by user ozp (be mindful of
     `ozp/settings.py`)
+
+## BasicAuth
+**OZP Usernames for Test users**
+The format below contains the users name and the associated organizations the user belongs to
+<username>(org1, org2, org3)  
+All passwords = password
+
+**Users:**  
+- aaronson (miniluv)  
+- jones (minitrue)  
+- rutherford (miniplenty)  
+- syme (minipax)  
+- tparsons (minipax, miniluv)  
+- charrington (minipax, miniluv, minitrue)
+
+**Org Stewards:**  
+- wsmith (minitrue)  
+- julia (minitrue, miniluv)  
+- Obrien (minipax, miniplenty)
+
+**Admin:**  
+- bigbrother  
+- bigbrother2
