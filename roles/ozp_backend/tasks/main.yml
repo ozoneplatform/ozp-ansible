@@ -195,6 +195,7 @@
   become: true
 
 - name: Mount the image directory via nfs
+  when: image_fqdn != "localhost"
   mount:
     src: "{{ image_fqdn }}:/usr/local/ozp/media"
     name: /mnt/nfs/ozp_media
