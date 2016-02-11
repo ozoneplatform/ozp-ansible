@@ -224,11 +224,12 @@ and Vagrant target, but also allows you to control ownership settings
 * Backend code -> /usr/local/ozp/backend, owned by user ozp (be mindful of
     `ozp/settings.py`)
 
-## BasicAuth
-**OZP Usernames for Test users**
-The format below contains the users name and the associated organizations the user belongs to
-<username>(org1, org2, org3)
-All passwords = password
+## Sample Users for BasicAuth
+By default, HTTP Basic Authentication is used for login. This can be changed
+to PKI (client certificates) by changing `pki_login` in `group_vars/all/all.yml`
+
+Below are usernames that are part of our sample data (defined in
+`ozp-backend/ozpcenter/scripts/sample_data_generator.py`) (password for all users is `password`):
 
 **Users:**
 - aaronson (miniluv)
@@ -239,10 +240,10 @@ All passwords = password
 - charrington (minipax, miniluv, minitrue)
 
 **Org Stewards:**
-- wsmith (minitrue)
-- julia (minitrue, miniluv)
-- Obrien (minipax, miniplenty)
+- wsmith (minitrue, stewarded_orgs: minitrue)
+- julia (minitrue, stewarded_orgs: minitrue, miniluv)
+- obrien (minipax, stewarded_orgs: minipax, miniplenty)
 
-**Admin:**
-- bigbrother
-- bigbrother2
+**Admins:**
+- bigbrother (minipax)
+- bigbrother2 (minitrue)
