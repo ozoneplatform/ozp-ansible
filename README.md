@@ -131,6 +131,12 @@ applies to other playbooks, so you can deploy/redeploy at a very granular
 level.
 
 ### Install part of OZP on a Vagrant box from your host
+*WARNING*: Make sure the port referenced in `hosts_vagrant` matches the
+port that Vagrant actually forwards ssh to. By default this is `2222`, but
+it could be different, and it *will* be different if you have multiple
+vagrant boxes running. To determine what port to use, look at the initial
+output of `vagrant up` - it will say which port is being forwarded for ssh
+
 Let's say you've already gone through the Quickstart section and have a
 Vagrant box up and running. Now you want to update the backend with the latest
 from the master branch on GitHub. To do this, simply use the instructions above,
