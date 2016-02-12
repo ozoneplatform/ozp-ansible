@@ -35,3 +35,4 @@ When we move ozp-ansible over to production, we make these changes:
     * PROJECT_NAME
     * SECONDS_TO_CACHE_DATA
 * create new playbook to run the db_migration role on one of the apiservers
+* after everything has run, copy static files on api server /usr/local/ozp/backend/static to /usr/local/ozp/frontend/django_static on frontend server
