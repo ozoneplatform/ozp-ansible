@@ -1,2 +1,11 @@
+[all:vars]
+# change site_fqdn if running on a real server - everything else is ok
+site_fqdn=localhost
+db_fqdn=localhost
+auth_fqdn=localhost
+image_fqdn=localhost
+api_fqdn=localhost
+frontend_fqdn=localhost
+
 [ozpdev]
 127.0.0.1
