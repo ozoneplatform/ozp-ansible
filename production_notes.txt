@@ -1,0 +1,37 @@
+When we move ozp-ansible over to production, we make these changes:
+
+* create copies of hosts_staging.yml, staging_site.yml, and
+    staging_rolling_update.yml
+* group_vars/all/all.yml
+    * offline: true
+    * site_port: 443
+    * pki_login: true
+* hosts_staging
+    * set all fqdns and ip addresses
+* staging_site.yml
+    * remove ozp_authorization and ozp_demo_apps roles
+* ozp_backend/vars/main.yml
+    * offline: true
+    * reset_database: false
+    * use_static_settings_file: true
+* ozp_backend/tasks/main.yml
+    * nfs mount options line 204
+* roles/ozp_*/vars/main.yml (center, hud, webtop, iwc, help)
+    * download_from: local
+* images/tasks/main.yml
+    * /etc/export options line 32
+* ssl_certs/files - add real ones
+* offline/files - put them all here (see README)
+* staging_rolling_updates.yml
+    * remove ozp_demo_apps, ozp_authorization roles
+* ozp_backend/files/settings.py
+    * USER_INFO_URL: https
+    * USER_GROUPS_URL: https
+    * ALLOWED_HOSTS
+    * APPS_MALL_STEWARD_GROUP_NAME
+    * ORG_STEWARD_GROUP_NAME
+    * METRICS_GROUP_NAME
+    * PROJECT_NAME
+    * PROJECT_NAME
+    * SECONDS_TO_CACHE_DATA
+* create new playbook to run the db_migration role on one of the apiservers
