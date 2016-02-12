@@ -9,3 +9,6 @@ frontend_fqdn=localhost
 
 [ozpdev]
 127.0.0.1
+
+[staticserver]
+127.0.0.1

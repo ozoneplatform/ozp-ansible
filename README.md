@@ -247,3 +247,9 @@ Below are usernames that are part of our sample data (defined in
 **Admins:**
 - bigbrother (minipax)
 - bigbrother2 (minitrue)
+
+
+## Other Notes
+If you get an ssh error, you may need to add/set `host_key_checking = false`
+in your Ansible config, typically located at `/etc/ansible/ansible.cfg`
+
