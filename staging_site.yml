@@ -48,6 +48,7 @@
     - group_vars/all/vault.yml
 
   roles:
+    - node
     - ssl_certs
     - nginx
     - ozp_center
