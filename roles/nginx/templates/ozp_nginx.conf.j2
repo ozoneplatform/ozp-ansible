@@ -8,7 +8,7 @@ server {
 
         # enforce trailing slash on urls
         location ~ ^/(?<page>static|center|hud|webtop|help|iwc|demo_apps)$ {
-            return 301 $scheme://$host/$page/;
+            return 301 $scheme://$http_host/$page/;
         }
 
         location /static/ {
