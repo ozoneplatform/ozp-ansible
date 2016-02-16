@@ -207,6 +207,7 @@
 ## WARNING: This will destroy all exiting data!!!
 - name: Redeploy the service AND reset the database with sample data
   when: reset_database
+  run_once: true
   command: service gunicorn_ozp nuke
   become: true
 
