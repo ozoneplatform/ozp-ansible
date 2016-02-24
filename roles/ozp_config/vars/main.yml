@@ -1,3 +1,4 @@
 ---
 root_url: "https://{{ site_fqdn }}:{{ site_port }}"
+metrics_url: "https://{{ site_fqdn }}:{{ metrics_port }}/"
 
