@@ -1,4 +1,6 @@
 ---
 root_url: "https://{{ site_fqdn }}:{{ site_port }}"
 metrics_url: "https://{{ site_fqdn }}:{{ metrics_port }}/"
+metrics_hud_id: 13
+metrics_webtop_id: 12
 
