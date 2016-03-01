@@ -16,6 +16,8 @@ site_port: 4440
 api_port: 4433
 # port that nginx runs on
 frontend_port: 4444
+# port that metrics nginx configuration runs on
+metrics_port: 4450
 # port that gunicorn (demo auth) runs on (not used in production)
 auth_port: 8081
 # if false, basic auth will be used
