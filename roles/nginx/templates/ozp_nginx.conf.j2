@@ -154,7 +154,7 @@ server {
 
 server {
         server_name {{ frontend_fqdn }};
-        listen 4440 ssl;
+        listen {{ metrics_port }} ssl;
 
         location = /favicon.ico { access_log off; log_not_found off; }
 
