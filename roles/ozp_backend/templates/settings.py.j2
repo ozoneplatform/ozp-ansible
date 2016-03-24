@@ -28,13 +28,24 @@ DEBUG = False
 # TODO: make this ['{{ api_fqdn}}', '{{ frontend_fqdn }}']
 ALLOWED_HOSTS = ['*']
 
+# Use nose to run all tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Tell nose to measure coverage on the ozp, ozpcenter, ozpiwc  apps
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-html',
+    '--cover-package=ozp,ozpcenter,ozpiwc',
+]
 
 # Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
-    'django.contrib.auth',
+    # put contenttypes above auth so that python manage.py flush works
+    # correctly: https://code.djangoproject.com/ticket/9207
     'django.contrib.contenttypes',
+    'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -84,17 +95,26 @@ WSGI_APPLICATION = 'ozp.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+MAIN_DATABASE = 'postgresql'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'ozp',  # Or path to database file if using sqlite3.
-        'USER': 'ozp_user',
-        'PASSWORD': 'password',
-        'HOST': '{{ db_fqdn }}',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',  # Set to empty string for default.
-    }
-}
+if MAIN_DATABASE == 'sqlite':
+	DATABASES = {
+		'default': {
+		    'ENGINE': 'django.db.backends.sqlite3',
+		    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+		}
+	}
+elif MAIN_DATABASE == 'postgresql':
+	DATABASES= {
+		'default': {
+		    'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+		    'NAME': 'ozp',  # Or path to database file if using sqlite3.
+		    'USER': 'ozp_user',
+		    'PASSWORD': 'password',
+		    'HOST': '{{ db_fqdn }}',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+		    'PORT': '',  # Set to empty string for default.
+		}
+	}
 
 LOGGING = {
     'version': 1,
@@ -102,12 +122,18 @@ LOGGING = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'json',
         },
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '/usr/local/ozp/ozp.log'
+            'filename': '/usr/local/ozp/ozp.log',
+            'formatter': 'json',
         }
+    },
+    'formatters':{
+    'json':{
+        '()': 'ozp.logging_formatter.CustomisedJSONFormatter',}
     },
     'loggers': {
         'django': {
@@ -116,11 +142,11 @@ LOGGING = {
         },
         'ozp-center': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
         },
         'ozp-iwc': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
         }
     },
 }
@@ -155,17 +181,17 @@ MEDIA_ROOT = os.path.join('/mnt/nfs/ozp_media/')
 
 # MEDIA_URL is the relative browser URL to be used when accessing media files
 #   from the browser
-MEDIA_URL='media/'
+MEDIA_URL = 'media/'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         {% if pki_login %}
-        'ozpcenter.auth.pkiauth.PkiAuthentication'
+        'ozpcenter.auth.pkiauth.PkiAuthentication',
         {% else %}
-        'rest_framework.authentication.BasicAuthentication'
+        'rest_framework.authentication.BasicAuthentication',
         {% endif %}
         # 'rest_framework.authentication.SessionAuthentication',
-    , ),
+    ),
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': (
@@ -238,3 +264,7 @@ OZP = {
         'SECONDS_TO_CACHE_DATA': 5
     }
 }
+
+# Set to empty string if no default agency exists
+# If a default agency exists, set it to the agency's short name
+DEFAULT_AGENCY = ''
