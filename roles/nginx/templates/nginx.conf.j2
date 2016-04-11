@@ -27,11 +27,33 @@ http {
     default_type  application/octet-stream;
     #
 
-    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-    #                  '$status $body_bytes_sent "$http_referer" '
-    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+     map $request_method $requestmap {
+        GET ACCESS;
+        PUT MODIFY;
+        PATCH MODIFY;
+        POST CREATE;
+        DELETE DELETE;
+        default ACCESS;
+      }
 
-    #access_log  logs/access.log  main;
+      map $status $statusmap {
+        ~^[23] SUCCESS;
+        default FAILURE;
+      }
+
+    map $http_x_forwarded_for $real_ip {
+        - $http_x_real_ip;
+        default $http_x_fwarded_for;
+    }
+
+    log_format auditjson '{"systemName": "opzbackend","version": "1.0","eventType: "$requestmap","userPkiDn": "$ssl_client_s_dn","userPkiDnIssuer": "$ssl_client_i_dn", "eventStartTime": "$time_iso8601", "eventTrigger": "USER_INITIATED", "status": "$statusmap", "source": "$real_ip", "destination": "$host", "resourcePath": "$request_uri",  "eventClassification":  {{ event_classification }}, "destinationClassification": {{ destination_classification }} }';
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  logs/access.log  auditjson;
+
 
     sendfile        on;
     # If serving locally stored static files, sendfile is essential to speed up the server,
