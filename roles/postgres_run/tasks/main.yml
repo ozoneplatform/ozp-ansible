@@ -18,6 +18,11 @@
   become: true
   ignore_errors: true
 
+- name: Wait up to two minutes for the database to start
+  shell: /usr/bin/timeout 120 bash -c 'until /usr/local/pgsql/bin/pg_isready -q ; do echo "Waiting for postgres ..."; sleep 15; done' 
+  become: true
+  become_user: postgres
+
 # TODO: Password?
 # Ignore errors - ok if this user already exists
 - name: Create a new database user
