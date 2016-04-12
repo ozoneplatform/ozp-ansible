@@ -1,3 +1,4 @@
 nginx_version: 1.9.4
+audit_log_system_version: '1.0'
 event_classification: SYSTEM HIGH
 destination_classification: SYSTEM HIGH
