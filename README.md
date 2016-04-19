@@ -188,6 +188,9 @@ rolling update fashion - that is, one set of servers will be updated at a time
 so that the site is always available via the load balancer. Run via:
 `ansible-playbook staging_rolling_update.yml -i hosts_staging -u vagrant -k --ask-vault-pass`
 
+### OZP Sample Arch ###
+![img](https://github.com/ozone-development/ozp-ansible/blob/master/ozp_sample_arch_diagram.png)
+
 ### Offline Installation
 The "offline" mode is useful for provisioning a system without Internet access.
 That said, we do assume that you have the following:
