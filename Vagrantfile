@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Vagrantfile Configuration Value Definitions
+OZP_FQDN = "localhost"
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -70,8 +73,15 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get install -y apache2
   # SHELL
   #
-  config.vm.provision "ansible_local" do |ansible|
-    ansible.playbook = "/vagrant/site.yml"
-    ansible.raw_arguments = '--extra-vars "site_fqdn=localhost db_fqdn=localhost auth_fqdn=localhost image_fqdn=localhost api_fqdn=localhost frontend_fqdn=localhost"'
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "site.yml"
+    ansible.extra_vars = {
+      site_fqdn: OZP_FQDN,
+      db_fqdn: OZP_FQDN,
+      auth_fqdn: OZP_FQDN,
+      image_fqdn: OZP_FQDN,
+      api_fqdn: OZP_FQDN,
+      frontend_fqdn: OZP_FQDN
+    }
   end
 end
