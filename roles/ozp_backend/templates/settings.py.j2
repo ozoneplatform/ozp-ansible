@@ -184,6 +184,7 @@ MEDIA_ROOT = os.path.join('/mnt/nfs/ozp_media/')
 MEDIA_URL = 'media/'
 
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'ozpcenter.errors.exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         {% if pki_login %}
         'ozpcenter.auth.pkiauth.PkiAuthentication',
