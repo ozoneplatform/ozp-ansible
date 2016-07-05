@@ -16,8 +16,7 @@
   # path here because with_first_found tries to find files in files/
   with_first_found:
     - files:
-      - "{{ ansible_os_family }}/redis.init.j2"
-      - default/redis.init.j2
+      - redis.init.j2
       paths:
         - ../templates
   when: redis_as_service

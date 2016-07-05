@@ -1,76 +1,65 @@
 ---
-- name: install dependencies
-  yum:
-    name: "{{ item }}"
-    state: present
+- name: Install Dependencies
+  yum: name={{ item }} state=present
   with_items:
     - gcc
     - make
+  become: true
 
-# get_url on Ansible 1.x only supports sha256 checksumming, so we're only
-# using `redis_checksums` on Ansible 2.x because they're sha1.
-- name: set redis checksum
-  set_fact:
-    redis_checksum: "sha1:{{ redis_checksums[redis_version] }}"
-  when:
-    - redis_verify_checksum|bool
-    - redis_checksum is not defined
-    - redis_version in redis_checksums
-    - ansible_version.major >= 2
-
-- name: download redis (ansible 2.x)
+- name: Download Redis
+  when: not offline
   get_url:
     url: "{{ redis_download_url }}"
-    dest: /usr/local/src/redis-{{ redis_version }}.tar.gz
-    checksum: "{{ redis_checksum|default(omit) }}"
-  when:
-    - not redis_tarball
-    - ansible_version.major >= 2
+    dest: "{{ download_dir }}/redis-{{ redis_version }}.tar.gz"
+  become: true
+  become_user: ozp
 
 - name: upload redis
+  when: offline
   copy:
     src: "{{ redis_tarball }}"
     dest: /usr/local/src/redis-{{ redis_version }}.tar.gz
   when: redis_tarball
 
-- name: extract redis tarball
+- name: Extract Redis tarball
   unarchive:
     src: /usr/local/src/redis-{{ redis_version }}.tar.gz
     dest: /usr/local/src
     creates: /usr/local/src/redis-{{ redis_version }}/Makefile
     copy: no
 
-- name: compile redis
+- name: Compile Redis
   command: make -j{{ ansible_processor_cores + 1 }}
   args:
     chdir: /usr/local/src/redis-{{ redis_version }}
     creates: /usr/local/src/redis-{{ redis_version }}/src/redis-server
 
-- name: create redis install directory
+- name: Create redis install directory
   file:
     path: "{{ redis_install_dir }}"
     state: directory
 
-- name: create /etc/redis
+- name: Create /etc/redis
   file:
     path: /etc/redis
     state: directory
 
-- name: add redis user
+- name: Create redis user
   user:
     name: "{{ redis_user }}"
-    comment: "Redis"
+    comment: "redis"
     home: "{{ redis_install_dir }}"
     shell: /bin/false
     system: yes
+  become: true
 
-- name: create /var/run/redis
+- name: Create /var/run/redis
   file:
     path: /var/run/redis
     state: directory
     owner: "{{ redis_user }}"
 
-- name: install redis
+- name: Install redis
   command: make PREFIX={{ redis_install_dir }} install
   args:
     chdir: /usr/local/src/redis-{{ redis_version }}
