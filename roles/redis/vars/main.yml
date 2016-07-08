@@ -28,7 +28,6 @@ redis_daemonize: yes
 redis_supervised: no
 
 redis_pidfile: /var/run/redis/{{ redis_port }}.pid
-
 redis_loglevel: notice
 
 ## Logging
@@ -62,7 +61,11 @@ redis_dbfilename: dump.rdb
 ###### SECURITY ######
 redis_password: hF2KLXJhhmhDdZKzsG8edGbECKN9kMn26XKhmNAA
 redis_rename_config:
-  - CONFIG kjLjnhTxFa24MdQmHbUnamUDLDURtQnSHfXEdYM8
+  - CONFIG CONFIG_OZP
+  - FLUSHDB FLUSHDB_OZP
+  - FLUSHALL FLUSHALL_OZP
+  - DEBUG DEBUG_OZP
+  - SHUTDOWN SHUTDOWN_OZP
 
 ###### LIMITS ######
 redis_maxclients: 10000
