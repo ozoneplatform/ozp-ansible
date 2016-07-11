@@ -22,3 +22,7 @@ metrics_port: 4450
 auth_port: 8081
 # if false, basic auth will be used
 pki_login: false
+# redis password
+redis_password: hF2KLXJhhmhDdZKzsG8edGbECKN9kMn26XKhmNAA
+# redis port
+redis_port: 6379

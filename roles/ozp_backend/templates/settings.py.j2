@@ -225,7 +225,7 @@ REST_FRAMEWORK = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://:{{ redis_password }}@{{ redis_fqdn }}:6379/',
+        'LOCATION': 'redis://:{{ redis_password }}@{{ redis_fqdn }}:{{ redis_port }}/',
         'OPTIONS':{
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
              # "REDIS_CLIENT_CLASS": "mockredis.mock_strict_redis_client",

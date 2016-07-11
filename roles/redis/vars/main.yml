@@ -15,9 +15,7 @@ redis_nofile_limit: 16384
 # #####################
 
 ##### NETWORK ######
-redis_bind: 0.0.0.0   # TODO: Used redis_fqdn instead?
 redis_protected_mode: "no"
-redis_port: 6379
 
 redis_tcp_backlog: 511
 redis_network_timeout: 0
