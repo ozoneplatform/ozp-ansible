@@ -14,5 +14,6 @@
     - postgres_build
     - postgres_run
     - images
+    - redis
     # TODO: add this
-    #- haproxy
+    # - haproxy

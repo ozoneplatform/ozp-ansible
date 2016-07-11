@@ -18,12 +18,21 @@
 
 - name: Extract Redis tarball
   unarchive:
-    src: /usr/local/src/redis-{{ redis_version }}.tar.gz
-    dest: /usr/local/src
-    creates: /usr/local/src/redis-{{ redis_version }}/Makefile  # If this file already exists, this step will skip
+    src: "{{ download_dir }}/redis-{{ redis_version }}.tar.gz"
+    dest: "{{ download_dir }}"
+    creates: "{{ download_dir }}/redis-{{ redis_version }}/Makefile"  # If this file already exists, this step will skip
     copy: no  # This makes the extraction on the target machine
   become: true
-  become_user: "{{ redis_user }}"
+  become_user: ozp
+
+
+- name: Compile Redis
+  command: make -j{{ ansible_processor_cores + 1 }}
+  args:
+    chdir: "{{ download_dir }}/redis-{{ redis_version }}"
+    creates: "{{ download_dir }}/redis-{{ redis_version }}/src/redis-server"
+  become: true
+  become_user: ozp
 
 - name: Create Redis user
   user:
@@ -34,20 +43,13 @@
     system: yes
   become: true
 
-- name: Compile Redis
-  command: make -j{{ ansible_processor_cores + 1 }}
-  args:
-    chdir: /usr/local/src/redis-{{ redis_version }}
-    creates: /usr/local/src/redis-{{ redis_version }}/src/redis-server
-  become: true
-  become_user: "{{ redis_user }}"
-
 - name: Create Redis Install Directory
   file:
     path: "{{ redis_install_dir }}"
     state: directory
     owner: "{{ redis_user }}"
     group: "{{ redis_group }}"
+    mode: 0755
   become: true
 
 - name: Create /etc/redis
@@ -65,12 +67,11 @@
     owner: "{{ redis_user }}"
     group: "{{ redis_group }}"
   become: true
-  become_user: "{{ redis_user }}"
 
 - name: Install redis
   command: make PREFIX={{ redis_install_dir }} install
   args:
-    chdir: /usr/local/src/redis-{{ redis_version }}
+    chdir: "{{ download_dir }}/redis-{{ redis_version }}"
     creates: "{{ redis_install_dir }}/bin/redis-server"
   become: true
   become_user: "{{ redis_user }}"
@@ -196,6 +197,7 @@
 - name: Ensure Redis is running
   service:
     name: redis_{{ redis_port }}
-    state: started
+    state: restarted
+  become: true
   tags:
     - config
