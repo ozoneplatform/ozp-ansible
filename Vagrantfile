@@ -74,7 +74,6 @@ Vagrant.configure(2) do |config|
   # SHELL
   #
   config.vm.provision "ansible" do |ansible|
-    ansible.verbose="vvvv"
     ansible.playbook = "site.yml"
     ansible.extra_vars = {
       site_fqdn: OZP_FQDN,
