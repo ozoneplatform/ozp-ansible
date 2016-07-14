@@ -78,6 +78,7 @@ Vagrant.configure(2) do |config|
     ansible.extra_vars = {
       site_fqdn: OZP_FQDN,
       db_fqdn: OZP_FQDN,
+      redis_fqdn: OZP_FQDN,
       auth_fqdn: OZP_FQDN,
       image_fqdn: OZP_FQDN,
       api_fqdn: OZP_FQDN,

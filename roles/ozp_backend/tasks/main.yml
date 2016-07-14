@@ -221,4 +221,3 @@
   service: name=gunicorn_ozp state=started enabled=yes
   become: true
   ignore_errors: true
-

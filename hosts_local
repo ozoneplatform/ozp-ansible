@@ -2,6 +2,7 @@
 # change site_fqdn if running on a real server - everything else is ok
 site_fqdn=localhost
 db_fqdn=localhost
+redis_fqdn=localhost
 auth_fqdn=localhost
 image_fqdn=localhost
 api_fqdn=localhost

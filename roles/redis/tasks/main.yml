@@ -1,0 +1,203 @@
+---
+# Install Phase
+
+- name: Install Dependencies
+  yum: name={{ item }} state=present
+  with_items:
+    - gcc
+    - make
+  become: true
+
+- name: Download Redis
+  when: not offline
+  get_url:
+    url: "{{ redis_download_url }}"
+    dest: "{{ download_dir }}/redis-{{ redis_version }}.tar.gz"
+  become: true
+  become_user: ozp
+
+- name: Extract Redis tarball
+  unarchive:
+    src: "{{ download_dir }}/redis-{{ redis_version }}.tar.gz"
+    dest: "{{ download_dir }}"
+    creates: "{{ download_dir }}/redis-{{ redis_version }}/Makefile"  # If this file already exists, this step will skip
+    copy: no  # This makes the extraction on the target machine
+  become: true
+  become_user: ozp
+
+
+- name: Compile Redis
+  command: make -j{{ ansible_processor_cores + 1 }}
+  args:
+    chdir: "{{ download_dir }}/redis-{{ redis_version }}"
+    creates: "{{ download_dir }}/redis-{{ redis_version }}/src/redis-server"
+  become: true
+  become_user: ozp
+
+- name: Create Redis user
+  user:
+    name: "{{ redis_user }}"
+    comment: "redis"
+    home: "{{ redis_install_dir }}"
+    shell: /bin/false
+    system: yes
+  become: true
+
+- name: Create Redis Install Directory
+  file:
+    path: "{{ redis_install_dir }}"
+    state: directory
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+    mode: 0755
+  become: true
+
+- name: Create /etc/redis
+  file:
+    path: /etc/redis
+    state: directory
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+  become: true
+
+- name: Create /var/run/redis
+  file:
+    path: /var/run/redis
+    state: directory
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+  become: true
+
+- name: Install redis
+  command: make PREFIX={{ redis_install_dir }} install
+  args:
+    chdir: "{{ download_dir }}/redis-{{ redis_version }}"
+    creates: "{{ redis_install_dir }}/bin/redis-server"
+  become: true
+  become_user: "{{ redis_user }}"
+
+# Server Config Phase
+- name: Create Redis working directory
+  file:
+    path: "{{ redis_dir }}"
+    state: directory
+    recurse: yes
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+  become: true
+  tags:
+    - config
+
+- name: Create Redis Init Script
+  template:
+    src: redis.init.j2
+    dest: /etc/init.d/redis_{{ redis_port }}
+    mode: 0755
+  become: true
+  tags:
+    - config
+
+- name: Set Redis to start at Boot
+  service:
+    name: redis_{{ redis_port }}
+    enabled: yes
+  become: true
+  tags:
+    - config
+
+# Check then create log dir to prevent aggressively overwriting permissions
+- name: Check if log directory exists
+  stat:
+    path: "{{ redis_logfile|dirname }}"
+  register: logdir
+  changed_when: false
+  when: redis_logfile != '""'
+  become: true
+  tags:
+    - config
+
+- name: create log directory if it does not exist
+  file:
+    state: directory
+    path: "{{ redis_logfile|dirname }}"
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+  when:
+    - redis_logfile != '""'
+    - not logdir.stat.exists
+  become: true
+  tags:
+    - config
+
+- name: touch the log file
+  file:
+    state: touch
+    path: "{{ redis_logfile }}"
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+  when: redis_logfile != '""'
+  become: true
+  tags:
+    - config
+
+- name: check if pid directory exists
+  stat:
+    path: "{{ redis_pidfile|dirname }}"
+  register: piddir
+  changed_when: false
+  when: redis_pidfile != '""'
+  become: true
+  tags:
+    - config
+
+- name: create pid directory if it does not exist
+  file:
+    state: directory
+    path: "{{ redis_pidfile|dirname }}"
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+  when:
+    - redis_pidfile != '""'
+    - not piddir.stat.exists
+  become: true
+  tags:
+    - config
+
+- name: create redis config file
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/{{ redis_port }}.conf
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+  notify: restart redis
+  become: true
+  tags:
+    - config
+
+- name: Add Redis init config file
+  template:
+    dest: /etc/sysconfig/redis_{{ redis_port }}
+    src: redis.init.conf.j2
+    mode: 0600
+    owner: "{{ redis_user }}"
+    group: "{{ redis_group }}"
+  notify: restart redis
+  become: true
+  tags:
+    - config
+
+# Flush handlers before ensuring the service is started to prevent
+# a start and then restart
+- name: flush handlers to apply config changes
+  meta: flush_handlers
+  become: true
+  tags:
+    - config
+
+- name: Ensure Redis is running
+  service:
+    name: redis_{{ redis_port }}
+    state: restarted
+  become: true
+  tags:
+    - config

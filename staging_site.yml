@@ -42,6 +42,14 @@
     - postgres_build
     - postgres_run
 
+- hosts: redisserver
+  vars_files:
+    - group_vars/all/all.yml
+    - group_vars/all/vault.yml
+
+  roles:
+    - redis
+
 - hosts: staticserver
   vars_files:
     - group_vars/all/all.yml

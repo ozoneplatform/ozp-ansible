@@ -6,6 +6,7 @@
 # world knows about
 site_fqdn=172.28.128.20
 db_fqdn=172.28.128.26
+redis_fqdn=172.28.128.26
 auth_fqdn=172.28.128.27
 image_fqdn=172.28.128.25
 
@@ -16,6 +17,9 @@ image_fqdn=172.28.128.25
 172.28.128.27
 
 [dbserver]
+172.28.128.26
+
+[redisserver]
 172.28.128.26
 
 [imageserver]

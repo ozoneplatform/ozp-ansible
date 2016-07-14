@@ -63,7 +63,6 @@
     password: "password"
   become: true
 
-
 - name: Change ownership to postgres user
   command: chown -R postgres /usr/local/pgsql
   become: true
@@ -106,4 +105,3 @@
     group: root
     mode: 0755
   become: true
-
