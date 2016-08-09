@@ -34,6 +34,8 @@ following installed on your host machine:
     memory - you will get very strange and unhelpful errors otherwise. Boxes
     that will only be running (and not building) these resources can get by with
     much less - 512MB should suffice
+* Currently the ozp ansible scripts are only supported for Centos 6. The
+  deployment scripts are not intended for any other operating systems.
 
 ## Installing Ansible
 *NOTE*: ozp-ansible requires Ansible >=2.0
