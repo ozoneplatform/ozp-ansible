@@ -11,4 +11,4 @@ jenkins_build_number: "lastSuccessfulBuild"
 # Optionally re-create the database
 reset_database: true
 # use a static settings.py file instead of a templated one
-use_static_settings_file: false
+use_static_settings_file: true
