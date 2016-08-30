@@ -5,7 +5,7 @@
   unarchive:
     src: http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.tar.gz
     dest: /opt
-    remote_src: yes
+    copy: no
   # become: true
 
 - name: Install Java 1.8 via Alternatives
