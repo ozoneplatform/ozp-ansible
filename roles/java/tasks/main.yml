@@ -1,8 +1,5 @@
 - name: Download Java 1.8 JDK
-  shell:  wget http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.tar.gz
-  args:
-    chdir: /opt/
-  become: true
+  get_url: url=http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.tar.gz dest=/opt/jdk-8u101-linux-x64.tar.gz
 
 - name: Extract Java 1.8 JDK
   unarchive:
