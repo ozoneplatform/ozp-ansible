@@ -1,0 +1,23 @@
+- name: Download Java 1.8 JDK
+  shell:  wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.tar.gz"
+  args:
+    chdir: /opt/
+  become: true
+
+- name: Extract Java 1.8 JDK
+  shell:  tar xzf jdk-8u101-linux-x64.tar.gz
+  args:
+    chdir: /opt/
+  become: true
+
+- name: Install Java 1.8 via Alternatives
+  shell:  alternatives --install /usr/bin/java java /opt/jdk1.8.0_101/bin/java 2;echo 1 | alternatives --config java
+  args:
+    chdir: /opt/jdk1.8.0_101/
+  become: true
+
+- name: Set Java environment variables
+  shell:  export JAVA_HOME=/opt/jdk1.8.0_101;export JRE_HOME=/opt/jdk1.8.0_101/jrel;export PATH=$PATH:/opt/jdk1.8.0_101/bin:/opt/jdk1.8.0_101/jre/bin
+  args:
+    chdir: /opt/jdk1.8.0_101/
+  become: true

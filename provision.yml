@@ -15,5 +15,8 @@
     - postgres_run
     - images
     - redis
+    - java
+    - maven
+    - cas
     # TODO: add this
     # - haproxy

@@ -1,0 +1,37 @@
+- name: Remove any existing local directory for cas-overlay-demo
+  file:
+    path: /usr/local/ozp/build/cas-overlay-demo
+    state: absent
+  become: true
+  become_user: ozp
+
+- name: Download source from GitHub tag
+  when: (not offline)
+  git:
+    repo: git://github.com/chazzlabs/cas-overlay-demo.git
+    dest: /usr/local/ozp/build/cas-overlay-demo
+    accept_hostkey: yes
+  become: true
+  become_user: ozp
+
+- name: Checkout git branch or tag name
+  when: (git_tag_or_branch_name)
+  command: git checkout {{ git_tag_or_branch_name }}
+  args:
+    chdir: /usr/local/ozp/build/cas-overlay-demo
+  become: true
+  become_user: ozp
+
+- name: Build CAS client and manager
+  when: (git_tag_or_branch_name)
+  shell:  source /usr/local/node_versions/set_node_version.sh {{ node_version }};npm install -g bower gulp
+  args:
+    chdir: /usr/local/ozp/build/cas-overlay-demo
+  become: true
+
+- name: Run CAS client and manager
+  when: (git_tag_or_branch_name)
+  shell:  source /usr/local/node_versions/set_node_version.sh {{ node_version }};npm install -g bower gulp
+  args:
+    chdir: /usr/local/ozp/build/cas-overlay-demo
+  become: true

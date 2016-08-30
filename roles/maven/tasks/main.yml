@@ -1,0 +1,29 @@
+- name: Download Maven 3
+  shell:  wget http://mirror.olnevhost.net/pub/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
+  args:
+    chdir: /opt/
+  become: true
+
+- name: Extract Maven 3
+  shell:  tar xvf apache-maven-3.0.5-bin.tar.gz
+  args:
+    chdir: /opt/
+  become: true
+
+- name: Move Maven 3 installation
+  shell: mv apache-maven-3.0.5  /usr/local/apache-maven
+  args:
+    chdir: /opt/
+  become: true
+
+- name: insert/update "Match User" configuation block in /etc/ssh/sshd_config
+  blockinfile:
+    dest: ~/.bashrc
+    block: |
+      export M2_HOME=/usr/local/apache-maven
+      export M2=$M2_HOME/bin
+      export PATH=$M2:$PATH
+
+- name: Apply changes to .bashrc
+  shell: source ~/.bashrc
+  become: true
