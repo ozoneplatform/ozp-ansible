@@ -1,12 +1,12 @@
-- name: Download Java 1.8 JDK
-  get_url: url=http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.tar.gz dest=/opt/jdk-8u101-linux-x64.tar.gz
+# - name: Download Java 1.8 JDK
+#   get_url: url=http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.tar.gz dest=/opt/jdk-8u101-linux-x64.tar.gz
 
-- name: Extract Java 1.8 JDK
+- name: Download and extract Java 1.8 JDK
   unarchive:
-    src: /opt/jdk-8u101-linux-x64.tar.gz
+    src: http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.tar.gz
     dest: /opt
-    copy: no
-  become: true
+    remote_src: yes
+  # become: true
 
 - name: Install Java 1.8 via Alternatives
   shell:  alternatives --install /usr/bin/java java /opt/jdk1.8.0_101/bin/java 2;echo 1 | alternatives --config java

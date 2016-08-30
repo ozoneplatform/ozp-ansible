@@ -1,11 +1,11 @@
-- name: Download Maven 3
-  get_url: url=http://mirror.olnevhost.net/pub/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz dest=/opt/apache-maven-3.0.5-bin.tar.gz
+# - name: Download Maven 3
+  # get_url: url=http://mirror.olnevhost.net/pub/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz dest=/opt/apache-maven-3.0.5-bin.tar.gz
 
-- name: Extract Maven 3
+- name: Download and extract Maven 3
   unarchive:
-    src: /opt/apache-maven-3.0.5-bin.tar.gz
+    src: http://mirror.olnevhost.net/pub/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
     dest: /opt
-    copy: no
+    remote_src: yes
   become: true
 
 - name: Move Maven 3 installation
