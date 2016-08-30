@@ -5,10 +5,13 @@
   become: true
 
 - name: Extract Maven 3
-  shell:  tar xvf apache-maven-3.0.5-bin.tar.gz
-  args:
-    chdir: /opt/
+  unarchive:
+    src: /opt/apache-maven-3.0.5-bin.tar.gz
+    dest: /opt
+    copy: no
   become: true
+
+  - name: Extract Java 1.8 JDK
 
 - name: Move Maven 3 installation
   shell: mv apache-maven-3.0.5  /usr/local/apache-maven

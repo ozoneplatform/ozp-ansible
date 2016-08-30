@@ -5,9 +5,10 @@
   become: true
 
 - name: Extract Java 1.8 JDK
-  shell:  tar xzf jdk-8u101-linux-x64.tar.gz
-  args:
-    chdir: /opt/
+  unarchive:
+    src: /opt/jdk-8u101-linux-x64.tar.gz
+    dest: /opt
+    copy: no
   become: true
 
 - name: Install Java 1.8 via Alternatives
