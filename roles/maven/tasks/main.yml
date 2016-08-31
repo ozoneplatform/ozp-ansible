@@ -17,7 +17,7 @@
     chdir: /opt/
   become: true
 
-- name: insert/update "Match User" configuation block in /etc/ssh/sshd_config
+- name: Add Maven environment variables to .bashrc
   blockinfile:
     dest: ~/.bashrc
     block: |
