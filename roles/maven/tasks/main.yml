@@ -1,12 +1,15 @@
-# - name: Download Maven 3
-  # get_url: url=http://mirror.olnevhost.net/pub/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz dest=/opt/apache-maven-3.0.5-bin.tar.gz
-
-- name: Download and extract Maven 3
-  unarchive:
-    src: http://mirror.olnevhost.net/pub/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
+- name: Download Maven 3
+  get_url:
+    url: http://mirror.olnevhost.net/pub/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
     dest: /opt
-    copy: no
-  # become: true
+  become: true
+
+# Can't use the Ansible Core module "unarchive" because it does not support *.tar.gz files
+- name: Extract Maven 3
+  shell: tar xvf apache-maven-3.0.5-bin.tar.gz
+  args:
+    chdir: /opt
+  become: true
 
 - name: Move Maven 3 installation
   shell: mv apache-maven-3.0.5  /usr/local/apache-maven
