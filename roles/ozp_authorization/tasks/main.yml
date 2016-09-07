@@ -2,7 +2,7 @@
 # Note: no offline option available for this project
 - name: Download source
   get_url:
-    url: https://github.com/ozone-development/demo-auth-service/archive/master.tar.gz
+    url: https://github.com/ozoneplatform/demo-auth-service/archive/master.tar.gz
     dest: "{{ download_dir }}/demo-auth-service-master.tar.gz"
   become: true
   become_user: ozp

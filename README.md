@@ -8,7 +8,7 @@ do this:
 * `vagrant up` in this directory (this will take about 35 minutes)
 * Access Center from your host at `https://localhost:4440/center/`,
     API docs at `https://localhost:4440/docs/`
-* Details: `https://github.com/ozone-development/ozp-documentation/wiki/Developer_Setup`
+* Details: `https://github.com/ozoneplatform/ozp-documentation/wiki/Developer_Setup`
 
 ## Introduction
 Ansible is a simple IT automation tool that we are using for lots of things,
@@ -191,7 +191,7 @@ so that the site is always available via the load balancer. Run via:
 `ansible-playbook staging_rolling_update.yml -i hosts_staging -u vagrant -k --ask-vault-pass`
 
 ### OZP Sample Arch ###
-![img](https://github.com/ozone-development/ozp-ansible/blob/master/ozp_sample_arch_diagram.png)
+![img](https://github.com/ozoneplatform/ozp-ansible/blob/master/ozp_sample_arch_diagram.png)
 
 ### Offline Installation
 The "offline" mode is useful for provisioning a system without Internet access.
