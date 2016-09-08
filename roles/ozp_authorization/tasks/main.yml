@@ -3,19 +3,19 @@
 - name: Download source
   get_url:
     url: https://github.com/ozoneplatform/ozp-demo-auth-service/archive/master.tar.gz
-    dest: "{{ download_dir }}/demo-auth-service-master.tar.gz"
+    dest: "{{ download_dir }}/ozp-demo-auth-service-master.tar.gz"
   become: true
   become_user: ozp
 
 - name: Clean up old files
   file:
-    path: "{{ download_dir }}/demo-auth-service-master"
+    path: "{{ download_dir }}/ozp-demo-auth-service-master"
     state: absent
   become: true
 
 - name: Extract archive
   unarchive:
-    src: "{{ download_dir }}/demo-auth-service-master.tar.gz"
+    src: "{{ download_dir }}/ozp-demo-auth-service-master.tar.gz"
     dest: "{{ download_dir }}"
     copy: no
     owner: ozp
@@ -28,7 +28,7 @@
   become: true
 
 - name: Move files
-  command: mv {{ download_dir }}/demo-auth-service-master /usr/local/ozp/demo-auth-service
+  command: mv {{ download_dir }}/ozp-demo-auth-service-master /usr/local/ozp/demo-auth-service
   become: true
 
 - name: Use custom settings.py file
