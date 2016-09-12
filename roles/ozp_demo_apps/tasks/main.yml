@@ -30,7 +30,7 @@
 - name: Download source from GitHub tag
   when: (download_from == "github" and not offline)
   git:
-    repo: git://github.com/aml-development/ozp-demo.git
+    repo: git://github.com/ozoneplatform/ozp-demo.git
     dest: /usr/local/ozp/build/ozp-demo
     accept_hostkey: true
   become: true
