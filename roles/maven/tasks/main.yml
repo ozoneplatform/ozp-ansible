@@ -3,7 +3,6 @@
     path: /usr/local/apache-maven
     state: absent
   become: true
-  become_user: ozp
 
 - name: Download Maven 3
   get_url:
