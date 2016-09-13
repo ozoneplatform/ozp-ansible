@@ -8,26 +8,23 @@
 - name: Download source from GitLab tag
   when: (not offline)
   git:
-    repo: http://dev1.vistronix.com:9080/ozp/cas-overlay-demo.git
+#    repo: http://dev1.vistronix.com:9080/ozp/cas-overlay-demo.git
+    repo: https://github.com/chazzlabs/cas-overlay-demo.git
     dest: /usr/local/ozp/build/cas-overlay-demo
-  become: true
-  become_user: ozp
-
-- name: Checkout git branch or tag name
-  command: git checkout 4.2.x
-  args:
-    chdir: /usr/local/ozp/build/cas-overlay-demo
+    version: 4.2.x
   become: true
   become_user: ozp
 
 - name: Build CAS client and manager
-  shell:  mvn clean install
+  shell:  /usr/local/apache-maven/bin/mvn clean install
   args:
     chdir: /usr/local/ozp/build/cas-overlay-demo
   become: true
+  become_user: ozp
 
 - name: Run CAS client and manager
-  shell:  mvn jetty:run
+  shell:  /usr/local/apache-maven/bin/mvn jetty:run &
   args:
     chdir: /usr/local/ozp/build/cas-overlay-demo/cas-overlay-server-demo
   become: true
+  become_user: ozp
