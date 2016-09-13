@@ -1,14 +1,14 @@
 - name: Remove any existing Maven installation
-  file:
-    path: /usr/local/apache-maven
-    state: absent
+  shell: rm -rf /usr/local/apache-maven
   become: true
+  become_user: ozp
 
 - name: Download Maven 3
   get_url:
     url: http://mirror.olnevhost.net/pub/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
     dest: /opt
   become: true
+  become_user: ozp
 
 # Can't use the Ansible Core module "unarchive" because it does not support *.tar.gz files
 - name: Extract Maven 3
@@ -16,12 +16,14 @@
   args:
     chdir: /opt
   become: true
+  become_user: ozp
 
-- name: Move Maven 3 installation
-  shell: mv apache-maven-3.0.5  /usr/local/apache-maven
+- name: Move Maven 3 installation and make it 0755
+  shell: mv apache-maven-3.0.5  /usr/local/apache-maven; chmod -R 0755 /usr/local/apache-maven
   args:
     chdir: /opt/
   become: true
+  become_user: ozp
 
 - name: Add Maven environment variables to .bashrc
   blockinfile:
@@ -30,7 +32,10 @@
       export M2_HOME=/usr/local/apache-maven
       export M2=$M2_HOME/bin
       export PATH=$M2:$PATH
+  become: true
+  become_user: ozp
 
 - name: Apply changes to .bashrc
   shell: source ~/.bashrc
   become: true
+  become_user: ozp
