@@ -6,7 +6,7 @@
     state: absent
   become: true
 
-  - name: Clean up old files
+- name: Clean up old files
   file:
       path: "/usr/local/ozp/demo-auth-service"
       state: absent
