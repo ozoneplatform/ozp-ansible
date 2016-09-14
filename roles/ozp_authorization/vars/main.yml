@@ -1,0 +1,3 @@
+---
+ # branch or tag name to checkout from git repo
+git_tag_or_branch_name: "master"
