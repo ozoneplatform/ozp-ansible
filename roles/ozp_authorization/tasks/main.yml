@@ -22,7 +22,7 @@
 - name: Checkout git branch or tag name
   command: git checkout {{ git_tag_or_branch_name }}
   args:
-    chdir: /usr/local/ozp/build/demo-auth-service
+    chdir: "{{ download_dir }}/demo-auth-service"
   become: true
 
 - name: Move files
