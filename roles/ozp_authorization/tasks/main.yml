@@ -14,7 +14,7 @@
 
 - name: Download source from GitHub tag
   git:
-    repo: git://dev1.vistronix.com:9080/ozp/demo-auth-service.git
+    repo: http://dev1.vistronix.com:9080/ozp/demo-auth-service.git
     dest: "{{ download_dir }}/demo-auth-service"
     accept_hostkey: yes
   become: true
