@@ -10,7 +10,7 @@
   file:
       path: "/usr/local/ozp/demo-auth-service"
       state: absent
-      become: true
+  become: true
 
 - name: Download source from GitHub tag
   git:
@@ -24,7 +24,6 @@
   args:
     chdir: /usr/local/ozp/build/demo-auth-service
   become: true
-  become_user: ozp
 
 - name: Move files
   command: mv {{ download_dir }}/demo-auth-service /usr/local/ozp/demo-auth-service
