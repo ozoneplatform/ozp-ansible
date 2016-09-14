@@ -76,7 +76,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 #CAS
-CAS_SERVER_URL = "http://localhost:8080/cas/"
+CAS_SERVER_URL = "http://localhost:9001/cas/"
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'cas.backends.CASBackend',
@@ -123,7 +123,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'ozp.log',
+            'filename': '/usr/local/ozp/ozp.log',
             'formatter': 'json',
         }
     },
@@ -172,7 +172,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
 
 # MEDIA_ROOT is the absolute path to the folder that will hold user uploads
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join('/mnt/nfs/ozp_media/')
 
 # MEDIA_URL is the relative browser URL to be used when accessing media files
 #   from the browser
@@ -182,8 +183,8 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'ozpcenter.errors.exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'ozpcenter.auth.pkiauth.PkiAuthentication'
-        'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.BasicAuthentication',
+         'rest_framework.authentication.SessionAuthentication',
         ),
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -218,12 +219,13 @@ REST_FRAMEWORK = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'localhost:6379',
+        #'LOCATION': 'localhost:6379',
+	'LOCATION': 'redis://hF2KLXJhhmhDdZKzsG8edGbECKN9kMn26XKhmNAA@localhost:6379/',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "REDIS_CLIENT_CLASS": "mockredis.mock_strict_redis_client",
-            # "COMPRESSOR": "django_redis.compressors.lzma.LzmaCompressor",
-            # "SERIALIZER": "django_redis.serializers.msgpack.MSGPackSerializer",
+            #"REDIS_CLIENT_CLASS": "mockredis.mock_strict_redis_client",
+             "COMPRESSOR": "django_redis.compressors.lzma.LzmaCompressor",
+             "SERIALIZER": "django_redis.serializers.msgpack.MSGPackSerializer",
             # "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
             # "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
         }
@@ -236,19 +238,21 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 OZP = {
-    'DEMO_APP_ROOT': 'https://localhost:8000',
+    'DEMO_APP_ROOT': 'https://localhost:4440',
     # if set to False, never try and update authorization-related info from
     # an external source
-    'USE_AUTH_SERVER': False,
+    'USE_AUTH_SERVER': True,
     # convert DNs read as /CN=My Name/OU=Something... to CN=My Name, OU=Something
     'PREPROCESS_DN': True,
     'OZP_AUTHORIZATION': {
-        'SERVER_CRT': '/ozp/server.crt',
-        'SERVER_KEY': '/ozp/server.key',
+        'SERVER_CRT': '/usr/local/ozp/server_certs/server.crt',
+        'SERVER_KEY': '/usr/local/ozp/server_certs/private/server.key',
         # assumes the real URL is <root>/users/<DN>/
-        'USER_INFO_URL': r'http://localhost:8000/demo-auth/users/%s/info.json?issuerDN=%s',
+        #'USER_INFO_URL': r'http://localhost:8000/demo-auth/users/%s/info.json?issuerDN=%s',
+        'USER_INFO_URL': r'http://localhost:8081/demo-auth/users/%s/info.json?issuerDN=%s',
         # assumes the real URL is <root>/users/<DN>/groups/<PROJECT_NAME>/
-        'USER_GROUPS_URL': r'http://localhost:8000/demo-auth/users/%s/groups/%s/',
+        #'USER_GROUPS_URL': r'http://localhost:8000/demo-auth/users/%s/groups/%s/',
+        'USER_GROUPS_URL': r'http://localhost:8081/demo-auth/users/%s/groups/%s/',
         # name of the group in the auth service for apps mall stewards
         'APPS_MALL_STEWARD_GROUP_NAME': 'OZP_APPS_MALL_STEWARD',
         # name of the group in the auth service for org stewards
