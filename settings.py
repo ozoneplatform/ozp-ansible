@@ -241,7 +241,7 @@ OZP = {
     'DEMO_APP_ROOT': 'https://localhost:4440',
     # if set to False, never try and update authorization-related info from
     # an external source
-    'USE_AUTH_SERVER': True,
+    'USE_AUTH_SERVER': False,
     # convert DNs read as /CN=My Name/OU=Something... to CN=My Name, OU=Something
     'PREPROCESS_DN': True,
     'OZP_AUTHORIZATION': {
