@@ -76,7 +76,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 #CAS
-CAS_SERVER_URL = "http://localhost:9001/cas/"
+CAS_SERVER_URL = "http://localhost:8080/cas/"
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'cas.backends.CASBackend',
