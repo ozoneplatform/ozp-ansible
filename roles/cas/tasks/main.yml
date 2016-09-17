@@ -1,29 +1,42 @@
-- name: Remove any existing local directory for cas-overlay-demo
+- name: Remove any existing local directory for cas-artifacts
   file:
-    path: /usr/local/ozp/build/cas-overlay-demo
+    path: /opt/cas-artifacts
     state: absent
   become: true
-  become_user: ozp
+  become_method: sudo
 
 - name: Download source from GitLab tag
   when: (not offline)
   git:
-    repo: http://dev1.vistronix.com:9080/ozp/cas-overlay-demo.git
-    dest: /usr/local/ozp/build/cas-overlay-demo
-    version: 4.2.x
+    repo: http://dev1.vistronix.com:9080/ozp/cas-artifacts.git
+    dest: /opt/cas-artifacts
+    version: master
   become: true
-  become_user: ozp
+  become_method: sudo
 
-- name: Build CAS client and manager
-  shell:  /usr/local/apache-maven/bin/mvn clean install
-  args:
-    chdir: /usr/local/ozp/build/cas-overlay-demo
+- name: Create CAS config folder
+  file:
+    path: /etc/cas
+    state: directory
   become: true
-  become_user: ozp
+  become_method: sudo
 
-- name: Run CAS client and manager
-  shell:  /usr/local/apache-maven/bin/mvn jetty:run &
-  args:
-    chdir: /usr/local/ozp/build/cas-overlay-demo/cas-overlay-server-demo
+- name: Move CAS config
+  shell: cp /opt/cas-artifacts/etc/cas/cas.properties /etc/cas/cas.properties ; chown tomcat:tomcat /etc/cas/cas.properties
   become: true
-  become_user: ozp
+  become_method: sudo
+
+- name: Move CAS Management config
+  shell: cp /opt/cas-artifacts/etc/cas/cas-management.properties /etc/cas/cas-management.properties ; chown tomcat:tomcat /etc/cas/cas-management.properties
+  become: true
+  become_method: sudo
+
+- name: Move CAS war
+  shell: cp /opt/cas-artifacts/cas.war /opt/apache-tomcat-7.0.61/webapps/cas.war ; chown tomcat:tomcat /opt/apache-tomcat-7.0.61/webapps/cas.war
+  become: true
+  become_method: sudo
+
+- name: Move CAS Service war
+  shell: cp /opt/cas-artifacts/cas-services.war /opt/apache-tomcat-7.0.61/webapps/cas-services.war ; chown tomcat:tomcat /opt/apache-tomcat-7.0.61/webapps/cas-services.war
+  become: true
+  become_method: sudo 

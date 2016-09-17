@@ -16,7 +16,8 @@
     - images
     - redis
     - java
-    - maven
+    - tomcat
+    # - maven
     - cas
     # TODO: add this
     # - haproxy
