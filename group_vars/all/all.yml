@@ -1,3 +1,6 @@
+# Git repository location
+git_host: "http://dev1.vistronix.com:9080"
+
 jenkins_username: "{{ vault_jenkins_username }}"
 jenkins_password: "{{ vault_jenkins_password }}"
 jenkins_host: "{{ vault_jenkins_host }}"

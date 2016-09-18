@@ -8,7 +8,7 @@
 - name: Download source from GitLab tag
   when: (not offline)
   git:
-    repo: http://dev1.vistronix.com:9080/ozp/cas-artifacts.git
+    repo: "{{ git_host }}/ozp/cas-artifacts.git"
     dest: /opt/cas-artifacts
     version: master
   become: true
@@ -39,4 +39,4 @@
 - name: Move CAS Service war
   shell: cp /opt/cas-artifacts/cas-services.war /opt/apache-tomcat-7.0.61/webapps/cas-services.war ; chown tomcat:tomcat /opt/apache-tomcat-7.0.61/webapps/cas-services.war
   become: true
-  become_method: sudo 
+  become_method: sudo
