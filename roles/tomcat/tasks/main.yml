@@ -11,7 +11,7 @@
 
 - name: Create Tomcat log folder
   file:
-    path: /var/lib/tomcat7/logs
+    path: /var/log/tomcat
     state: directory
     group: tomcat
     owner: tomcat

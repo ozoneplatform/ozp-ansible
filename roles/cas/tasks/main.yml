@@ -21,13 +21,13 @@
   become: true
   become_method: sudo
 
-- name: Move CAS config
-  shell: cp /opt/cas-artifacts/etc/cas/cas.properties /etc/cas/cas.properties ; chown tomcat:tomcat /etc/cas/cas.properties
+- name: Move CAS Config
+  template: src=cas.properties dest=/etc/cas/
   become: true
   become_method: sudo
 
-- name: Move CAS Management config
-  shell: cp /opt/cas-artifacts/etc/cas/cas-management.properties /etc/cas/cas-management.properties ; chown tomcat:tomcat /etc/cas/cas-management.properties
+- name: Move CAS Management Config
+  template: src=cas-management.properties dest=/etc/cas
   become: true
   become_method: sudo
 
