@@ -44,6 +44,12 @@
   become: True
   become_method: sudo
 
+- name: Install Tomcat server Keystore
+  copy: src=cacerts dest=/usr/share/tomcat/conf/
+  notify: restart tomcat
+  become: True
+  become_method: sudo
+
 - name: Configure Tomcat users
   template: src=tomcat-users.xml dest=/usr/share/tomcat/conf/
   notify: restart tomcat
@@ -61,7 +67,6 @@
   become_method: sudo
 
 - name: wait for tomcat to start
-  wait_for: port={{http_port}}
+  wait_for: port={{https_port}}
   become: True
   become_method: sudo
-
