@@ -11,8 +11,11 @@ Ansible, more options for running specific Ansible tasks, and basic notes about
 the ozp-ansible project.
 
 ## Deploying the OZP SDK
+See the bottom of this README for detailed instructions on installing
+Vagrant, Ansible, and Virtualbox
+
 To deploy OZP, follw these steps:
-* Install Virtualbox, Vagrant, and Ansible on your host (Ansible must be >= v2.0)
+* Install Vagrant, Ansible, and Virtualbox on your host (Ansible must be >= v2.0)
 * `git clone` this repository to your host
 * Update `roles/cas/vars/main.yml` with the correct values for the local Active Directory installation (optional if not using AD)
 * Update `group_vars/all/all.yml` with the correct `git_host` URL pointing to your OZP module repositories
@@ -73,3 +76,49 @@ Below are usernames that are part of our sample data (defined in
 If you get an ssh error, you may need to add/set `host_key_checking = false`
 in your Ansible config, typically located at `/etc/ansible/ansible.cfg`
 
+## Installing Vagrant, Ansible, and Virtualbox
+The following steps were applied on CentOS 6.8 VM in BAH environment.
+
+**Vagrant Installation**
+
+[root@OZP-CentOS home]# cd /srv
+
+[root@OZP-CentOS srv]# ls
+
+[root@OZP-CentOS srv]# wget https://releases.hashicorp.com/vagrant/1.8.4/vagrant_1.8.4_x86_64.rpm
+
+[root@OZP-CentOS srv]# rpm -ivh vagrant_1.8.4_x86_64.rpm
+
+
+**Ansible Installation**
+
+[root@OZP-CentOS yum.repos.d]# yum install epel-release
+
+[root@OZP-CentOS yum.repos.d]# yum install ansible
+
+
+**Virtualbox Installation**
+
+[root@OZP-CentOS srv]# cd /etc/yum.repos.d/
+
+[root@OZP-CentOS yum.repos.d]# wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo
+
+Output of following commands version numbers should match:
+
+[root@OZP-CentOS yum.repos.d]# rpm -qa kernel |sort -V |tail -n 1
+
+kernel-2.6.32-642.3.1.el6.x86_64
+
+[root@OZP-CentOS yum.repos.d]# uname -r 2.6.32-642.3.1.el6.x86_64
+
+[root@OZP-CentOS yum.repos.d]# rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+
+[root@OZP-CentOS yum.repos.d]# yum install binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms
+
+[root@OZP-CentOS yum.repos.d]# yum install VirtualBox-5.0
+
+[root@OZP-CentOS yum.repos.d]# service vboxdrv setup
+
+[root@OZP-CentOS yum.repos.d]# usermod -a -G vboxusers username
+
+[root@OZP-CentOS yum.repos.d]# VirtualBox
