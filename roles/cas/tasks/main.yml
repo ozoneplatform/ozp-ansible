@@ -26,22 +26,7 @@
   become: true
   become_method: sudo
 
-- name: Move CAS Management Config
-  template: src=cas-management.properties dest=/etc/cas
-  become: true
-  become_method: sudo
-
-- name: Move CAS Management Users Config
-  template: src=user-details.properties dest=/etc/cas
-  become: true
-  become_method: sudo
-
 - name: Move CAS war
   shell: cp /opt/cas-artifacts/cas.war /opt/apache-tomcat-7.0.61/webapps/cas.war ; chown tomcat:tomcat /opt/apache-tomcat-7.0.61/webapps/cas.war
-  become: true
-  become_method: sudo
-
-- name: Move CAS Service war
-  shell: cp /opt/cas-artifacts/cas-services.war /opt/apache-tomcat-7.0.61/webapps/cas-services.war ; chown tomcat:tomcat /opt/apache-tomcat-7.0.61/webapps/cas-services.war
   become: true
   become_method: sudo

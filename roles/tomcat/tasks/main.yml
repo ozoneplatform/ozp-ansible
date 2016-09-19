@@ -45,7 +45,7 @@
   become_method: sudo
 
 - name: Install Tomcat server Keystore
-  copy: src=cacerts dest=/usr/share/tomcat/conf/
+  copy: src=.keystore dest=/usr/share/tomcat/conf/
   notify: restart tomcat
   become: True
   become_method: sudo
