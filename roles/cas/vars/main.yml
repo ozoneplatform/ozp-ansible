@@ -1,11 +1,11 @@
 ---
-ldap_url: ldap://10.18.2.30:3268
+ldap_url: ldap://localhost:1389
 ldap_useStartTLS: false
-ldap_rootDn: DC=netcentric,DC=local
-ldap_baseDn: OU=SBSUsers,OU=Users,OU=MyBusiness,DC=netcentric,DC=local
+ldap_rootDn: dc=example,dc=org
+ldap_baseDn: ou=people,dc=example,dc=org
 ldap_connectTimeout: 3000
-ldap_managerDn: CN=redmine,OU=SBSUsers,OU=Users,OU=MyBusiness,DC=netcentric,DC=local
-ldap_managerPassword: Password1234!@#$
+ldap_managerDn: cn=Directory Manager,dc=example,dc=org
+ldap_managerPassword: Password
 ldap_pool_minSize: 1
 ldap_pool_maxSize: 10
 ldap_pool_validateOnCheckout: false
@@ -14,7 +14,7 @@ ldap_pool_blockWaitTime: 3000
 ldap_pool_validatePeriod: 300
 ldap_pool_prunePeriod: 300
 ldap_pool_idleTime: 600
-ldap_authn_searchFilter: sAMAccountName={user}
-ldap_domain: netcentric.local
+ldap_authn_searchFilter: cn={user}
+ldap_domain: example.org
 ldap_usePpolicy: false
 ldap_allowMultipleDns: false
