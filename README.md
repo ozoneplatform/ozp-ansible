@@ -46,7 +46,7 @@ To deploy OZP, follw these steps:
 *NOTE*: Any variables defined in `group_vars/all/all.yml` (or any group for
 that matter) will take precedence over variables defined in Inventory files.
 
-## Sample Users for 
+## Sample Users
 The following users are included in the CAS configuration provided in the OZP SDK.
 
 Below are usernames that are part of our sample data (defined in
