@@ -179,6 +179,14 @@
   become: true
   become_user: ozp
 
+- name: Use templated requirements.txt file
+  template:
+    src: requirements.txt.j2
+    dest: /usr/local/ozp/backend/requirements.txt
+    owner: ozp
+    mode: 0644
+  become: true
+
 - name: Copy init.d file
   copy:
     src: gunicorn_ozp.initd
