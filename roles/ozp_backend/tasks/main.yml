@@ -56,6 +56,13 @@
   become: true
   become_user: ozp
 
+- name: Use templated requirements.txt file for Python dependencies
+  template:
+    src: requirements.txt.j2
+    dest: /usr/local/ozp/backend/requirements.txt
+    owner: ozp
+    mode: 0644
+  become: true
 
 - name: Fix Python sandbox problem
   shell: chown -R ozp /usr/local/lib/python3.4/lib2to3/
@@ -178,14 +185,6 @@
     mode: 0644
   become: true
   become_user: ozp
-
-- name: Use templated requirements.txt file
-  template:
-    src: requirements.txt.j2
-    dest: /usr/local/ozp/backend/requirements.txt
-    owner: ozp
-    mode: 0644
-  become: true
 
 - name: Copy init.d file
   copy:
