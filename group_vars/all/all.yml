@@ -1,6 +1,18 @@
 # Git repository location
 git_host: "http://dev1.vistronix.com:9080"
 
+# Git repo URLs for OZP projects and dependencies
+git_cas_url: "ozp/cas-artifacts.git"
+git_demo_auth_url: "ozp/demo-auth-service.git"
+git_ozp_backend_url: "ozp/ozp-backend.git"
+git_ozp_center_url: "ozp/ozp-center.git"
+git_demo_apps_url: "ozp/ozp-demo.git"
+git_ozp_webtop_url: "ozp/ozp-webtop.git"
+git_ozp_iwc_url: "ozp/ozp-iwc.git"
+git_ozp_hud_url: "ozp/ozp-hud.git"
+git_ozp_help_url: "ozp/ozp-help.git"
+git_django_cas_url: "ozp/django-cas.git"
+
 jenkins_username: "{{ vault_jenkins_username }}"
 jenkins_password: "{{ vault_jenkins_password }}"
 jenkins_host: "{{ vault_jenkins_host }}"

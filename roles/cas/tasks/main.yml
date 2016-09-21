@@ -8,7 +8,7 @@
 - name: Download source from GitLab tag
   when: (not offline)
   git:
-    repo: "{{ git_host }}/ozp/cas-artifacts.git"
+    repo: "{{ git_host }}/{{ git_cas_url }}"
     dest: /opt/cas-artifacts
     version: master
   become: true

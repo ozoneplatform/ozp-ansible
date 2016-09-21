@@ -30,7 +30,7 @@
 - name: Download source from GitHub tag
   when: (download_from == "github" and not offline)
   git:
-    repo: "{{ git_host }}/ozp/ozp-webtop.git"
+    repo: "{{ git_host }}/{{ git_ozp_webtop_url }}"
     dest: /usr/local/ozp/build/ozp-webtop
     accept_hostkey: yes
   become: true

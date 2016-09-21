@@ -14,7 +14,7 @@
 
 - name: Download source from GitHub tag
   git:
-    repo: "{{ git_host }}/ozp/demo-auth-service.git"
+    repo: "{{ git_host }}/{{ git_demo_auth_url }}"
     dest: "{{ download_dir }}/demo-auth-service"
     accept_hostkey: yes
   become: true
