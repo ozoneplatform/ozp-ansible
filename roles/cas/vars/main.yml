@@ -1,5 +1,4 @@
 ---
-ldap_authenticator: "null"
 ldap_url: ldap://localhost:1389
 ldap_useStartTLS: false
 ldap_rootDn: dc=example,dc=org
@@ -19,3 +18,5 @@ ldap_authn_searchFilter: cn={user}
 ldap_domain: example.org
 ldap_usePpolicy: false
 ldap_allowMultipleDns: false
+
+enable_ad: false

@@ -26,7 +26,43 @@
   become: true
   become_method: sudo
 
+- name: Move deployerConfigContextAD.xml
+  copy: src=deployerConfigContext-AD.xml dest=/etc/cas/deployerContextConfig.xml
+  when: enable_ad
+  become: true
+  become_method: sudo
+
+- name: Move deployerConfigContext.xml
+  copy: src=deployerConfigContext.xml dest=/etc/cas/deployerContextConfig.xml
+  when: not enable_ad
+  become: true
+  become_method: sudo
+
+- name: Stop Tomcat
+  service: name=tomcat state=stopped
+  become: true
+  become_method: sudo
+
+- name: Remove existing CAS war
+  file:
+    path: /opt/apache-tomcat-7.0.61/webapps/cas.war
+    state: absent
+  become: true
+  become_method: sudo
+
+- name: Remove existing CAS Tomcat deployment
+  file:
+    path: /opt/apache-tomcat-7.0.61/webapps/cas
+    state: absent
+  become: true
+  become_method: sudo
+
 - name: Move CAS war
   shell: cp /opt/cas-artifacts/cas.war /opt/apache-tomcat-7.0.61/webapps/cas.war ; chown tomcat:tomcat /opt/apache-tomcat-7.0.61/webapps/cas.war
+  become: true
+  become_method: sudo
+
+- name:	Start Tomcat
+  service: name=tomcat state=started
   become: true
   become_method: sudo
