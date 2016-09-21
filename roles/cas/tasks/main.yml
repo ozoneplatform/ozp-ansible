@@ -27,13 +27,13 @@
   become_method: sudo
 
 - name: Move deployerConfigContextAD.xml
-  copy: src=deployerConfigContext-AD.xml dest=/etc/cas/deployerContextConfig.xml
+  copy: src=deployerConfigContext-AD.xml dest=/etc/cas/deployerConfigContext.xml
   when: enable_ad
   become: true
   become_method: sudo
 
 - name: Move deployerConfigContext.xml
-  copy: src=deployerConfigContext.xml dest=/etc/cas/deployerContextConfig.xml
+  copy: src=deployerConfigContext.xml dest=/etc/cas/deployerConfigContext.xml
   when: not enable_ad
   become: true
   become_method: sudo
