@@ -1,5 +1,5 @@
 ---
-ldap_authenticator: null
+ldap_authenticator: "null"
 ldap_url: ldap://localhost:1389
 ldap_useStartTLS: false
 ldap_rootDn: dc=example,dc=org
