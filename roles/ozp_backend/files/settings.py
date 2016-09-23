@@ -107,12 +107,14 @@ WSGI_APPLICATION = 'ozp.wsgi.application'
 
 DATABASES= {
 	'default': {
-	    'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-	    'NAME': 'ozp',  # Or path to database file if using sqlite3.
+	    #'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+	    #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Or path to database file if using sqlite3.
+	    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+	    'NAME': 'ozp',
 	    'USER': 'ozp_user',
 	    'PASSWORD': 'password',
-	    'HOST': 'localhost',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-	    'PORT': '',  # Set to empty string for default.
+	    'HOST': 'localhost',
+	    'PORT': ''
 	}
 }
 
@@ -223,13 +225,13 @@ REST_FRAMEWORK = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        #'LOCATION': 'localhost:6379',
-	'LOCATION': 'redis://hF2KLXJhhmhDdZKzsG8edGbECKN9kMn26XKhmNAA@localhost:6379/',
+        'LOCATION': 'localhost:6379',
+	#'LOCATION': 'redis://hF2KLXJhhmhDdZKzsG8edGbECKN9kMn26XKhmNAA@localhost:6379/',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            #"REDIS_CLIENT_CLASS": "mockredis.mock_strict_redis_client",
-             "COMPRESSOR": "django_redis.compressors.lzma.LzmaCompressor",
-             "SERIALIZER": "django_redis.serializers.msgpack.MSGPackSerializer",
+            "REDIS_CLIENT_CLASS": "mockredis.mock_strict_redis_client",
+            "COMPRESSOR": "django_redis.compressors.lzma.LzmaCompressor",
+            "SERIALIZER": "django_redis.serializers.msgpack.MSGPackSerializer",
             # "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
             # "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
         }
