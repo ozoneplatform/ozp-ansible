@@ -10,7 +10,7 @@ ldap_subtreeSearch: true
 ldap_usePasswordPolicy: false
 ldap_bindDn: cn=Directory Manager,dc=example,dc=org
 ldap_bindCredential: Password
-ldap_principalAttributeId=uid
+ldap_principalAttributeId: uid
 
 # This is a list of static users to provide for CAS instead of or in addition to use of AD. This generates a warning on the CAS page; leave blank to disable static users
 cas_users: casuser::Mellon,aaronson::password,jones::password,rutherford::password,syme::password,tparsons::password,charrington::password,wsmith::password,julia::password,obrien::password,bigbrother::password,bigbrother2::password
