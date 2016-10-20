@@ -23,7 +23,7 @@
 
 - name: Create CAS config folder
   file:
-    path: /etc/cas
+    path: /etc/cas/config
     state: directory
     owner: tomcat
     group: tomcat
@@ -31,19 +31,12 @@
   become_method: sudo
 
 - name: Move CAS Config
-  template: src=cas.properties dest=/etc/cas/ owner=tomcat group=tomcat
+  template: src=cas.properties dest=/etc/cas/config owner=tomcat group=tomcat
   become: true
   become_method: sudo
 
-- name: Move deployerConfigContextAD.xml
-  copy: src=deployerConfigContext-AD.xml dest=/etc/cas/deployerConfigContext.xml owner=tomcat group=tomcat
-  when: enable_ad
-  become: true
-  become_method: sudo
-
-- name: Move deployerConfigContext.xml
-  copy: src=deployerConfigContext.xml dest=/etc/cas/deployerConfigContext.xml owner=tomcat group=tomcat
-  when: not enable_ad
+- name: Move log4j config
+  copy: src=log4j2.xml dest=/etc/cas/config owner=tomcat group=tomcat
   become: true
   become_method: sudo
 
@@ -54,24 +47,24 @@
 
 - name: Remove existing CAS war
   file:
-    path: /opt/apache-tomcat-7.0.61/webapps/cas.war
+    path: /usr/share/tomcat/webapps/cas.war
     state: absent
   become: true
   become_method: sudo
 
 - name: Remove existing CAS Tomcat deployment
   file:
-    path: /opt/apache-tomcat-7.0.61/webapps/cas
+    path: /usr/share/tomcat/webapps/cas
     state: absent
   become: true
   become_method: sudo
 
 - name: Move CAS war
-  shell: cp /opt/cas-artifacts/cas.war /opt/apache-tomcat-7.0.61/webapps/cas.war ; chown tomcat:tomcat /opt/apache-tomcat-7.0.61/webapps/cas.war
+  shell: cp /opt/cas-artifacts/cas.war /usr/share/tomcat/webapps/cas.war ; chown tomcat:tomcat /usr/share/tomcat/webapps/cas.war
   become: true
   become_method: sudo
 
-- name:	Start Tomcat
+- name: Start Tomcat
   service: name=tomcat state=started
   become: true
   become_method: sudo

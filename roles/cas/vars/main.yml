@@ -1,22 +1,19 @@
 ---
-ldap_url: ldap://localhost:1389
+# Active Directory Settings: leave following setting blank if not using AD, otherwise replace below samples with installation specific data as needed
+ldap_ldapUrl: ldap://localhost:1389
+ldap_useSsl: false
 ldap_useStartTLS: false
-ldap_rootDn: dc=example,dc=org
+ldap_connectTimeout: 5000
 ldap_baseDn: ou=people,dc=example,dc=org
-ldap_connectTimeout: 3000
-ldap_managerDn: cn=Directory Manager,dc=example,dc=org
-ldap_managerPassword: Password
-ldap_pool_minSize: 1
-ldap_pool_maxSize: 10
-ldap_pool_validateOnCheckout: false
-ldap_pool_validatePeriodically: true
-ldap_pool_blockWaitTime: 3000
-ldap_pool_validatePeriod: 300
-ldap_pool_prunePeriod: 300
-ldap_pool_idleTime: 600
-ldap_authn_searchFilter: cn={user}
-ldap_domain: example.org
-ldap_usePpolicy: false
-ldap_allowMultipleDns: false
+ldap_userFilter: cn={user}
+ldap_subtreeSearch: true
+ldap_usePasswordPolicy: false
+ldap_bindDn: cn=Directory Manager,dc=example,dc=org
+ldap_bindCredential: Password
+ldap_principalAttributeId=uid
 
-enable_ad: false
+# This is a list of static users to provide for CAS instead of or in addition to use of AD. This generates a warning on the CAS page; leave blank to disable static users
+cas_users: casuser::Mellon,aaronson::password,jones::password,rutherford::password,syme::password,tparsons::password,charrington::password,wsmith::password,julia::password,obrien::password,bigbrother::password,bigbrother2::password
+
+# This should be the hostname of the system cas is running on
+cas_server_name: localhost
