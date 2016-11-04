@@ -9,7 +9,7 @@ When we move ozp-ansible over to production, we make these changes:
 * hosts_staging
     * set all fqdns and ip addresses
 * staging_site.yml
-    * remove ozp_authorization and ozp_demo_apps roles
+    * remove ozp_authorization and iwc_sample_widgets roles
 * ozp_backend/vars/main.yml
     * offline: true
     * reset_database: false
@@ -19,7 +19,7 @@ When we move ozp-ansible over to production, we make these changes:
     box will have unique certs, which is not supported by these Ansible scripts
 * offline/files - put them all here (see README)
 * staging_rolling_updates.yml
-    * remove ozp_demo_apps, ozp_authorization roles
+    * remove iwc_sample_widgets, ozp_authorization roles
 * ozp_backend/templates/settings.py.j2
     * USER_INFO_URL: https
     * USER_GROUPS_URL: https

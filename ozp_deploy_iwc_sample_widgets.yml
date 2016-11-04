@@ -5,4 +5,4 @@
     - group_vars/all/vault.yml
 
   roles:
-    - ozp_demo_apps
+    - iwc_sample_widgets

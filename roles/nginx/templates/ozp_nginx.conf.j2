@@ -7,7 +7,7 @@ server {
         location = /favicon.ico { access_log off; log_not_found off; }
 
         # enforce trailing slash on urls
-        location ~ ^/(?<page>static|center|hud|webtop|help|iwc|demo_apps)$ {
+        location ~ ^/(?<page>static|center|hud|webtop|help|iwc|iwc_sample_widgets)$ {
             return 301 $scheme://$http_host/$page/;
         }
 
@@ -26,8 +26,8 @@ server {
         location /iwc/ {
             alias /usr/local/ozp/frontend/iwc/;
         }
-        location /demo_apps/ {
-            alias /usr/local/ozp/frontend/demo_apps/;
+        location /iwc_sample_widgets/ {
+            alias /usr/local/ozp/frontend/iwc_sample_widgets/;
         }
         location /help/ {
             alias /usr/local/ozp/frontend/help/;

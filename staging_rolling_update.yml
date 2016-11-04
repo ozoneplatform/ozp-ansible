@@ -21,7 +21,7 @@
     - { role: ozp_webtop}
     - { role: ozp_iwc}
     - { role: ozp_help}
-    - { role: ozp_demo_apps}
+    - { role: iwc_sample_widgets}
     - { role: ozp_config}
     - { role: ozp_authorization, delegate_to: "{{ api_fqdn }}"}
     - { role: ozp_backend, delegate_to: "{{ api_fqdn }}"}
@@ -32,4 +32,3 @@
     delegate_to: "{{ item }}"
     with_items: groups.loadbalancer
     become: true
-

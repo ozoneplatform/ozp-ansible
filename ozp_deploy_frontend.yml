@@ -3,5 +3,5 @@
 - include: ozp_deploy_hud.yml
 - include: ozp_deploy_webtop.yml
 - include: ozp_deploy_iwc.yml
-- include: ozp_deploy_demo_apps.yml
+- include: ozp_deploy_iwc_sample_widgets.yml
 - include: ozp_deploy_help.yml
