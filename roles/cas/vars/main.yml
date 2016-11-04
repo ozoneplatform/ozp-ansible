@@ -1,5 +1,5 @@
 ---
-# Active Directory Settings: leave following setting blank if not using AD, otherwise replace below samples with installation specific data as needed
+# Active Directory Settings: replace below samples with installation specific data as needed, and make sure to uncomment all ldap parameters in cas.properties template
 ldap_ldapUrl: ldap://localhost:1389
 ldap_useSsl: false
 ldap_useStartTls: false
