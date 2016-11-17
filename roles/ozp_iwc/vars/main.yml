@@ -8,5 +8,5 @@ jenkins_project: "build-iwc-latest"
 # enter a build number or "lastSuccessfulBuild" to get the latest artifact
 jenkins_build_number: "lastSuccessfulBuild"
 # for ozpIwc.conf.js
-api_root_url: "/api"
+api_root_url: "/iwc-api"
 node_version: 0.12.7
