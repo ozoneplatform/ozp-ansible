@@ -53,7 +53,7 @@
 
 - name: Build, test, and create tarball for iwc-sample-widgets release
   when: (download_from == "github" and git_tag_or_branch_name)
-  shell: source /usr/local/node_versions/set_node_version.sh {{ node_version }};npm install; npm run build;npm run tarDistDate
+  shell: source /usr/local/node_versions/set_node_version.sh {{ node_version }};npm install; npm run build -- --host {{ site_fqdn }} --port {{ site_port }};npm run tarDistDate
   args:
     chdir: /usr/local/ozp/build/iwc-sample-widgets
   become: true
