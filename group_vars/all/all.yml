@@ -13,6 +13,9 @@ git_ozp_help_url: "ozp/ozp-help.git"
 git_iwc_sample_widgets_url: "ozp/iwc-sample-widgets.git"
 git_django_cas_url: "ozp/django-cas.git"
 
+# System high classification will be represented in banners on OZP UI
+system_high_classification: "U"
+
 jenkins_username: "{{ vault_jenkins_username }}"
 jenkins_password: "{{ vault_jenkins_password }}"
 jenkins_host: "{{ vault_jenkins_host }}"
