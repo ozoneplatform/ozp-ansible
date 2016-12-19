@@ -1,17 +1,17 @@
 # Git repository location
-git_host: "http://dev1.vistronix.com:9080"
+git_host: "https://www.github.com"
 
 # Git repo URLs for OZP projects and dependencies
-git_cas_url: "ozp/cas-artifacts.git"
-git_demo_auth_url: "ozp/demo-auth-service.git"
-git_ozp_backend_url: "ozp/ozp-backend.git"
-git_ozp_center_url: "ozp/ozp-center.git"
-git_ozp_webtop_url: "ozp/ozp-webtop.git"
-git_ozp_iwc_url: "ozp/ozp-iwc.git"
-git_ozp_hud_url: "ozp/ozp-hud.git"
-git_ozp_help_url: "ozp/ozp-help.git"
-git_iwc_sample_widgets_url: "ozp/iwc-sample-widgets.git"
-git_django_cas_url: "ozp/django-cas.git"
+git_cas_url: "ozoneplatform/cas-artifacts.git"
+git_demo_auth_url: "ozoneplatform/demo-auth-service.git"
+git_ozp_backend_url: "ozoneplatform/ozp-backend.git"
+git_ozp_center_url: "ozoneplatform/ozp-center.git"
+git_ozp_webtop_url: "ozoneplatform/ozp-webtop.git"
+git_ozp_iwc_url: "ozoneplatform/ozp-iwc.git"
+git_ozp_hud_url: "ozoneplatform/ozp-hud.git"
+git_ozp_help_url: "ozoneplatform/ozp-help.git"
+git_iwc_sample_widgets_url: "ozoneplatform/iwc-sample-widgets.git"
+git_django_cas_url: "nssbu/django-cas.git"
 
 # System high classification will be represented in banners on OZP UI
 system_high_classification: "U"

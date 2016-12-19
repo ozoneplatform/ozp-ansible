@@ -2,12 +2,12 @@ ozp-ansible
 =====================
 
 ## Note
-This is a fork of the ozp-ansible project from AML Development: https://github.com/aml-development/ozp-ansible.
+This is a fork of the ozp-ansible project from AML Development: https://github.com/ozoneplatform/ozp-ansible.
 
 This README only contains instructions for building the modified OZP SDK as well
-as some important notes about this project and its Ansible build.  See the AML 
+as some important notes about this project and its Ansible build.  See the AML
 Development's ozp-ansible repository's README for a more thorough explanation of
-Ansible, more options for running specific Ansible tasks, and basic notes about 
+Ansible, more options for running specific Ansible tasks, and basic notes about
 the ozp-ansible project.
 
 ## Deploying the OZP SDK
