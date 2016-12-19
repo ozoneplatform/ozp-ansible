@@ -2,7 +2,7 @@
 git_host: "https://www.github.com"
 
 # Git repo URLs for OZP projects and dependencies
-git_cas_url: "ozoneplatform/cas-artifacts.git"
+git_cas_url: "nssbu/cas-artifacts.git"
 git_demo_auth_url: "ozoneplatform/demo-auth-service.git"
 git_ozp_backend_url: "ozoneplatform/ozp-backend.git"
 git_ozp_center_url: "ozoneplatform/ozp-center.git"
