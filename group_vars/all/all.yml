@@ -10,7 +10,7 @@ git_ozp_webtop_url: "ozoneplatform/ozp-webtop.git"
 git_ozp_iwc_url: "ozoneplatform/ozp-iwc.git"
 git_ozp_hud_url: "ozoneplatform/ozp-hud.git"
 git_ozp_help_url: "ozoneplatform/ozp-help.git"
-git_iwc_sample_widgets_url: "ozoneplatform/iwc-sample-widgets.git"
+git_iwc_sample_widgets_url: "nssbu/iwc-sample-widgets.git"
 git_django_cas_url: "nssbu/django-cas.git"
 
 # System high classification will be represented in banners on OZP UI
