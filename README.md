@@ -1,5 +1,5 @@
 ## Interested in becoming a contributor? 
-Fork the code for this repository. Make the changes a should be made part of the OZP pnd submit a pull request. The Ozone team will review your pull request and evaluate if itroject. For more information on the patch process please review the Patch Process at https://ozone.nextcentury.com/patch_process.
+Fork the code for this repository. Make your changes and submit a pull request. The Ozone team will review your pull request and evaluate if itroject. For more information on the patch process please review the Patch Process at https://ozone.nextcentury.com/patch_process.
 
 ozp-ansible
 =====================
